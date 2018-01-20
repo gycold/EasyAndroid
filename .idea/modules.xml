@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://E:\Projects\Demos\EasyAndroid-master\EasyAndroid.iml" filepath="E:\Projects\Demos\EasyAndroid-master\EasyAndroid.iml" />
+      <module fileurl="file://$PROJECT_DIR$/EasyAndroid-master.iml" filepath="$PROJECT_DIR$/EasyAndroid-master.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/easytools/easytools.iml" filepath="$PROJECT_DIR$/easytools/easytools.iml" />
+      <module fileurl="file://$PROJECT_DIR$/easyviews/easyviews.iml" filepath="$PROJECT_DIR$/easyviews/easyviews.iml" />
+    </modules>
+  </component>
+</project>
