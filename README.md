@@ -5,4 +5,4 @@ an easy library for developer
 compile 'com.easyandroid:easytools:1.1.5'
 
 
- ![image](https://github.com/gycold/EasyAndroid/tree/master/pictures/list.png)
+ ![image](https://github.com/gycold/EasyAndroid/raw/master/pictures/list.png)
