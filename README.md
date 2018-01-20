@@ -5,6 +5,7 @@ an easy library for developer
 compile 'com.easyandroid:easytools:1.2.2'
 
 添加混淆：
+
 -keep class com.easytools.tools.DialogUtil {*;}
 
 -dontwarn com.easytools.tools.**
