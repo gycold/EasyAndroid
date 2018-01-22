@@ -9,6 +9,7 @@ import android.os.StatFs;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
@@ -56,6 +57,32 @@ public class SDCardUtil {
             throw new RuntimeException("sdcard disabled!");
         }
         return Environment.getExternalStorageDirectory().getPath() + File.separator;
+    }
+
+    /**
+     * 在缓存路径下创建指定图片名称的文件
+     * tips:通过Context获取的路径都带有包名
+     *
+     * @param context
+     * @param fileName
+     */
+    public static void savePic(Context context, String fileName){
+        if (!isSDCardEnable()) {
+            throw new RuntimeException("sdcard disabled!");
+        }
+        String path = context.getExternalCacheDir().getAbsolutePath();
+        String filePath = path + fileName;
+        File file = new File(filePath);
+        if (!file.getParentFile().exists()) {
+            file.getParentFile().mkdirs();
+        }
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     /**

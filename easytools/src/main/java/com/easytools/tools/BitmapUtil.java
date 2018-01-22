@@ -18,8 +18,8 @@ import android.graphics.Paint;
 import android.graphics.PaintFlagsDrawFilter;
 import android.graphics.PixelFormat;
 import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
 import android.graphics.PorterDuff.Mode;
+import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
@@ -44,8 +44,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-
-import static android.R.string.no;
 
 /**
  * package: com.easytools.tools.BitmapUtil
@@ -732,7 +730,7 @@ public class BitmapUtil {
      * @param pixelH  target pixel of height
      * @return
      */
-    public Bitmap compressBySize(String imgPath, float pixelW, float pixelH) {
+    public static Bitmap compressBySize(String imgPath, float pixelW, float pixelH) {
         BitmapFactory.Options newOpts = new BitmapFactory.Options();
         // 开始读入图片，此时把options.inJustDecodeBounds 设回true，即只读边不读内容
         newOpts.inJustDecodeBounds = true;
@@ -770,7 +768,7 @@ public class BitmapUtil {
      * @param pixelH target pixel of height
      * @return
      */
-    public Bitmap compressBySize(Bitmap image, float pixelW, float pixelH) {
+    public static Bitmap compressBySize(Bitmap image, float pixelW, float pixelH) {
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         image.compress(Bitmap.CompressFormat.JPEG, 100, os);
         if (os.toByteArray().length / 1024 > 1024) {//判断如果图片大于1M,进行压缩避免在生成图片（BitmapFactory
