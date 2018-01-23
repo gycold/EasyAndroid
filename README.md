@@ -1,5 +1,5 @@
 # EasyAndroid
-[ ![EasyAndroid](https://api.bintray.com/packages/easyandroid/maven/easytools/images/download.svg) ](https://bintray.com/easyandroid/maven/easytools/_latestVersion) [ ![API](https://img.shields.io/appveyor/ci/gruntjs/grunt.svg) ](15+) [ ![License](https://img.shields.io/appveyor/ci/gruntjs/grunt.svg) ](Apache-2.0)
+[![EasyAndroid](https://api.bintray.com/packages/easyandroid/maven/easytools/images/download.svg)](https://bintray.com/easyandroid/maven/easytools/_latestVersion) [![API](https://img.shields.io/appveyor/ci/gruntjs/grunt.svg)](15+) [![License](https://img.shields.io/appveyor/ci/gruntjs/grunt.svg)](Apache-2.0)
 
 包含各种工具类的集合，会不定期更新，欢迎贡献code  
 
