@@ -1,5 +1,5 @@
 # EasyAndroid
-[ ![Download](https://api.bintray.com/packages/easyandroid/maven/easytools/images/download.svg) ](https://bintray.com/easyandroid/maven/easytools/_latestVersion)image::https://api.bintray.com/packages/easyandroid/maven/easytools/images/download.svg[link="https://bintray.com/easyandroid/maven/easytools/_latestVersion"] <a href='https://bintray.com/easyandroid/maven/easytools/_latestVersion'><img src='https://api.bintray.com/packages/easyandroid/maven/easytools/images/download.svg'></a>
+[ ![Download](https://api.bintray.com/packages/easyandroid/maven/easytools/images/download.svg) ](https://bintray.com/easyandroid/maven/easytools/_latestVersion)
 包含各种工具类的集合，会不定期更新，欢迎贡献code
 
 使用方法：
