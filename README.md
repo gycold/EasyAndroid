@@ -7,10 +7,7 @@
 compile 'com.easyandroid:easytools:1.2.3'
 
 添加混淆：  
--keep class com.easytools.tools.DialogUtil {*;} 
-
+-keep class com.easytools.tools.DialogUtil {*;}  
 -dontwarn com.easytools.tools.**  
-
 -keep class com.easytools.constant.**{*;}  
-
  ![image](https://github.com/gycold/EasyAndroid/raw/master/pictures/list.png)
