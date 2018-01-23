@@ -6,8 +6,8 @@
 使用方法：
 compile 'com.easyandroid:easytools:1.2.3'
 
-添加混淆：＜/br＞
--keep class com.easytools.tools.DialogUtil {*;}  
+添加混淆：  
+-keep class com.easytools.tools.DialogUtil {*;} 
 
 -dontwarn com.easytools.tools.**  
 
