@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">EasyTools</string>
+    <string name="app_name_s">EasyTools</string>
     <string name="loading">加载中...</string>
 </resources>

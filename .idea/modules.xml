@@ -2,8 +2,13 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/EasyAndroid.iml" filepath="$PROJECT_DIR$/EasyAndroid.iml" />
+      <module fileurl="file://F:\Projects\MyGithub\EasyAndroid\EasyAndroid.iml" filepath="F:\Projects\MyGithub\EasyAndroid\EasyAndroid.iml" />
       <module fileurl="file://E:\Projects\Demos\EasyAndroid-master\EasyAndroid.iml" filepath="E:\Projects\Demos\EasyAndroid-master\EasyAndroid.iml" />
-      <module fileurl="file://$PROJECT_DIR$/EasyAndroid-master.iml" filepath="$PROJECT_DIR$/EasyAndroid-master.iml" />
+      <module fileurl="file://F:\Projects\MyGithub\EasyAndroid\app\EasyAndroid-app.iml" filepath="F:\Projects\MyGithub\EasyAndroid\app\EasyAndroid-app.iml" />
+      <module fileurl="file://F:\Projects\MyGithub\EasyAndroid\easytools\EasyAndroid-easytools.iml" filepath="F:\Projects\MyGithub\EasyAndroid\easytools\EasyAndroid-easytools.iml" />
+      <module fileurl="file://F:\Projects\MyGithub\EasyAndroid\easyviews\EasyAndroid-easyviews.iml" filepath="F:\Projects\MyGithub\EasyAndroid\easyviews\EasyAndroid-easyviews.iml" />
+      <module fileurl="file://F:\Projects\MyGithub\EasyAndroid\EasyAndroid-master.iml" filepath="F:\Projects\MyGithub\EasyAndroid\EasyAndroid-master.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/easytools/easytools.iml" filepath="$PROJECT_DIR$/easytools/easytools.iml" />
       <module fileurl="file://$PROJECT_DIR$/easyviews/easyviews.iml" filepath="$PROJECT_DIR$/easyviews/easyviews.iml" />

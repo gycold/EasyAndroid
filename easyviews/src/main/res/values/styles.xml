@@ -24,4 +24,12 @@
         <!-- 模糊 -->
         <item name="android:backgroundDimEnabled">true</item>
     </style>
+<<<<<<< HEAD
+
+    <style name="PopupAnimaFade" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/basepopup_fade_in</item>
+        <item name="android:windowExitAnimation">@anim/basepopup_fade_out</item>
+    </style>
+=======
+>>>>>>> d54f1d8d3ad820b039cb18aefe55e6342e9e2fd7
 </resources>
