@@ -24,13 +24,10 @@
     <!--圆角-->
     <dimen name="radius_alertview">15px</dimen>
 
-<<<<<<< HEAD
     <!--RecyclerView-->
     <dimen name="flag_left">60dp</dimen>
     <dimen name="header_divider_height">2dp</dimen>
     <dimen name="header_height">24dp</dimen>
     <dimen name="header_textsize">22sp</dimen>
 
-=======
->>>>>>> d54f1d8d3ad820b039cb18aefe55e6342e9e2fd7
 </resources>

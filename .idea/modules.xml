@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/EasyAndroid.iml" filepath="$PROJECT_DIR$/EasyAndroid.iml" />
-      <module fileurl="file://F:\Projects\MyGithub\EasyAndroid\EasyAndroid.iml" filepath="F:\Projects\MyGithub\EasyAndroid\EasyAndroid.iml" />
       <module fileurl="file://E:\Projects\Demos\EasyAndroid-master\EasyAndroid.iml" filepath="E:\Projects\Demos\EasyAndroid-master\EasyAndroid.iml" />
       <module fileurl="file://F:\Projects\MyGithub\EasyAndroid\app\EasyAndroid-app.iml" filepath="F:\Projects\MyGithub\EasyAndroid\app\EasyAndroid-app.iml" />
       <module fileurl="file://F:\Projects\MyGithub\EasyAndroid\easytools\EasyAndroid-easytools.iml" filepath="F:\Projects\MyGithub\EasyAndroid\easytools\EasyAndroid-easytools.iml" />

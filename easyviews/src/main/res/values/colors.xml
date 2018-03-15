@@ -24,9 +24,5 @@
     <!--actionsheet模式的取消按钮背景颜色-->
     <color name="bgColor_actionsheet_cancel_nor">#ffffff</color>
 
-<<<<<<< HEAD
     <color name="font_text_dialog_gray">#D4D4D4</color>
-
-=======
->>>>>>> d54f1d8d3ad820b039cb18aefe55e6342e9e2fd7
 </resources>
