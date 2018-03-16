@@ -46,6 +46,10 @@
         <attr name="ddmenuUnselectedIcon" format="reference"/>
         <attr name="ddmenuMenuHeightPercent" format="float"/>
         <attr name="ddmenuHeight" format="dimension"/>
+        <attr name="ddmenuIconHeight" format="dimension"/>
+        <attr name="ddmuneIconWidth" format="dimension"/>
+        <attr name="ddmenuIconMarginLeft" format="dimension"/>
+        <attr name="ddmenuIconMarginTop" format="dimension"/>
     </declare-styleable>
 
     <!--垂直滚动公告-->
