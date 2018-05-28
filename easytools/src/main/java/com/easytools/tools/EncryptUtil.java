@@ -14,7 +14,6 @@ import javax.crypto.Cipher;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
-import static android.R.attr.key;
 import static com.easytools.tools.ConvertUtil.bytes2HexString;
 import static com.easytools.tools.ConvertUtil.hexString2Bytes;
 
@@ -121,7 +120,7 @@ public class EncryptUtil {
     }
 
     /**
-     * MD5加密文件
+     * 获取MD5加密文件校验码
      *
      * @param filePath 文件路径
      * @return 文件的16进制密文
@@ -131,7 +130,7 @@ public class EncryptUtil {
     }
 
     /**
-     * MD5加密文件
+     * 获取MD5加密文件校验码
      *
      * @param filePath 文件路径
      * @return 文件的MD5校验码
@@ -141,7 +140,7 @@ public class EncryptUtil {
     }
 
     /**
-     * MD5加密文件
+     * 获取MD5加密文件校验码
      *
      * @param file 文件
      * @return 文件的16进制密文
@@ -150,8 +149,9 @@ public class EncryptUtil {
         return bytes2HexString(encryptMD5File(file));
     }
 
+
     /**
-     * MD5加密文件
+     * 获取MD5加密文件校验码
      *
      * @param file 文件
      * @return 文件的MD5校验码
@@ -762,6 +762,17 @@ public class EncryptUtil {
     }
 
     /**
+     * AES解密
+     *
+     * @param data 密文
+     * @param key  16、24、32字节秘钥
+     * @return 明文
+     */
+    public static byte[] decryptAES(byte[] data, byte[] key) {
+        return desTemplate(data, key, AES_Algorithm, AES_Transformation, false);
+    }
+
+    /**
      * AES解密Base64编码密文
      *
      * @param data Base64编码密文
@@ -783,19 +794,9 @@ public class EncryptUtil {
         return decryptAES(hexString2Bytes(data), key);
     }
 
-    /**
-     * AES解密
-     *
-     * @param data 密文
-     * @param key  16、24、32字节秘钥
-     * @return 明文
-     */
-    public static byte[] decryptAES(byte[] data, byte[] key) {
-        return desTemplate(data, key, AES_Algorithm, AES_Transformation, false);
-    }
 
     /**
-     * DES加密模板
+     * 加密模板
      *
      * @param data           数据
      * @param key            秘钥
@@ -818,4 +819,5 @@ public class EncryptUtil {
             return null;
         }
     }
+
 }

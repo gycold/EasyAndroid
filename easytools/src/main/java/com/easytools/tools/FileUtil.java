@@ -915,7 +915,6 @@ public class FileUtil {
      */
     public static boolean writeFile(File file, InputStream stream) {
         return writeFile(file, stream, false);
-
     }
 
     /**

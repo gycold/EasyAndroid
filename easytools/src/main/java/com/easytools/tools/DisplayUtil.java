@@ -2,7 +2,10 @@ package com.easytools.tools;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.util.DisplayMetrics;
+import android.view.WindowManager;
 
 /**
  * package: com.easytools.tools.DisplayUtil
@@ -48,18 +51,22 @@ public class DisplayUtil {
     /**
      * 获取屏幕宽度
      */
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     public static int getScreenWidthPixels(Activity context) {
-        DisplayMetrics metric = new DisplayMetrics();
-        context.getWindowManager().getDefaultDisplay().getMetrics(metric);
-        return metric.widthPixels;
+        DisplayMetrics dm = new DisplayMetrics();
+        WindowManager windowMgr = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        windowMgr.getDefaultDisplay().getRealMetrics(dm);
+        return dm.widthPixels;
     }
 
     /**
      * 获取屏幕高度
      */
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     public static int getScreenHeightPixels(Activity context) {
-        DisplayMetrics metric = new DisplayMetrics();
-        context.getWindowManager().getDefaultDisplay().getMetrics(metric);
-        return metric.heightPixels;
+        DisplayMetrics dm = new DisplayMetrics();
+        WindowManager windowMgr = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        windowMgr.getDefaultDisplay().getRealMetrics(dm);
+        return dm.heightPixels;
     }
 }

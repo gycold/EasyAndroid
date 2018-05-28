@@ -1,5 +1,6 @@
 package com.easytools.tools;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
@@ -12,6 +13,7 @@ import android.os.Build;
 import android.os.SystemClock;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
+import android.text.TextUtils;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -105,10 +107,35 @@ public class DeviceUtil {
      * @return
      * @throws Exception
      */
-    public static String getDeviceIMEI(Context context) throws Exception{
-        TelephonyManager manager = (TelephonyManager) context.getSystemService(Context
-                .TELECOM_SERVICE);
-        return manager.getDeviceId();
+    public static String getDeviceIMEI(Context context) throws Exception {
+        try {
+            TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+            @SuppressLint("MissingPermission") String imei = telephonyManager.getDeviceId();
+            if (TextUtils.isEmpty(imei)) {
+                imei = "";
+            }
+            return imei;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+
+    /**
+     * 获取手机IMSI
+     */
+    public static String getIMSI(Context context) {
+        try {
+            TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+            @SuppressLint("MissingPermission") String imsi = telephonyManager.getSubscriberId();
+            if (TextUtils.isEmpty(imsi)) {
+                imsi = "";
+            }
+            return imsi;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "";
+        }
     }
 
     /**
