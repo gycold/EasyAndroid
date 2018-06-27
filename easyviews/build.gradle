@@ -1,13 +1,13 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.novoda.bintray-release'
+//apply plugin: 'com.novoda.bintray-release'
 
 buildscript {
     repositories {
         jcenter()
     }
-    dependencies {
-        classpath 'com.novoda:bintray-release:0.8.0'
-    }
+//    dependencies {
+//        classpath 'com.novoda:bintray-release:0.8.0'
+//    }
 }
 
 android {
@@ -45,16 +45,16 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     implementation 'com.android.support:appcompat-v7:27.1.1'
-    implementation 'com.easyandroid:easytools:1.2.3'
+    implementation 'com.easyandroid:easytools:1.2.6'
     testImplementation 'junit:junit:4.12'
 }
 
 //添加
-publish {
-    userOrg = 'easyandroid'//bintray.com用户名
-    groupId = 'com.easyandroid'//jcenter上的路径
-    artifactId = 'easyviews'//项目名称
-    publishVersion = '1.0.4'//版本号
-    desc = 'Oh hi, this is a nice description for a project, right?'//描述，不重要
-    website = 'https://github.com/gycold/EasyAndroid.git'//网站，不重要；尽量模拟github上的地址，例如我这样的；当然你有地址最好了
-}
+//publish {
+//    userOrg = 'easyandroid'//bintray.com用户名
+//    groupId = 'com.easyandroid'//jcenter上的路径
+//    artifactId = 'easyviews'//项目名称
+//    publishVersion = '1.0.4'//版本号
+//    desc = 'Oh hi, this is a nice description for a project, right?'//描述，不重要
+//    website = 'https://github.com/gycold/EasyAndroid.git'//网站，不重要；尽量模拟github上的地址，例如我这样的；当然你有地址最好了
+//}
