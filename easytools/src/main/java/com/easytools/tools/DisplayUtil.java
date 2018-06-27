@@ -1,11 +1,17 @@
 package com.easytools.tools;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Point;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.util.DisplayMetrics;
+import android.view.Display;
+import android.view.ViewConfiguration;
 import android.view.WindowManager;
+
+import java.lang.reflect.Method;
 
 /**
  * package: com.easytools.tools.DisplayUtil
@@ -49,24 +55,119 @@ public class DisplayUtil {
     }
 
     /**
-     * 获取屏幕宽度
+     * 获取屏幕真实宽度，包含虚拟按键
      */
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
-    public static int getScreenWidthPixels(Activity context) {
-        DisplayMetrics dm = new DisplayMetrics();
-        WindowManager windowMgr = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        windowMgr.getDefaultDisplay().getRealMetrics(dm);
-        return dm.widthPixels;
+    public static int getRealScreenWidthPixels(Activity activity) {
+        WindowManager windowManager = (WindowManager) activity.getSystemService(Context.WINDOW_SERVICE);
+        final Display display = windowManager.getDefaultDisplay();
+        Point outPoint = new Point();
+        if (Build.VERSION.SDK_INT >= 19) {
+            // 可能有虚拟按键的情况
+            display.getRealSize(outPoint);
+        } else {
+            // 不可能有虚拟按键
+            display.getSize(outPoint);
+        }
+        int mRealSizeWidth;//手机屏幕真实宽度
+        mRealSizeWidth = outPoint.x;
+        return mRealSizeWidth;
     }
 
     /**
      * 获取屏幕高度
      */
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
-    public static int getScreenHeightPixels(Activity context) {
-        DisplayMetrics dm = new DisplayMetrics();
-        WindowManager windowMgr = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        windowMgr.getDefaultDisplay().getRealMetrics(dm);
-        return dm.heightPixels;
+    public static int getRealScreenHeightPixels(Activity activity) {
+        WindowManager windowManager = (WindowManager) activity.getSystemService(Context.WINDOW_SERVICE);
+        final Display display = windowManager.getDefaultDisplay();
+        Point outPoint = new Point();
+        if (Build.VERSION.SDK_INT >= 19) {
+            // 可能有虚拟按键的情况
+            display.getRealSize(outPoint);
+        } else {
+            // 不可能有虚拟按键
+            display.getSize(outPoint);
+        }
+        int mRealSizeHeight;//手机屏幕真实高度
+        mRealSizeHeight = outPoint.y;
+        return mRealSizeHeight;
+    }
+
+    /**
+     * 获取屏幕宽度，不包含虚拟按键
+     */
+    public static int getScreenWidthPixels(Activity activity) {
+        DisplayMetrics metric = new DisplayMetrics();
+        activity.getWindowManager().getDefaultDisplay().getMetrics(metric);
+        return metric.widthPixels;
+    }
+
+    /**
+     * 获取屏幕高度，不包含虚拟按键
+     */
+    public static int getScreenHeightPixels(Activity activity) {
+        DisplayMetrics metric = new DisplayMetrics();
+        activity.getWindowManager().getDefaultDisplay().getMetrics(metric);
+        return metric.heightPixels;
+    }
+
+    /**
+     * 获取虚拟按键高度
+     * @param context
+     * @return
+     */
+    public static int getNavigationBarHeight(Context context) {
+        int result = 0;
+        if (hasNavBar(context)) {
+            Resources res = context.getResources();
+            int resourceId = res.getIdentifier("navigation_bar_height", "dimen", "android");
+            if (resourceId > 0) {
+                result = res.getDimensionPixelSize(resourceId);
+            }
+        }
+        return result;
+    }
+
+    /**
+     * 检查是否存在虚拟按键栏
+     *
+     * @param context
+     * @return
+     */
+    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+    public static boolean hasNavBar(Context context) {
+        Resources res = context.getResources();
+        int resourceId = res.getIdentifier("config_showNavigationBar", "bool", "android");
+        if (resourceId != 0) {
+            boolean hasNav = res.getBoolean(resourceId);
+            // check override flag
+            String sNavBarOverride = getNavBarOverride();
+            if ("1".equals(sNavBarOverride)) {
+                hasNav = false;
+            } else if ("0".equals(sNavBarOverride)) {
+                hasNav = true;
+            }
+            return hasNav;
+        } else { // fallback
+            return !ViewConfiguration.get(context).hasPermanentMenuKey();
+        }
+    }
+
+    /**
+     * 判断虚拟按键栏是否重写
+     *
+     * @return
+     */
+    private static String getNavBarOverride() {
+        String sNavBarOverride = null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            try {
+                Class c = Class.forName("android.os.SystemProperties");
+                Method m = c.getDeclaredMethod("get", String.class);
+                m.setAccessible(true);
+                sNavBarOverride = (String) m.invoke(null, "qemu.hw.mainkeys");
+            } catch (Throwable e) {
+            }
+        }
+        return sNavBarOverride;
     }
 }

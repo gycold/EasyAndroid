@@ -1,22 +1,10 @@
 package com.easyandroid;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 
-import com.easytools.tools.StringUtil;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static android.R.id.list;
-import static com.easyandroid.R.id.btn;
+import com.easytools.tools.DisplayUtil;
 
 
 /**
@@ -32,13 +20,16 @@ public class TestActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.test_activity);
-        Log.d("******************Child", "onCreate");
+        Log.d("****getRealScreenHeightPixels", DisplayUtil.getRealScreenHeightPixels(this) + "");
+        Log.d("****getRealScreenWidthPixels", DisplayUtil.getRealScreenWidthPixels(this) + "");
+        Log.d("****getScreenWidthPixels", DisplayUtil.getScreenWidthPixels(this) + "");
+        Log.d("****getScreenHeightPixels", DisplayUtil.getScreenHeightPixels(this) + "");
+        Log.d("****getNavigationBarHeight", DisplayUtil.getNavigationBarHeight(this) + "");
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.d("******************Child", "onDestroy");
     }
 
 }
