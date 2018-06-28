@@ -5,7 +5,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import static com.easytools.tools.TimeUtil.date2Str;
 import static com.easytools.tools.TimeUtil.parse;
 
 
@@ -255,6 +254,17 @@ public class DateUtil {
         return new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS").format(time);
     }
 
+    /**
+     * 时间转换
+     * @param time
+     * @param format
+     * @return
+     */
+    public static String getDateByLong(long time, String format) {
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
+        Date date = new Date(time);
+        return sdf.format(date);
+    }
 
     /**
      * 在日期上增加数个整月
