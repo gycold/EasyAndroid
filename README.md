@@ -4,7 +4,7 @@
 包含各种工具类的集合，会不定期更新，欢迎贡献code  
 
 使用方法：
-compile 'com.easyandroid:easytools:1.2.4'
+compile 'com.easyandroid:easytools:1.2.8'
 
 
 添加混淆：  
