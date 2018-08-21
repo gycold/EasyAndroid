@@ -48,7 +48,7 @@ dependencies {
     implementation 'com.android.support:design:27.1.1'
     implementation 'com.android.support:palette-v7:27.1.1'
     testImplementation 'junit:junit:4.12'
-    implementation 'com.google.code.gson:gson:2.8.2'
+    implementation 'com.google.code.gson:gson:2.8.5'
 
 }
 
@@ -57,7 +57,7 @@ publish {
     userOrg = 'easyandroid'//bintray.com用户名
     groupId = 'com.easyandroid'//jcenter上的路径
     artifactId = 'easytools'//项目名称
-    publishVersion = '1.2.8'//版本号
+    publishVersion = '1.2.9'//版本号
     desc = 'Oh hi, this is a nice description for a project, right?'//描述，不重要
     website = 'https://github.com/gycold/EasyAndroid.git'//网站，不重要；尽量模拟github上的地址，例如我这样的；当然你有地址最好了
 }
