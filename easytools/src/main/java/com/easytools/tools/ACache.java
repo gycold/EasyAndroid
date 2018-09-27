@@ -7,6 +7,9 @@ import android.graphics.Canvas;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.WorkerThread;
+import android.util.Base64;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -27,6 +30,7 @@ import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -48,22 +52,27 @@ import java.util.concurrent.atomic.AtomicLong;
  *
  * time: create at 2016/10/17 15:43
  */
-
+@WorkerThread
 public class ACache {
+
+    private static final String FILE_NAME = "ACache";
+
+    private final static String TAG = "ACache";
 
     public static final int TIME_HOUR = 60 * 60;
     public static final int TIME_DAY = TIME_HOUR * 24;
-    private static final int MAX_SIZE = 1000 * 1000 * 50; // 50 mb,最大存储空间
+    private static final int MAX_SIZE = 1000 * 1000 * 100; // 100 mb
     private static final int MAX_COUNT = Integer.MAX_VALUE; // 不限制存放数据的数量
-    private static Map<String, ACache> mInstanceMap = new HashMap<String, ACache>();
+    //private static Map<String, ACache> mInstanceMap = Collections.synchronizedMap(new HashMap<String, ACache>());
+    private static ACache instance = null;
     private ACacheManager mCache;
 
     public static ACache get(Context ctx) {
-        return get(ctx, "ACache");
+        return get(ctx, FILE_NAME);
     }
 
     public static ACache get(Context ctx, String cacheName) {
-        File f = new File(ctx.getCacheDir(), cacheName);
+        File f = new File(ctx.getFilesDir(), cacheName);
         return get(f, MAX_SIZE, MAX_COUNT);
     }
 
@@ -72,17 +81,28 @@ public class ACache {
     }
 
     public static ACache get(Context ctx, long max_zise, int max_count) {
-        File f = new File(ctx.getCacheDir(), "ACache");
+        File f = new File(ctx.getFilesDir(), FILE_NAME);
         return get(f, max_zise, max_count);
     }
 
-    public static ACache get(File cacheDir, long max_zise, int max_count) {
-        ACache manager = mInstanceMap.get(cacheDir.getAbsoluteFile() + myPid());
-        if (manager == null) {
-            manager = new ACache(cacheDir, max_zise, max_count);
-            mInstanceMap.put(cacheDir.getAbsolutePath() + myPid(), manager);
+    /**
+     * 个人觉得没必要用map来缓存实例，一个就够用了
+     * @param cacheDir
+     * @param max_zise
+     * @param max_count
+     * @return
+     */
+    public  static ACache get(File cacheDir, long max_zise, int max_count) {
+        if (instance == null) {
+            synchronized (ACache.class) {
+                //ACache manager = mInstanceMap.get(cacheDir.getAbsoluteFile() + myPid());
+                if (instance == null) {
+                    instance = new ACache(cacheDir, max_zise, max_count);
+                    //mInstanceMap.put(cacheDir.getAbsolutePath() + myPid(), manager);
+                }
+            }
         }
-        return manager;
+        return instance;
     }
 
     private static String myPid() {
@@ -91,8 +111,7 @@ public class ACache {
 
     private ACache(File cacheDir, long max_size, int max_count) {
         if (!cacheDir.exists() && !cacheDir.mkdirs()) {
-            throw new RuntimeException("can't make dirs in "
-                    + cacheDir.getAbsolutePath());
+            throw new RuntimeException("can't make dirs in " + cacheDir.getAbsolutePath());
         }
         mCache = new ACacheManager(cacheDir, max_size, max_count);
     }
@@ -100,6 +119,7 @@ public class ACache {
     // =======================================
     // ============ String数据 读写 ==============
     // =======================================
+
     /**
      * 保存 String数据 到 缓存中
      *
@@ -113,14 +133,14 @@ public class ACache {
             out = new BufferedWriter(new FileWriter(file), 1024);
             out.write(value);
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(TAG, "", e);
         } finally {
             if (out != null) {
                 try {
                     out.flush();
                     out.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    Log.e(TAG, "", e);
                 }
             }
             mCache.put(file);
@@ -164,14 +184,14 @@ public class ACache {
                 return null;
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(TAG, "", e);
             return null;
         } finally {
             if (in != null) {
                 try {
                     in.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    Log.e(TAG, "", e);
                 }
             }
             if (removeFile)
@@ -216,7 +236,7 @@ public class ACache {
             JSONObject obj = new JSONObject(JSONString);
             return obj;
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, "", e);
             return null;
         }
     }
@@ -258,7 +278,7 @@ public class ACache {
             JSONArray obj = new JSONArray(JSONString);
             return obj;
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, "", e);
             return null;
         }
     }
@@ -280,14 +300,14 @@ public class ACache {
             out = new FileOutputStream(file);
             out.write(value);
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, "", e);
         } finally {
             if (out != null) {
                 try {
                     out.flush();
                     out.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    Log.e(TAG, "", e);
                 }
             }
             mCache.put(file);
@@ -328,14 +348,14 @@ public class ACache {
                 return null;
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, "", e);
             return null;
         } finally {
             if (RAFile != null) {
                 try {
                     RAFile.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    Log.e(TAG, "", e);
                 }
             }
             if (removeFile)
@@ -378,11 +398,12 @@ public class ACache {
                 put(key, data);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, "", e);
         } finally {
             try {
                 oos.close();
             } catch (IOException e) {
+
             }
         }
     }
@@ -404,20 +425,20 @@ public class ACache {
                 Object reObject = ois.readObject();
                 return reObject;
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.e(TAG, "", e);
                 return null;
             } finally {
                 try {
                     if (bais != null)
                         bais.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    Log.e(TAG, "", e);
                 }
                 try {
                     if (ois != null)
                         ois.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    Log.e(TAG, "", e);
                 }
             }
         }
@@ -531,18 +552,12 @@ public class ACache {
         mCache.clear();
     }
 
-    /**
-     * @author 杨福海（michael） www.yangfuhai.com
-     * @version 1.0
-     * @title 缓存管理器
-     */
     public class ACacheManager {
         private final AtomicLong cacheSize;
         private final AtomicInteger cacheCount;
         private final long sizeLimit;
         private final int countLimit;
-        private final Map<File, Long> lastUsageDates = Collections
-                .synchronizedMap(new HashMap<File, Long>());
+        private final Map<File, Long> lastUsageDates = Collections.synchronizedMap(new HashMap<File, Long>());
         protected File cacheDir;
 
         private ACacheManager(File cacheDir, long sizeLimit, int countLimit) {
@@ -567,9 +582,8 @@ public class ACache {
                     if (cachedFiles != null) {
                         for (File cachedFile : cachedFiles) {
                             size += calculateSize(cachedFile);
-                            count += 1;
-                            lastUsageDates.put(cachedFile,
-                                    cachedFile.lastModified());
+                            count++;
+                            lastUsageDates.put(cachedFile, cachedFile.lastModified());
                         }
                         cacheSize.set(size);
                         cacheCount.set(count);
@@ -610,8 +624,14 @@ public class ACache {
             return file;
         }
 
+        /**
+         * hashCode发生碰撞怎么办，我建议用base64
+         * @param key
+         * @return
+         */
         private File newFile(String key) {
-            return new File(cacheDir, key.hashCode() + "");
+            //return new File(cacheDir, key.hashCode() + "");
+            return new File(cacheDir, Base64.encodeToString(key.getBytes(), Base64.NO_WRAP) + "");
         }
 
         private boolean remove(String key) {
@@ -619,6 +639,7 @@ public class ACache {
             return image.delete();
         }
 
+        @WorkerThread
         private void clear() {
             lastUsageDates.clear();
             cacheSize.set(0);
@@ -642,9 +663,9 @@ public class ACache {
 
             Long oldestUsage = null;
             File mostLongUsedFile = null;
-            Set<Map.Entry<File, Long>> entries = lastUsageDates.entrySet();
+            Set<Entry<File, Long>> entries = lastUsageDates.entrySet();
             synchronized (lastUsageDates) {
-                for (Map.Entry<File, Long> entry : entries) {
+                for (Entry<File, Long> entry : entries) {
                     if (mostLongUsedFile == null) {
                         mostLongUsedFile = entry.getKey();
                         oldestUsage = entry.getValue();
@@ -671,9 +692,7 @@ public class ACache {
     }
 
     /**
-     * @author 杨福海（michael） www.yangfuhai.com
      * @version 1.0
-     * @title 时间计算工具类
      */
     private static class Utils {
 
@@ -698,8 +717,7 @@ public class ACache {
             if (strs != null && strs.length == 2) {
                 String saveTimeStr = strs[0];
                 while (saveTimeStr.startsWith("0")) {
-                    saveTimeStr = saveTimeStr
-                            .substring(1, saveTimeStr.length());
+                    saveTimeStr = saveTimeStr.substring(1, saveTimeStr.length());
                 }
                 long saveTime = Long.valueOf(saveTimeStr);
                 long deleteAfter = Long.valueOf(strs[1]);
@@ -724,30 +742,26 @@ public class ACache {
 
         private static String clearDateInfo(String strInfo) {
             if (strInfo != null && hasDateInfo(strInfo.getBytes())) {
-                strInfo = strInfo.substring(strInfo.indexOf(mSeparator) + 1,
-                        strInfo.length());
+                strInfo = strInfo.substring(strInfo.indexOf(mSeparator) + 1, strInfo.length());
             }
             return strInfo;
         }
 
         private static byte[] clearDateInfo(byte[] data) {
             if (hasDateInfo(data)) {
-                return copyOfRange(data, indexOf(data, mSeparator) + 1,
-                        data.length);
+                return copyOfRange(data, indexOf(data, mSeparator) + 1, data.length);
             }
             return data;
         }
 
         private static boolean hasDateInfo(byte[] data) {
-            return data != null && data.length > 15 && data[13] == '-'
-                    && indexOf(data, mSeparator) > 14;
+            return data != null && data.length > 15 && data[13] == '-' && indexOf(data, mSeparator) > 14;
         }
 
         private static String[] getDateInfoFromDate(byte[] data) {
             if (hasDateInfo(data)) {
                 String saveDate = new String(copyOfRange(data, 0, 13));
-                String deleteAfter = new String(copyOfRange(data, 14,
-                        indexOf(data, mSeparator)));
+                String deleteAfter = new String(copyOfRange(data, 14, indexOf(data, mSeparator)));
                 return new String[]{saveDate, deleteAfter};
             }
             return null;
@@ -767,8 +781,7 @@ public class ACache {
             if (newLength < 0)
                 throw new IllegalArgumentException(from + " > " + to);
             byte[] copy = new byte[newLength];
-            System.arraycopy(original, from, copy, 0,
-                    Math.min(original.length - from, newLength));
+            System.arraycopy(original, from, copy, 0, Math.min(original.length - from, newLength));
             return copy;
         }
 
@@ -838,6 +851,5 @@ public class ACache {
             return new BitmapDrawable(bm);
         }
     }
-
 
 }
