@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.webkit.MimeTypeMap;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedWriter;
@@ -24,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * package: com.easytools.tools.FileUtil
@@ -269,6 +271,7 @@ public class FileUtil {
 
     /**
      * 删除方法，这里只会删除某个文件夹下的文件，如果传入的directory是个文件，将不做处理，同时返回false
+     *
      * @param directory 文件夹
      * @return true成功，false不是文件夹或文件夹不存在，删除失败
      */
@@ -1020,6 +1023,61 @@ public class FileUtil {
             return null;
         }
         return null;
+    }
+
+    /**
+     * 获取文档扩展名
+     *
+     * @param file
+     * @return
+     */
+    public static String getSuffix(File file) {
+        if (file == null || !file.exists() || file.isDirectory()) {
+            return null;
+        }
+        String fileName = file.getName();
+        if (fileName.equals("") || fileName.endsWith(".")) {
+            return null;
+        }
+        int index = fileName.lastIndexOf(".");
+        if (index != -1) {
+            return fileName.substring(index + 1).toLowerCase(Locale.US);
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * 去掉文档扩展名
+     * @param filename
+     * @return
+     */
+    public static String getFileNameNoEx(String filename) {
+        if ((filename != null) && (filename.length() > 0)) {
+            int dot = filename.lastIndexOf('.');
+            if ((dot > -1) && (dot < (filename.length()))) {
+                return filename.substring(0, dot);
+            }
+        }
+        return filename;
+    }
+
+    /**
+     * 获取本地文件的媒体类型
+     *
+     * @param file
+     * @return
+     */
+    public static String getMimeType(File file) {
+        String suffix = getSuffix(file);
+        if (suffix == null) {
+            return "file/*";
+        }
+        String type = MimeTypeMap.getSingleton().getMimeTypeFromExtension(suffix);
+        if (!TextUtils.isEmpty(type)) {
+            return type;
+        }
+        return "file/*";
     }
 
 }

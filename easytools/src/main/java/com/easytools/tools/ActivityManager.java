@@ -22,43 +22,7 @@ public class ActivityManager {
 
     private static final JActivityLifecycleCallbacks instance = new JActivityLifecycleCallbacks();
 
-    private static class JActivityLifecycleCallbacks implements Application.ActivityLifecycleCallbacks {
-
-        @Override
-        public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
-
-        }
-
-        @Override
-        public void onActivityStarted(Activity activity) {
-
-        }
-
-        @Override
-        public void onActivityResumed(Activity activity) {
-            activityStack.remove(activity);
-            activityStack.push(activity);
-        }
-
-        @Override
-        public void onActivityPaused(Activity activity) {
-
-        }
-
-        @Override
-        public void onActivityStopped(Activity activity) {
-
-        }
-
-        @Override
-        public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
-
-        }
-
-        @Override
-        public void onActivityDestroyed(Activity activity) {
-            activityStack.remove(activity);
-        }
+    public ActivityManager() {
     }
 
     public static Application.ActivityLifecycleCallbacks getActivityLifecycleCallbacks() {
@@ -89,7 +53,7 @@ public class ActivityManager {
         }
     }
 
-    public void closeAllActivity() {
+    public static void closeAllActivity() {
         while (true) {
             Activity activity = currentActivity();
             if (null == activity) {
@@ -143,6 +107,45 @@ public class ActivityManager {
         Stack<Activity> stack = new Stack<>();
         stack.addAll(activityStack);
         return stack;
+    }
+
+    private static class JActivityLifecycleCallbacks implements Application.ActivityLifecycleCallbacks {
+
+        @Override
+        public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+
+        }
+
+        @Override
+        public void onActivityStarted(Activity activity) {
+
+        }
+
+        @Override
+        public void onActivityResumed(Activity activity) {
+            activityStack.remove(activity);
+            activityStack.push(activity);
+        }
+
+        @Override
+        public void onActivityPaused(Activity activity) {
+
+        }
+
+        @Override
+        public void onActivityStopped(Activity activity) {
+
+        }
+
+        @Override
+        public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
+
+        }
+
+        @Override
+        public void onActivityDestroyed(Activity activity) {
+            activityStack.remove(activity);
+        }
     }
 
 }
