@@ -3,19 +3,17 @@ package com.easyandroid;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 
-
 /**
- * package: com.easyandroid.TestActivity
+ * package: com.easyandroid.KeyBoardActivity
  * author: gyc
  * description:
- * time: create at 2017/1/8 21:06
+ * time: create at 2018/10/10 11:43
  */
-
-public class TestActivity extends BaseActivity {
-
+public class KeyBoardActivity extends AppCompatActivity {
     EditText edittext1;
     PopupKeyboardUtil smallKeyboardUtil;
     private View viewContainer;
@@ -42,10 +40,4 @@ public class TestActivity extends BaseActivity {
     private Activity self() {
         return this;
     }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
 }
