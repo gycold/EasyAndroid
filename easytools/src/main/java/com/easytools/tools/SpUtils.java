@@ -11,12 +11,15 @@ import java.util.Set;
 /**
  * package: com.easytools.tools.SpUtils
  * author: gyc
- * description:SP相关的工具类
+ * description:SharedPreferences相关的工具类
  * time: create at 2017/2/15 22:30
  */
 public class SpUtils {
 
     private static String SP_NAME = "";
+
+    //默认操作模式，代表该文件是私有数据，只能被应用本身访问。一般sp只是用该模式。
+    //在该模式下，写入的内容会覆盖原文件的内容，如果想把新写入的内容追加到原文件中，可以使用Context.MODE_APPEND
     private static int SP_MODE = Context.MODE_PRIVATE;
     private SharedPreferences sp;
 
@@ -34,45 +37,45 @@ public class SpUtils {
     }
 
     /**
-     * Return the single {@link SpUtils} instance
+     * 获取单例 {@link SpUtils}
      *
-     * @return the single {@link SpUtils} instance
+     * @return 返回单例
      */
     public static SpUtils getInstance() {
         return getInstance(SP_NAME, Context.MODE_PRIVATE);
     }
 
     /**
-     * Return the single {@link SpUtils} instance
+     * 获取单例 {@link SpUtils}
      *
-     * @param mode Operating mode.
-     * @return the single {@link SpUtils} instance
+     * @param mode 操作模式
+     * @return 返回单例 {@link SpUtils}
      */
     public static SpUtils getInstance(final int mode) {
         return getInstance(SP_NAME, mode);
     }
 
     /**
-     * Return the single {@link SpUtils} instance
+     * 获取单例 {@link SpUtils}
      *
-     * @param spName The name of sp.
-     * @return the single {@link SpUtils} instance
+     * @param spName sp名称
+     * @return 返回单例 {@link SpUtils}
      */
     public static SpUtils getInstance(String spName) {
         return getInstance(spName, Context.MODE_PRIVATE);
     }
 
     /**
-     * Return the single {@link SpUtils} instance
+     * 获取单例 {@link SpUtils}
      *
-     * @param spName The name of sp.
-     * @param mode   Operating mode.
-     * @return the single {@link SpUtils} instance
+     * @param spName sp名称
+     * @param mode   操作模式
+     * @return 返回单例 {@link SpUtils}
      */
     public static SpUtils getInstance(String spName, final int mode) {
         SP_NAME = spName;
         SP_MODE = mode;
-        if (isSpace(SP_NAME)) SP_NAME = "SpUtils";
+        if (StringUtils.isEmpty(SP_NAME)) SP_NAME = "SpUtils";
         return LazyLoader.INSTANCE;
     }
 
@@ -85,24 +88,24 @@ public class SpUtils {
     }
 
     /**
-     * Put the string value in sp.
+     * 保存String
      *
      * @param key   The key of sp.
      * @param value The value of sp.
      */
-    public void put(@NonNull final String key, final String value) {
-        put(key, value, false);
+    public void putString(@NonNull final String key, final String value) {
+        putString(key, value, false);
     }
 
     /**
-     * Put the string value in sp.
+     * 保存String
      *
-     * @param key      The key of sp.
-     * @param value    The value of sp.
-     * @param isCommit True to use {@link SharedPreferences.Editor#commit()},
-     *                 false to use {@link SharedPreferences.Editor#apply()}
+     * @param key      键
+     * @param value    值
+     * @param isCommit True  使用 {@link SharedPreferences.Editor#commit()},
+     *                 false 使用 {@link SharedPreferences.Editor#apply()}
      */
-    public void put(@NonNull final String key, final String value, final boolean isCommit) {
+    public void putString(@NonNull final String key, final String value, final boolean isCommit) {
         if (isCommit) {
             sp.edit().putString(key, value).commit();
         } else {
@@ -111,45 +114,45 @@ public class SpUtils {
     }
 
     /**
-     * Return the string value in sp.
+     * 获取String值
      *
-     * @param key The key of sp.
-     * @return the string value if sp exists or {@code ""} otherwise
+     * @param key 键
+     * @return 返回缓存或默认值 {@code ""}
      */
     public String getString(@NonNull final String key) {
         return getString(key, "");
     }
 
     /**
-     * Return the string value in sp.
+     * 获取String值
      *
-     * @param key          The key of sp.
-     * @param defaultValue The default value if the sp doesn't exist.
-     * @return the string value if sp exists or {@code defaultValue} otherwise
+     * @param key          键
+     * @param defaultValue 默认值
+     * @return 返回值，不存在则返回默认值{@code defaultValue}
      */
     public String getString(@NonNull final String key, final String defaultValue) {
         return sp.getString(key, defaultValue);
     }
 
     /**
-     * Put the int value in sp.
+     * 保存int
      *
-     * @param key   The key of sp.
-     * @param value The value of sp.
+     * @param key   键
+     * @param value 值
      */
-    public void put(@NonNull final String key, final int value) {
-        put(key, value, false);
+    public void putInt(@NonNull final String key, final int value) {
+        putInt(key, value, false);
     }
 
     /**
-     * Put the int value in sp.
+     * 保存int
      *
-     * @param key      The key of sp.
-     * @param value    The value of sp.
-     * @param isCommit True to use {@link SharedPreferences.Editor#commit()},
-     *                 false to use {@link SharedPreferences.Editor#apply()}
+     * @param key      键
+     * @param value    值
+     * @param isCommit True  使用 {@link SharedPreferences.Editor#commit()},
+     *                 false 使用 {@link SharedPreferences.Editor#apply()}
      */
-    public void put(@NonNull final String key, final int value, final boolean isCommit) {
+    public void putInt(@NonNull final String key, final int value, final boolean isCommit) {
         if (isCommit) {
             sp.edit().putInt(key, value).commit();
         } else {
@@ -158,45 +161,45 @@ public class SpUtils {
     }
 
     /**
-     * Return the int value in sp.
+     * 获取int值
      *
-     * @param key The key of sp.
-     * @return the int value if sp exists or {@code -1} otherwise
+     * @param key 键
+     * @return 返回缓存或默认值 {@code -1}
      */
     public int getInt(@NonNull final String key) {
         return getInt(key, -1);
     }
 
     /**
-     * Return the int value in sp.
+     * 获取int值
      *
-     * @param key          The key of sp.
-     * @param defaultValue The default value if the sp doesn't exist.
-     * @return the int value if sp exists or {@code defaultValue} otherwise
+     * @param key          键
+     * @param defaultValue 默认值
+     * @return 返回缓存或默认值 {@code defaultValue}
      */
     public int getInt(@NonNull final String key, final int defaultValue) {
         return sp.getInt(key, defaultValue);
     }
 
     /**
-     * Put the long value in sp.
+     * 保存long值
      *
-     * @param key   The key of sp.
-     * @param value The value of sp.
+     * @param key   键
+     * @param value 值
      */
-    public void put(@NonNull final String key, final long value) {
-        put(key, value, false);
+    public void putLong(@NonNull final String key, final long value) {
+        putLong(key, value, false);
     }
 
     /**
-     * Put the long value in sp.
+     * 保存long值
      *
-     * @param key      The key of sp.
-     * @param value    The value of sp.
-     * @param isCommit True to use {@link SharedPreferences.Editor#commit()},
-     *                 false to use {@link SharedPreferences.Editor#apply()}
+     * @param key      键
+     * @param value    值
+     * @param isCommit True  使用 {@link SharedPreferences.Editor#commit()},
+     *                 false 使用 {@link SharedPreferences.Editor#apply()}
      */
-    public void put(@NonNull final String key, final long value, final boolean isCommit) {
+    public void putLong(@NonNull final String key, final long value, final boolean isCommit) {
         if (isCommit) {
             sp.edit().putLong(key, value).commit();
         } else {
@@ -205,45 +208,45 @@ public class SpUtils {
     }
 
     /**
-     * Return the long value in sp.
+     * 获取long值
      *
-     * @param key The key of sp.
-     * @return the long value if sp exists or {@code -1} otherwise
+     * @param key 键
+     * @return 返回缓存或默认值 {@code -1}
      */
     public long getLong(@NonNull final String key) {
         return getLong(key, -1L);
     }
 
     /**
-     * Return the long value in sp.
+     * 获取long值
      *
-     * @param key          The key of sp.
-     * @param defaultValue The default value if the sp doesn't exist.
-     * @return the long value if sp exists or {@code defaultValue} otherwise
+     * @param key          键
+     * @param defaultValue 默认值
+     * @return 返回缓存或默认值 {@code defaultValue}
      */
     public long getLong(@NonNull final String key, final long defaultValue) {
         return sp.getLong(key, defaultValue);
     }
 
     /**
-     * Put the float value in sp.
+     * 保存float值
      *
-     * @param key   The key of sp.
-     * @param value The value of sp.
+     * @param key   键
+     * @param value 值
      */
-    public void put(@NonNull final String key, final float value) {
-        put(key, value, false);
+    public void putFloat(@NonNull final String key, final float value) {
+        putFloat(key, value, false);
     }
 
     /**
-     * Put the float value in sp.
+     * 保存float值
      *
-     * @param key      The key of sp.
-     * @param value    The value of sp.
-     * @param isCommit True to use {@link SharedPreferences.Editor#commit()},
-     *                 false to use {@link SharedPreferences.Editor#apply()}
+     * @param key      键
+     * @param value    值
+     * @param isCommit True  使用 {@link SharedPreferences.Editor#commit()},
+     *                 false 使用 {@link SharedPreferences.Editor#apply()}
      */
-    public void put(@NonNull final String key, final float value, final boolean isCommit) {
+    public void putFloat(@NonNull final String key, final float value, final boolean isCommit) {
         if (isCommit) {
             sp.edit().putFloat(key, value).commit();
         } else {
@@ -252,45 +255,45 @@ public class SpUtils {
     }
 
     /**
-     * Return the float value in sp.
+     * 获取float值
      *
-     * @param key The key of sp.
-     * @return the float value if sp exists or {@code -1f} otherwise
+     * @param key 键
+     * @return 返回缓存或默认值 {@code -1f}
      */
     public float getFloat(@NonNull final String key) {
         return getFloat(key, -1f);
     }
 
     /**
-     * Return the float value in sp.
+     * 获取float值
      *
-     * @param key          The key of sp.
-     * @param defaultValue The default value if the sp doesn't exist.
-     * @return the float value if sp exists or {@code defaultValue} otherwise
+     * @param key          键
+     * @param defaultValue 默认值
+     * @return 返回缓存或默认值 {@code defaultValue}
      */
     public float getFloat(@NonNull final String key, final float defaultValue) {
         return sp.getFloat(key, defaultValue);
     }
 
     /**
-     * Put the boolean value in sp.
+     * 保存boolean值
      *
-     * @param key   The key of sp.
-     * @param value The value of sp.
+     * @param key   键
+     * @param value 值
      */
-    public void put(@NonNull final String key, final boolean value) {
-        put(key, value, false);
+    public void putBoolean(@NonNull final String key, final boolean value) {
+        putBoolean(key, value, false);
     }
 
     /**
-     * Put the boolean value in sp.
+     * 保存boolean值
      *
-     * @param key      The key of sp.
-     * @param value    The value of sp.
-     * @param isCommit True to use {@link SharedPreferences.Editor#commit()},
-     *                 false to use {@link SharedPreferences.Editor#apply()}
+     * @param key      键
+     * @param value    值
+     * @param isCommit True  使用 {@link SharedPreferences.Editor#commit()},
+     *                 false 使用 {@link SharedPreferences.Editor#apply()}
      */
-    public void put(@NonNull final String key, final boolean value, final boolean isCommit) {
+    public void putBoolean(@NonNull final String key, final boolean value, final boolean isCommit) {
         if (isCommit) {
             sp.edit().putBoolean(key, value).commit();
         } else {
@@ -299,45 +302,45 @@ public class SpUtils {
     }
 
     /**
-     * Return the boolean value in sp.
+     * 获取boolean值
      *
-     * @param key The key of sp.
-     * @return the boolean value if sp exists or {@code false} otherwise
+     * @param key 键
+     * @return 返回缓存或默认值 {@code false}
      */
     public boolean getBoolean(@NonNull final String key) {
         return getBoolean(key, false);
     }
 
     /**
-     * Return the boolean value in sp.
+     * 获取boolean值
      *
-     * @param key          The key of sp.
-     * @param defaultValue The default value if the sp doesn't exist.
-     * @return the boolean value if sp exists or {@code defaultValue} otherwise
+     * @param key          键
+     * @param defaultValue 默认值
+     * @return 返回缓存或默认值 {@code defaultValue}
      */
     public boolean getBoolean(@NonNull final String key, final boolean defaultValue) {
         return sp.getBoolean(key, defaultValue);
     }
 
     /**
-     * Put the set of string value in sp.
+     * 保存类型为String的集合值
      *
-     * @param key   The key of sp.
-     * @param value The value of sp.
+     * @param key   键
+     * @param value 值
      */
-    public void put(@NonNull final String key, final Set<String> value) {
-        put(key, value, false);
+    public void putStringSet(@NonNull final String key, final Set<String> value) {
+        putStringSet(key, value, false);
     }
 
     /**
-     * Put the set of string value in sp.
+     * 保存类型为String的集合值
      *
-     * @param key      The key of sp.
-     * @param value    The value of sp.
-     * @param isCommit True to use {@link SharedPreferences.Editor#commit()},
-     *                 false to use {@link SharedPreferences.Editor#apply()}
+     * @param key      键
+     * @param value    值
+     * @param isCommit True  使用 {@link SharedPreferences.Editor#commit()},
+     *                 false 使用 {@link SharedPreferences.Editor#apply()}
      */
-    public void put(@NonNull final String key,
+    public void putStringSet(@NonNull final String key,
                     final Set<String> value,
                     final boolean isCommit) {
         if (isCommit) {
@@ -348,22 +351,21 @@ public class SpUtils {
     }
 
     /**
-     * Return the set of string value in sp.
+     * 获取类型为String的集合值
      *
-     * @param key The key of sp.
-     * @return the set of string value if sp exists
-     * or {@code Collections.<String>emptySet()} otherwise
+     * @param key 键
+     * @return    返回缓存或默认值 {@code Collections.<String>emptySet()}
      */
     public Set<String> getStringSet(@NonNull final String key) {
         return getStringSet(key, Collections.<String>emptySet());
     }
 
     /**
-     * Return the set of string value in sp.
+     * 获取类型为String的集合值
      *
-     * @param key          The key of sp.
-     * @param defaultValue The default value if the sp doesn't exist.
-     * @return the set of string value if sp exists or {@code defaultValue} otherwise
+     * @param key          键
+     * @param defaultValue 默认集合
+     * @return 返回缓存或默认值 {@code defaultValue}
      */
     public Set<String> getStringSet(@NonNull final String key,
                                     final Set<String> defaultValue) {
@@ -371,26 +373,26 @@ public class SpUtils {
     }
 
     /**
-     * Return all values in sp.
+     * 返回该缓存中所有的值
      *
-     * @return all values in sp
+     * @return 该缓存中所有值
      */
     public Map<String, ?> getAll() {
         return sp.getAll();
     }
 
     /**
-     * Return whether the sp contains the preference.
+     * 是否存在缓存值
      *
-     * @param key The key of sp.
-     * @return {@code true}: yes<br>{@code false}: no
+     * @param key 键
+     * @return {@code true}: 是<br>{@code false}: 否
      */
     public boolean contains(@NonNull final String key) {
         return sp.contains(key);
     }
 
     /**
-     * Remove the preference in sp.
+     * 删除一条缓存
      *
      * @param key The key of sp.
      */
@@ -399,11 +401,11 @@ public class SpUtils {
     }
 
     /**
-     * Remove the preference in sp.
+     * 删除一条缓存
      *
-     * @param key      The key of sp.
-     * @param isCommit True to use {@link SharedPreferences.Editor#commit()},
-     *                 false to use {@link SharedPreferences.Editor#apply()}
+     * @param key      键
+     * @param isCommit True  使用 {@link SharedPreferences.Editor#commit()},
+     *                 false 使用 {@link SharedPreferences.Editor#apply()}
      */
     public void remove(@NonNull final String key, final boolean isCommit) {
         if (isCommit) {
@@ -414,17 +416,17 @@ public class SpUtils {
     }
 
     /**
-     * Remove all preferences in sp.
+     * 清空该缓存
      */
     public void clear() {
         clear(false);
     }
 
     /**
-     * Remove all preferences in sp.
+     * 清空该缓存
      *
-     * @param isCommit True to use {@link SharedPreferences.Editor#commit()},
-     *                 false to use {@link SharedPreferences.Editor#apply()}
+     * @param isCommit True  使用 {@link SharedPreferences.Editor#commit()},
+     *                 false 使用 {@link SharedPreferences.Editor#apply()}
      */
     public void clear(final boolean isCommit) {
         if (isCommit) {
@@ -432,16 +434,6 @@ public class SpUtils {
         } else {
             sp.edit().clear().apply();
         }
-    }
-
-    private static boolean isSpace(final String s) {
-        if (s == null) return true;
-        for (int i = 0, len = s.length(); i < len; ++i) {
-            if (!Character.isWhitespace(s.charAt(i))) {
-                return false;
-            }
-        }
-        return true;
     }
 
 }
