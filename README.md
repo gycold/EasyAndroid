@@ -1051,7 +1051,7 @@ cn2PY                  : 中文转拼音
 isNumeric              : 判断字符串是否只包含unicode数字
 ```
 
-* ### 线程操作相关 -> [ThreadPoolUtils.java][ThreadPoolUtils.java][ThreadPoolUtilsTest.java]
+* ### 线程操作相关 -> [ThreadPoolUtils.java][ThreadPoolUtils.java] -> [ThreadPoolUtilsTest.java]
 ```
 isMainThread            : 判断当前是否主线程
 getFixedPool            : 获取固定线程池
