@@ -5,6 +5,7 @@
 
 使用方法：
 implementation 'com.easyandroid:easytools:1.4.0'
+在自己的Application中调用Utils.init(this)进行初始化
 
 添加混淆：
 -keep class com.easytools.tools.DialogUtils {\*;}
