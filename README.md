@@ -4,13 +4,13 @@
 包含各种工具类的集合，会不定期更新，欢迎贡献code
 
 使用方法：
-implementation 'com.easyandroid:easytools:1.4.0'
+implementation 'com.easyandroid:easytools:1.4.0'<br>
 在自己的Application中调用Utils.init(this)进行初始化
 
 添加混淆：
--keep class com.easytools.tools.DialogUtils {\*;}
--dontwarn com.easytools.tools.\*\*
--keep class com.easytools.constant.\*\*{\*;}
+-keep class com.easytools.tools.DialogUtils {\*;}<br>
+-dontwarn com.easytools.tools.\*\*<br>
+-keep class com.easytools.constant.\*\*{\*;}<br>
 
 ---
 
