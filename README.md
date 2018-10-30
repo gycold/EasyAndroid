@@ -358,7 +358,7 @@ getHour          : 返回小时
 getMinute        : 返回分
 getSecond        : 返回秒
 getMillis        : 返回毫秒
-getDatePattern   :获得默认的日期格式：yyyy-MM-dd HH:mm:ss
+getDatePattern   : 获得默认的日期格式：yyyy-MM-dd HH:mm:ss
 countDays        : 按格式的字符串距离今天的天数
 parse            : 使用用户格式提取字符串日期
 ```
@@ -1051,7 +1051,7 @@ cn2PY                  : 中文转拼音
 isNumeric              : 判断字符串是否只包含unicode数字
 ```
 
-* ### 线程操作相关 -> [ThreadPoolUtils.java][ThreadPoolUtils.java] -> [ThreadPoolUtilsTest.java]
+* ### 线程操作相关 -> [ThreadPoolUtils.java][ThreadPoolUtils.java] ->[ThreadPoolUtilsTest.java]
 ```
 isMainThread            : 判断当前是否主线程
 getFixedPool            : 获取固定线程池
@@ -1122,7 +1122,7 @@ setLayout        : 设置控件所在的位置YY，并且不改变宽高，XY为
 
 ```
 
-* ### WebView常用设置 -> [WidgetController.java][WidgetController.java]
+* ### WebView常用设置 -> [WebViewUtils.java][WebViewUtils.java]
 ```
 enableAdaptive                              : 开启自适应功能
 disableAdaptive                             : 禁用自适应功能
@@ -1303,6 +1303,8 @@ getComments       : 获取压缩文件中的注释链表
 [ViewUtils.java]: https://github.com/gycold/EasyAndroid/blob/master/easytools/src/main/java/com/easytools/tools/ViewUtils.java
 
 [WeakHandler.java]: https://github.com/gycold/EasyAndroid/blob/master/easytools/src/main/java/com/easytools/tools/WeakHandler.java
+
+[WebViewUtils.java]: https://github.com/gycold/EasyAndroid/blob/master/easytools/src/main/java/com/easytools/tools/WebViewUtils.java
 
 [ZipUtils.java]: https://github.com/gycold/EasyAndroid/blob/master/easytools/src/main/java/com/easytools/tools/ZipUtils.java
 
