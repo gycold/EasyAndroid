@@ -11,9 +11,9 @@ implementation 'com.easyandroid:easytools:1.4.0'
 
 添加混淆：<br>
 ```
--keep class com.easytools.tools.DialogUtils {*;}<br>
--dontwarn com.easytools.tools.**<br>
--keep class com.easytools.constant.**{*;}<br>
+-keep class com.easytools.tools.DialogUtils {*;}
+-dontwarn com.easytools.tools.**
+-keep class com.easytools.constant.**{*;}
 ```
 
 ---
