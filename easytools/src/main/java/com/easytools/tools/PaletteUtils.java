@@ -11,7 +11,7 @@ import android.support.v7.graphics.Palette;
 /**
  * package: com.easytools.tools.PaletteUtils
  * author: gyc
- * description:
+ * description:提取颜色的帮助类
  * time: create at 2018/1/20 0020 10:37
  */
 
@@ -27,11 +27,22 @@ public class PaletteUtils implements Palette.PaletteAsyncListener{
         return instance;
     }
 
+    /**
+     * 对象初始化
+     * @param bitmap
+     * @param patternCallBack
+     */
     public synchronized void init(Bitmap bitmap, PatternCallBack patternCallBack) {
         Palette.from(bitmap).generate(this);
         this.patternCallBack = patternCallBack;
     }
 
+    /**
+     * 对象初始化
+     * @param resources
+     * @param resourceId
+     * @param patternCallBack
+     */
     public synchronized void init(Resources resources, int resourceId, PatternCallBack patternCallBack) {
         Bitmap bitmap = BitmapFactory.decodeResource(resources, resourceId);
         Palette.from(bitmap).generate(this);

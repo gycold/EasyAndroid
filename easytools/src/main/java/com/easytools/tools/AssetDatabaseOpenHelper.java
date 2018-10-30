@@ -29,7 +29,7 @@ public class AssetDatabaseOpenHelper {
     /**
      * 创建或打开一个数据库
      *
-         * @return 返回数据库的对象
+     * @return 返回数据库的对象
      */
     public synchronized SQLiteDatabase getWriteableDatabase() {
         File dbFile = context.getDatabasePath(databaseName);
@@ -63,6 +63,7 @@ public class AssetDatabaseOpenHelper {
 
     /**
      * 返回数据库名称
+     *
      * @return
      */
     public String getDatabaseName() {
@@ -70,13 +71,12 @@ public class AssetDatabaseOpenHelper {
     }
 
     /**
-     *
      * @param dbFile
      * @throws IOException
      */
     private void copyDatabase(File dbFile) throws IOException {
         InputStream is = context.getAssets().open(databaseName);
-        FileUtil.writeFile(dbFile, is);
+        FileUtils.writeFile(dbFile, is);
         is.close();
     }
 
@@ -84,23 +84,38 @@ public class AssetDatabaseOpenHelper {
      * 获取asset文件下的资源文件信息
      *
      * @param fileName 文件名
-     * @param context 上下文
+     * @param context  上下文
      * @return 文件信息
      */
     public static String getFromAssets(String fileName, Context context) {
+        InputStreamReader inputReader = null;
+        BufferedReader bufReader = null;
         try {
-            InputStreamReader inputReader = new InputStreamReader(context.getAssets().open
-                    (fileName));
-            BufferedReader buffered = new BufferedReader(inputReader);
+            inputReader = new InputStreamReader(context
+                    .getResources().getAssets().open(fileName));
+
+            bufReader = new BufferedReader(inputReader);
+
             String line = "";
-            String result = "";
-            while ((line = buffered.readLine()) != null) {
-                result += line;
+            StringBuffer result = new StringBuffer();
+            while ((line = bufReader.readLine()) != null) {
+                result.append(line);
             }
-            return result;
-        } catch (Exception e) {
+            return result.toString();
+        } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                if (inputReader != null) {
+                    inputReader.close();
+                }
+                if (bufReader != null) {
+                    bufReader.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-        return null;
+        return "";
     }
 }

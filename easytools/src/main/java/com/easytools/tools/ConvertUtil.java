@@ -1,11 +1,11 @@
 package com.easytools.tools;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.PixelFormat;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.Base64;
@@ -20,16 +20,29 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.util.Locale;
 
-import static com.easytools.tools.ConstantUtil.BYTE;
-import static com.easytools.tools.ConstantUtil.GB;
-import static com.easytools.tools.ConstantUtil.KB;
-import static com.easytools.tools.ConstantUtil.MB;
+import static com.easytools.tools.ConstantUtils.BYTE;
+import static com.easytools.tools.ConstantUtils.GB;
+import static com.easytools.tools.ConstantUtils.KB;
+import static com.easytools.tools.ConstantUtils.MB;
 
 /**
  * package: com.easytools.tools.ConvertUtil
  * author: gyc
- * description:转换相关的工具类，包含16进位制与字节的转换、输入输出流的转换、字节字符的转换、bitmap与drawable的转换
- * 字节与bitmap/drawable的转换，像素单位的转换等
+ *
+ * bytes2Bits, bits2Bytes                  : bytes 与 bits 互转
+ * bytes2Chars, chars2Bytes                : bytes 与 chars 互转
+ * bytes2HexString, hexString2Bytes        : bytes 与 hexString 互转
+ * input2OutputStream, output2InputStream  : inputStream 与 outputStream 互转
+ * inputStream2Bytes, bytes2InputStream    : inputStream 与 bytes 互转
+ * outputStream2Bytes, bytes2OutputStream  : outputStream 与 bytes 互转
+ * inputStream2String, string2InputStream  : inputStream 与 string 按编码互转
+ * outputStream2String, string2OutputStream: outputStream 与 string 按编码互转
+ * bitmap2Bytes, bytes2Bitmap              : bitmap 与 bytes 互转
+ * drawable2Bitmap, bitmap2Drawable        : drawable 与 bitmap 互转
+ * drawable2Bytes, bytes2Drawable          : drawable 与 bytes 互转
+ * view2Bitmap                             : view 转 Bitmap
+ * dp2px, px2dp                            : dp 与 px 互转
+ * sp2px, px2sp                            : sp 与 px 互转
  * time: create at 2016/11/23 12:04
  */
 
@@ -68,7 +81,7 @@ public class ConvertUtil {
      * @return 字节数组
      */
     public static byte[] hexString2Bytes(String hexString) {
-        if (StringUtil.isSpace(hexString)) return null;
+        if (StringUtils.isSpace(hexString)) return null;
         int len = hexString.length();
         if (len % 2 != 0) {
             hexString = "0" + hexString;
@@ -172,14 +185,14 @@ public class ConvertUtil {
      *
      * @param byteNum 字节数
      * @param unit    <ul>
-     *                <li>{@link ConstantUtil.MemoryUnit#BYTE}: 字节</li>
-     *                <li>{@link ConstantUtil.MemoryUnit#KB}  : 千字节</li>
-     *                <li>{@link ConstantUtil.MemoryUnit#MB}  : 兆</li>
-     *                <li>{@link ConstantUtil.MemoryUnit#GB}  : GB</li>
+     *                <li>{@link ConstantUtils.MemoryUnit#BYTE}: 字节</li>
+     *                <li>{@link ConstantUtils.MemoryUnit#KB}  : 千字节</li>
+     *                <li>{@link ConstantUtils.MemoryUnit#MB}  : 兆</li>
+     *                <li>{@link ConstantUtils.MemoryUnit#GB}  : GB</li>
      *                </ul>
      * @return 以unit为单位的size
      */
-    public static double byte2Size(long byteNum, ConstantUtil.MemoryUnit unit) {
+    public static double byte2Size(long byteNum, ConstantUtils.MemoryUnit unit) {
         if (byteNum < 0) return -1;
         switch (unit) {
             default:
@@ -199,14 +212,14 @@ public class ConvertUtil {
      *
      * @param size 大小
      * @param unit <ul>
-     *             <li>{@link ConstantUtil.MemoryUnit#BYTE}: 字节</li>
-     *             <li>{@link ConstantUtil.MemoryUnit#KB}  : 千字节</li>
-     *             <li>{@link ConstantUtil.MemoryUnit#MB}  : 兆</li>
-     *             <li>{@link ConstantUtil.MemoryUnit#GB}  : GB</li>
+     *             <li>{@link ConstantUtils.MemoryUnit#BYTE}: 字节</li>
+     *             <li>{@link ConstantUtils.MemoryUnit#KB}  : 千字节</li>
+     *             <li>{@link ConstantUtils.MemoryUnit#MB}  : 兆</li>
+     *             <li>{@link ConstantUtils.MemoryUnit#GB}  : GB</li>
      *             </ul>
      * @return 字节数
      */
-    public static long size2Byte(long size, ConstantUtil.MemoryUnit unit) {
+    public static long size2Byte(long size, ConstantUtils.MemoryUnit unit) {
         if (size < 0) return -1;
         switch (unit) {
             default:
@@ -304,7 +317,7 @@ public class ConvertUtil {
             e.printStackTrace();
             return null;
         } finally {
-            CloseUtil.closeIO(is);
+            CloseUtils.closeIO(is);
         }
     }
 
@@ -369,7 +382,7 @@ public class ConvertUtil {
             e.printStackTrace();
             return null;
         } finally {
-            CloseUtil.closeIO(os);
+            CloseUtils.closeIO(os);
         }
     }
 
@@ -387,6 +400,13 @@ public class ConvertUtil {
         return baos.toByteArray();
     }
 
+    public static byte[] bitmap2Bytes(final Bitmap bitmap) {
+        if (bitmap == null) return null;
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        return baos.toByteArray();
+    }
+
     /**
      * 字节数组转bitmap
      *
@@ -394,8 +414,7 @@ public class ConvertUtil {
      * @return bitmap
      */
     public static Bitmap bytes2Bitmap(byte[] bytes) {
-        return (bytes == null || bytes.length == 0) ? null : BitmapFactory.decodeByteArray(bytes,
-                0, bytes.length);
+        return (bytes == null || bytes.length == 0) ? null : BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
     }
 
     /**
@@ -405,18 +424,37 @@ public class ConvertUtil {
      * @return Bitmap对象
      */
     public static Bitmap drawable2Bitmap(Drawable drawable) {
-        return drawable == null ? null : ((BitmapDrawable) drawable).getBitmap();
+        if (drawable instanceof BitmapDrawable) {
+            BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
+            if (bitmapDrawable.getBitmap() != null) {
+                return bitmapDrawable.getBitmap();
+            }
+        }
+        Bitmap bitmap;
+        if (drawable.getIntrinsicWidth() <= 0 || drawable.getIntrinsicHeight() <= 0) {
+            bitmap = Bitmap.createBitmap(1, 1,
+                    drawable.getOpacity() != PixelFormat.OPAQUE ?
+                            Bitmap.Config.ARGB_8888 : Bitmap.Config.RGB_565);
+        } else {
+            bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(),
+                    drawable.getIntrinsicHeight(),
+                    drawable.getOpacity() != PixelFormat.OPAQUE ?
+                            Bitmap.Config.ARGB_8888 : Bitmap.Config.RGB_565);
+        }
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+        return bitmap;
     }
 
     /**
      * bitmap转drawable
      *
-     * @param res    Resource对象
-     * @param bitmap Bitmap对象
-     * @return Drawable对象
+     * @param bitmap
+     * @return
      */
-    public static Drawable bitmap2Drawable(Resources res, Bitmap bitmap) {
-        return bitmap == null ? null : new BitmapDrawable(res, bitmap);
+    public static Drawable bitmap2Drawable(final Bitmap bitmap) {
+        return bitmap == null ? null : new BitmapDrawable(Utils.getApp().getResources(), bitmap);
     }
 
     /**
@@ -433,12 +471,11 @@ public class ConvertUtil {
     /**
      * 字节数组转drawable
      *
-     * @param res   resources对象
      * @param bytes 字节数组
      * @return drawable
      */
-    public static Drawable bytes2Drawable(Resources res, byte[] bytes) {
-        return res == null ? null : bitmap2Drawable(res, bytes2Bitmap(bytes));
+    public static Drawable bytes2Drawable(byte[] bytes) {
+        return bytes == null ? null : bitmap2Drawable(bytes2Bitmap(bytes));
     }
 
     /**
@@ -449,8 +486,7 @@ public class ConvertUtil {
      */
     public static Bitmap view2Bitmap(View view) {
         if (view == null) return null;
-        Bitmap ret = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config
-                .ARGB_8888);
+        Bitmap ret = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(ret);
         Drawable bgDrawable = view.getBackground();
         if (bgDrawable != null) {
@@ -464,12 +500,12 @@ public class ConvertUtil {
 
     /**
      * 把bitmap以PNG格式转换成Base64编码的字符串
+     *
      * @param bitmap 待编码bitmap
      * @return 编码后的字符串
      */
     public static String bitmap2String(Bitmap bitmap) {
-        return Base64.encodeToString(bitmap2Bytes(bitmap, Bitmap.CompressFormat.PNG), Base64
-                .DEFAULT);
+        return Base64.encodeToString(bitmap2Bytes(bitmap, Bitmap.CompressFormat.PNG), Base64.DEFAULT);
     }
 
 

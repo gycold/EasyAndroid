@@ -5,7 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.easytools.tools.EncodeUtil;
+import com.easytools.tools.EncodeUtils;
 import com.easytools.tools.EncryptUtil;
 
 public class MainActivity extends AppCompatActivity {
@@ -25,11 +25,11 @@ public class MainActivity extends AppCompatActivity {
         tv2 = (TextView) findViewById(R.id.tv2);
         tv3 = (TextView) findViewById(R.id.tv3);
 
-        tv1.setText(EncodeUtil.urlEncode(s1));
-        tv2.setText(EncodeUtil.urlEncode(s2));
-        tv3.setText(EncodeUtil.urlEncode(s3));
+        tv1.setText(EncodeUtils.urlEncode(s1));
+        tv2.setText(EncodeUtils.urlEncode(s2));
+        tv3.setText(EncodeUtils.urlEncode(s3));
 
-        String s = EncodeUtil.urlEncodeWithRFC3986(s2);
+        String s = EncodeUtils.urlEncodeWithRFC3986(s2);
         System.out.println(s);
         System.out.println(EncryptUtil.encryptSHA1ToString(s));
     }

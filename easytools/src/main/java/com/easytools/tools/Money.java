@@ -303,6 +303,15 @@ public class Money {
     }
 
     /**
+     * 设置货币的分值。
+     *
+     * @param l 金额数，以分为单位。
+     */
+    public void setCent(long l) {
+        cent = l;
+    }
+
+    /**
      * 获取本货币对象代表的币种。
      *
      * @return 本货币对象所代表的币种。
@@ -901,12 +910,4 @@ public class Money {
         return sb.toString();
     }
 
-    /**
-     * 设置货币的分值。
-     *
-     * @param l
-     */
-    public void setCent(long l) {
-        cent = l;
-    }
 }

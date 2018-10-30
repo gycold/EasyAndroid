@@ -22,13 +22,30 @@ import java.lang.ref.WeakReference;
  * package: com.easytools.tools.SnackbarUtils
  * author: gyc
  * description:Snackbar 相关工具类
+ * <p>
+ * with           : 设置 snackbar 依赖 view
+ * setMessage     : 设置消息
+ * setMessageColor: 设置消息颜色
+ * setBgColor     : 设置背景色
+ * setBgResource  : 设置背景资源
+ * setDuration    : 设置显示时长
+ * setAction      : 设置行为
+ * setBottomMargin: 设置底边距
+ * show           : 显示 snackbar
+ * showSuccess    : 显示预设成功的 snackbar
+ * showWarning    : 显示预设警告的 snackbar
+ * showError      : 显示预设错误的 snackbar
+ * dismiss        : 消失 snackbar
+ * getView        : 获取 snackbar 视图
+ * addView        : 添加 snackbar 视图
+ * <p>
  * time: create at 2018/1/20 0020 09:35
  */
 
 public class SnackbarUtils {
     public static final int LENGTH_INDEFINITE = -2;
-    public static final int LENGTH_SHORT      = -1;
-    public static final int LENGTH_LONG       = 0;
+    public static final int LENGTH_SHORT = -1;
+    public static final int LENGTH_LONG = 0;
 
     @IntDef({LENGTH_INDEFINITE, LENGTH_SHORT, LENGTH_LONG})
     @Retention(RetentionPolicy.SOURCE)
@@ -38,20 +55,20 @@ public class SnackbarUtils {
     private static final int COLOR_DEFAULT = 0xFEFFFFFF;
     private static final int COLOR_SUCCESS = 0xFF2BB600;
     private static final int COLOR_WARNING = 0xFFFFC100;
-    private static final int COLOR_ERROR   = 0xFFFF0000;
+    private static final int COLOR_ERROR = 0xFFFF0000;
     private static final int COLOR_MESSAGE = 0xFFFFFFFF;
     private static WeakReference<Snackbar> sReference;
 
-    private View                 parent;
-    private CharSequence         message;
-    private int                  messageColor;
-    private int                  bgColor;
-    private int                  bgResource;
-    private int                  duration;
-    private CharSequence         actionText;
-    private int                  actionTextColor;
+    private View parent;
+    private CharSequence message;
+    private int messageColor;
+    private int bgColor;
+    private int bgResource;
+    private int duration;
+    private CharSequence actionText;
+    private int actionTextColor;
     private View.OnClickListener actionListener;
-    private int                  bottomMargin;
+    private int bottomMargin;
 
     private SnackbarUtils(final View parent) {
         setDefault();

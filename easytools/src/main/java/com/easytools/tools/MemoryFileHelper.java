@@ -33,6 +33,13 @@ public class MemoryFileHelper {
         return null;
     }
 
+    /**
+     * 打开共享内存
+     * @param pfd
+     * @param length
+     * @param mode
+     * @return
+     */
     public static MemoryFile openMemoryFile(ParcelFileDescriptor pfd, int length, int mode){
         if(pfd == null){
             throw new IllegalArgumentException("ParcelFileDescriptor 不能为空");
@@ -77,7 +84,7 @@ public class MemoryFileHelper {
     }
 
     /**
-     * 获取memoryFile的ParcelFileDescriptor
+     * 获取共享内存的文件描述符
      * @param memoryFile 描述一块共享内存
      * @return ParcelFileDescriptor
      */
@@ -92,7 +99,7 @@ public class MemoryFileHelper {
     }
 
     /**
-     * 获取memoryFile的FileDescriptor
+     * 获取共享内存的文件描述符
      * @param memoryFile 描述一块共享内存
      * @return 这块共享内存对应的文件描述符
      */

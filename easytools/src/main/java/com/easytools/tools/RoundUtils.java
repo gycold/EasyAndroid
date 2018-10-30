@@ -353,7 +353,7 @@ public class RoundUtils {
      * @return
      */
     public static String getMoneyStr(String cent) {
-        if (cent != null && StringUtil.isNumeric(cent)) {
+        if (cent != null && StringUtils.isNumeric(cent)) {
             Money money = new Money();
             money.setCent(Long.valueOf(cent));
             return money.toString();

@@ -1,6 +1,5 @@
 package com.easytools.tools;
 
-import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.AppOpsManager;
 import android.app.usage.UsageStats;
@@ -10,8 +9,10 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.os.Process;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresPermission;
 import android.util.Log;
 
 import java.util.Arrays;
@@ -20,10 +21,19 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static android.Manifest.permission.KILL_BACKGROUND_PROCESSES;
+
 /**
  * package: com.easytools.tools.ProcessUtils
  * author: gyc
  * description:进程相关工具类
+ * <p>
+ * getForegroundProcessName  : 获取前台线程包名
+ * killAllBackgroundProcesses: 杀死所有的后台服务进程
+ * killBackgroundProcesses   : 杀死后台服务进程
+ * isMainProcess             : 判断是否运行在主进程
+ * getCurrentProcessName     : 获取当前进程名称
+ * <p>
  * time: create at 2018/1/20 0020 10:04
  */
 
@@ -34,18 +44,17 @@ public class ProcessUtils {
     }
 
     /**
-     * 获取前台线程包名
-     * <p>当不是查看当前 App，且 SDK 大于 21 时，
-     * 需添加权限
+     * Return the foreground process name.
+     * <p>Target APIs greater than 21 must hold
      * {@code <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS" />}</p>
      *
-     * @return 前台应用包名
+     * @return the foreground process name
      */
     public static String getForegroundProcessName() {
-        ActivityManager manager =
+        ActivityManager am =
                 (ActivityManager) Utils.getApp().getSystemService(Context.ACTIVITY_SERVICE);
-        if (manager == null) return null;
-        List<ActivityManager.RunningAppProcessInfo> pInfo = manager.getRunningAppProcesses();
+        //noinspection ConstantConditions
+        List<ActivityManager.RunningAppProcessInfo> pInfo = am.getRunningAppProcesses();
         if (pInfo != null && pInfo.size() > 0) {
             for (ActivityManager.RunningAppProcessInfo aInfo : pInfo) {
                 if (aInfo.importance
@@ -55,34 +64,34 @@ public class ProcessUtils {
             }
         }
         if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.LOLLIPOP) {
-            PackageManager packageManager = Utils.getApp().getPackageManager();
+            PackageManager pm = Utils.getApp().getPackageManager();
             Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
             List<ResolveInfo> list =
-                    packageManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+                    pm.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
             Log.i("ProcessUtils", list.toString());
             if (list.size() <= 0) {
                 Log.i("ProcessUtils",
-                        "getForegroundProcessName() called" + ": 无\"有权查看使用权限的应用\"选项");
-                return null;
+                        "getForegroundProcessName: noun of access to usage information.");
+                return "";
             }
-            try {// 有"有权查看使用权限的应用"选项
+            try {// Access to usage information.
                 ApplicationInfo info =
-                        packageManager.getApplicationInfo(Utils.getApp().getPackageName(), 0);
+                        pm.getApplicationInfo(Utils.getApp().getPackageName(), 0);
                 AppOpsManager aom =
                         (AppOpsManager) Utils.getApp().getSystemService(Context.APP_OPS_SERVICE);
-                if (aom != null) {
-                    if (aom.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS,
-                            info.uid,
-                            info.packageName) != AppOpsManager.MODE_ALLOWED) {
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        Utils.getApp().startActivity(intent);
-                    }
-                    if (aom.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS,
-                            info.uid,
-                            info.packageName) != AppOpsManager.MODE_ALLOWED) {
-                        Log.i("ProcessUtils", "没有打开\"有权查看使用权限的应用\"选项");
-                        return null;
-                    }
+                //noinspection ConstantConditions
+                if (aom.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS,
+                        info.uid,
+                        info.packageName) != AppOpsManager.MODE_ALLOWED) {
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    Utils.getApp().startActivity(intent);
+                }
+                if (aom.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS,
+                        info.uid,
+                        info.packageName) != AppOpsManager.MODE_ALLOWED) {
+                    Log.i("ProcessUtils",
+                            "getForegroundProcessName: refuse to device usage stats.");
+                    return "";
                 }
                 UsageStatsManager usageStatsManager = (UsageStatsManager) Utils.getApp()
                         .getSystemService(Context.USAGE_STATS_SERVICE);
@@ -107,20 +116,21 @@ public class ProcessUtils {
                 e.printStackTrace();
             }
         }
-        return null;
+        return "";
     }
 
     /**
-     * 获取后台服务进程
-     * <p>需添加权限
+     * Return all background processes.
+     * <p>Must hold
      * {@code <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />}</p>
      *
-     * @return 后台服务进程
+     * @return all background processes
      */
+    @RequiresPermission(KILL_BACKGROUND_PROCESSES)
     public static Set<String> getAllBackgroundProcesses() {
         ActivityManager am =
                 (ActivityManager) Utils.getApp().getSystemService(Context.ACTIVITY_SERVICE);
-        if (am == null) return Collections.emptySet();
+        //noinspection ConstantConditions
         List<ActivityManager.RunningAppProcessInfo> info = am.getRunningAppProcesses();
         Set<String> set = new HashSet<>();
         if (info != null) {
@@ -132,17 +142,17 @@ public class ProcessUtils {
     }
 
     /**
-     * 杀死所有的后台服务进程
-     * <p>需添加权限
+     * Kill all background processes.
+     * <p>Must hold
      * {@code <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />}</p>
      *
-     * @return 被暂时杀死的服务集合
+     * @return background processes were killed
      */
-    @SuppressLint("MissingPermission")
+    @RequiresPermission(KILL_BACKGROUND_PROCESSES)
     public static Set<String> killAllBackgroundProcesses() {
         ActivityManager am =
                 (ActivityManager) Utils.getApp().getSystemService(Context.ACTIVITY_SERVICE);
-        if (am == null) return Collections.emptySet();
+        //noinspection ConstantConditions
         List<ActivityManager.RunningAppProcessInfo> info = am.getRunningAppProcesses();
         Set<String> set = new HashSet<>();
         for (ActivityManager.RunningAppProcessInfo aInfo : info) {
@@ -161,18 +171,18 @@ public class ProcessUtils {
     }
 
     /**
-     * 杀死后台服务进程
-     * <p>需添加权限
+     * Kill background processes.
+     * <p>Must hold
      * {@code <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />}</p>
      *
-     * @param packageName 包名
-     * @return {@code true}: 杀死成功<br>{@code false}: 杀死失败
+     * @param packageName The name of the package.
+     * @return {@code true}: success<br>{@code false}: fail
      */
-    @SuppressLint("MissingPermission")
+    @RequiresPermission(KILL_BACKGROUND_PROCESSES)
     public static boolean killBackgroundProcesses(@NonNull final String packageName) {
         ActivityManager am =
                 (ActivityManager) Utils.getApp().getSystemService(Context.ACTIVITY_SERVICE);
-        if (am == null) return false;
+        //noinspection ConstantConditions
         List<ActivityManager.RunningAppProcessInfo> info = am.getRunningAppProcesses();
         if (info == null || info.size() == 0) return true;
         for (ActivityManager.RunningAppProcessInfo aInfo : info) {
@@ -188,5 +198,35 @@ public class ProcessUtils {
             }
         }
         return true;
+    }
+
+    /**
+     * Return whether app running in the main process.
+     *
+     * @return {@code true}: yes<br>{@code false}: no
+     */
+    public static boolean isMainProcess() {
+        return Utils.getApp().getPackageName().equals(getCurrentProcessName());
+    }
+
+    /**
+     * Return the name of current process.
+     *
+     * @return the name of current process
+     */
+    public static String getCurrentProcessName() {
+        ActivityManager am = (ActivityManager) Utils.getApp().getSystemService(Context.ACTIVITY_SERVICE);
+        //noinspection ConstantConditions
+        List<ActivityManager.RunningAppProcessInfo> info = am.getRunningAppProcesses();
+        if (info == null || info.size() == 0) return null;
+        int pid = Process.myPid();
+        for (ActivityManager.RunningAppProcessInfo aInfo : info) {
+            if (aInfo.pid == pid) {
+                if (aInfo.processName != null) {
+                    return aInfo.processName;
+                }
+            }
+        }
+        return "";
     }
 }

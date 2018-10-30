@@ -16,6 +16,18 @@ import java.util.List;
  * package: com.easytools.tools.ReflectUtils
  * author: gyc
  * description:反射相关工具类
+ * <p>
+ * reflect        : 设置要反射的类
+ * newInstance    : 实例化反射对象
+ * field          : 设置反射的字段
+ * method         : 设置反射的方法
+ * get            : 获取反射想要获取的
+ * invoke         : 执行instance的方法
+ * invokeMethod   : 执行指定的对方法
+ * getInstance    : 根据类名，参数实例化对象
+ * getField       : 取得属性值
+ * setField       : 设置属性
+ * <p>
  * time: create at 2018/1/20 0020 10:10
  */
 
@@ -505,19 +517,21 @@ public class ReflectUtils {
 
 
     /*新增*/
+
     /**
-     *根据类名，参数实例化对象
+     * 根据类名，参数实例化对象
+     *
      * @param className 类的路径全名
-     * @param params 构造函数需要的参数
+     * @param params    构造函数需要的参数
      * @return 返回T类型的一个对象
      */
-    public static Object getInstance(String className,Object ... params){
-        if(className == null || className.equals("")){
+    public static Object getInstance(String className, Object... params) {
+        if (className == null || className.equals("")) {
             throw new IllegalArgumentException("className 不能为空");
         }
         try {
             Class<?> c = Class.forName(className);
-            if(params != null){
+            if (params != null) {
                 int plength = params.length;
                 Class[] paramsTypes = new Class[plength];
                 for (int i = 0; i < plength; i++) {
@@ -538,24 +552,25 @@ public class ReflectUtils {
 
     /**
      * 执行instance的方法
-     * @param className 类的全名
-     * @param instance 对应的对象，为null时执行类的静态方法
+     *
+     * @param className  类的全名
+     * @param instance   对应的对象，为null时执行类的静态方法
      * @param methodName 方法名称
-     * @param params 参数
+     * @param params     参数
      */
-    public static Object invoke(String className,Object instance,String methodName,Object ... params){
-        if(className == null || className.equals("")){
+    public static Object invoke(String className, Object instance, String methodName, Object... params) {
+        if (className == null || className.equals("")) {
             throw new IllegalArgumentException("className 不能为空");
         }
-        if(methodName == null || methodName.equals("")){
+        if (methodName == null || methodName.equals("")) {
             throw new IllegalArgumentException("methodName不能为空");
         }
         try {
             Class<?> c = Class.forName(className);
-            if(params != null){
+            if (params != null) {
                 int plength = params.length;
                 Class[] paramsTypes = new Class[plength];
-                for(int i = 0;i < plength;i++){
+                for (int i = 0; i < plength; i++) {
                     paramsTypes[i] = params[i].getClass();
                 }
                 Method method = c.getDeclaredMethod(methodName, paramsTypes);
@@ -573,19 +588,20 @@ public class ReflectUtils {
 
     /**
      * 执行指定的对方法
+     *
      * @param instance 需要执行该方法的对象，为空时，执行静态方法
-     * @param m 需要执行的方法对象
-     * @param params 方法对应的参数
+     * @param m        需要执行的方法对象
+     * @param params   方法对应的参数
      * @return 方法m执行的返回值
      */
-    public static Object invokeMethod(Object instance,Method m,Object ... params){
-        if(m == null){
+    public static Object invokeMethod(Object instance, Method m, Object... params) {
+        if (m == null) {
             throw new IllegalArgumentException("method 不能为空");
         }
         m.setAccessible(true);
         try {
-            return m.invoke(instance,params);
-        } catch (Exception e){
+            return m.invoke(instance, params);
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
@@ -593,16 +609,17 @@ public class ReflectUtils {
 
     /**
      * 取得属性值
+     *
      * @param className 类的全名
      * @param fieldName 属性名
-     * @param instance 对应的对象，为null时取静态变量
+     * @param instance  对应的对象，为null时取静态变量
      * @return 属性对应的值
      */
-    public static Object getField(String className,Object instance,String fieldName){
-        if(className == null || className.equals("")){
+    public static Object getField(String className, Object instance, String fieldName) {
+        if (className == null || className.equals("")) {
             throw new IllegalArgumentException("className 不能为空");
         }
-        if(fieldName == null || fieldName.equals("")){
+        if (fieldName == null || fieldName.equals("")) {
             throw new IllegalArgumentException("fieldName 不能为空");
         }
         try {
@@ -618,16 +635,17 @@ public class ReflectUtils {
 
     /**
      * 设置属性
+     *
      * @param className 类的全名
      * @param fieldName 属性名
-     * @param instance 对应的对象，为null时改变的是静态变量
-     * @param value 值
+     * @param instance  对应的对象，为null时改变的是静态变量
+     * @param value     值
      */
-    public static void setField(String className,Object instance,String fieldName,Object value){
-        if(className == null || className.equals("")){
+    public static void setField(String className, Object instance, String fieldName, Object value) {
+        if (className == null || className.equals("")) {
             throw new IllegalArgumentException("className 不能为空");
         }
-        if(fieldName == null || fieldName.equals("")){
+        if (fieldName == null || fieldName.equals("")) {
             throw new IllegalArgumentException("fieldName 不能为空");
         }
         try {
@@ -642,21 +660,22 @@ public class ReflectUtils {
 
     /**
      * 根据方法名，类名，参数获取方法
-     * @param className 类名，全名称
+     *
+     * @param className  类名，全名称
      * @param methodName 方法名
      * @param paramsType 参数类型列表
      * @return 方法对象
      */
-    public static Method getMethod(String className,String methodName,Class ... paramsType){
-        if(className == null || className.equals("")){
+    public static Method getMethod(String className, String methodName, Class... paramsType) {
+        if (className == null || className.equals("")) {
             throw new IllegalArgumentException("className 不能为空");
         }
-        if(methodName == null || methodName.equals("")){
+        if (methodName == null || methodName.equals("")) {
             throw new IllegalArgumentException("methodName不能为空");
         }
         try {
             Class<?> c = Class.forName(className);
-            return c.getDeclaredMethod(methodName,paramsType);
+            return c.getDeclaredMethod(methodName, paramsType);
         } catch (Exception e) {
             e.printStackTrace();
         }

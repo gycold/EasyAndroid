@@ -128,7 +128,7 @@ public class StatusBarUtils {
     }
 
     /**
-     * 设置状态栏纯色 不加半透明效果
+     * 设置状态栏纯色，不加半透明效果
      *
      * @param activity 需要设置的 activity
      * @param color    状态栏颜色值

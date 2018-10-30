@@ -20,7 +20,7 @@ public class ShellUtils {
     }
 
     /**
-     * 是否是在 root 下执行命令
+     * 在 root 下执行命令
      *
      * @param command 命令
      * @param isRoot  是否需要 root 权限执行
@@ -31,7 +31,7 @@ public class ShellUtils {
     }
 
     /**
-     * 是否是在 root 下执行命令
+     * 在 root 下执行命令
      *
      * @param commands 多条命令链表
      * @param isRoot   是否需要 root 权限执行
@@ -42,7 +42,7 @@ public class ShellUtils {
     }
 
     /**
-     * 是否是在 root 下执行命令
+     * 在 root 下执行命令
      *
      * @param commands 多条命令数组
      * @param isRoot   是否需要 root 权限执行
@@ -53,7 +53,7 @@ public class ShellUtils {
     }
 
     /**
-     * 是否是在 root 下执行命令
+     * 在 root 下执行命令
      *
      * @param command         命令
      * @param isRoot          是否需要 root 权限执行
@@ -139,7 +139,7 @@ public class ShellUtils {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            CloseUtil.closeIO(os, successResult, errorResult);
+            CloseUtils.closeIO(os, successResult, errorResult);
             if (process != null) {
                 process.destroy();
             }

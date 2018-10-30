@@ -29,6 +29,16 @@ import java.util.Set;
  * package: com.easytools.tools.PermissionUtils
  * author: gyc
  * description:权限相关工具类
+ * <p>
+ * getPermissions          : 获取应用权限
+ * isGranted               : 判断权限是否被授予
+ * launchAppDetailsSettings: 打开应用具体设置
+ * permission              : 设置请求权限
+ * rationale               : 设置拒绝权限后再次请求的回调接口
+ * callback                : 设置回调
+ * theme                   : 设置主题
+ * request                 : 开始请求
+ * <p>
  * time: create at 2018/1/20 0020 09:52
  */
 
@@ -38,14 +48,14 @@ public class PermissionUtils {
     private static PermissionUtils sInstance;
 
     private OnRationaleListener mOnRationaleListener;
-    private SimpleCallback      mSimpleCallback;
-    private FullCallback        mFullCallback;
-    private ThemeCallback       mThemeCallback;
+    private SimpleCallback mSimpleCallback;
+    private FullCallback mFullCallback;
+    private ThemeCallback mThemeCallback;
     private Set<String> mPermissions;
-    private List<String>        mPermissionsRequest;
-    private List<String>        mPermissionsGranted;
-    private List<String>        mPermissionsDenied;
-    private List<String>        mPermissionsDeniedForever;
+    private List<String> mPermissionsRequest;
+    private List<String> mPermissionsGranted;
+    private List<String> mPermissionsDenied;
+    private List<String> mPermissionsDeniedForever;
 
     /**
      * 获取应用权限

@@ -1,345 +1,1143 @@
 package com.easytools.tools;
 
-import android.support.annotation.IntDef;
+import android.os.Handler;
+import android.os.Looper;
+import android.support.annotation.IntRange;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.util.Log;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.util.Collection;
-import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * package: com.easytools.tools.ThreadPoolUtil
+ * package: com.easytools.tools.ThreadPoolUtils
  * author: gyc
- * description:
+ * description:线程操作相关
+ * <p>
+ * isMainThread            : 判断当前是否主线程
+ * getFixedPool            : 获取固定线程池
+ * getSinglePool           : 获取单线程池
+ * getCachedPool           : 获取缓冲线程池
+ * getIoPool               : 获取 IO 线程池
+ * getCpuPool              : 获取 CPU 线程池
+ * executeByFixed          : 在固定线程池执行任务
+ * executeByFixedWithDelay : 在固定线程池延时执行任务
+ * executeByFixedAtFixRate : 在固定线程池按固定频率执行任务
+ * executeBySingle         : 在单线程池执行任务
+ * executeBySingleWithDelay: 在单线程池延时执行任务
+ * executeBySingleAtFixRate: 在单线程池按固定频率执行任务
+ * executeByCached         : 在缓冲线程池执行任务
+ * executeByCachedWithDelay: 在缓冲线程池延时执行任务
+ * executeByCachedAtFixRate: 在缓冲线程池按固定频率执行任务
+ * executeByIo             : 在 IO 线程池执行任务
+ * executeByIoWithDelay    : 在 IO 线程池延时执行任务
+ * executeByIoAtFixRate    : 在 IO 线程池按固定频率执行任务
+ * executeByCpu            : 在 CPU 线程池执行任务
+ * executeByCpuWithDelay   : 在 CPU 线程池延时执行任务
+ * executeByCpuAtFixRate   : 在 CPU 线程池按固定频率执行任务
+ * executeByCustom         : 在自定义线程池执行任务
+ * executeByCustomWithDelay: 在自定义线程池延时执行任务
+ * executeByCustomAtFixRate: 在自定义线程池按固定频率执行任务
+ * cancel                  : 取消任务的执行
+ * <p>
  * time: create at 2018/1/20 0020 09:31
  */
 
 public class ThreadPoolUtils {
-    public static final int FixedThread  = 0;
-    public static final int CachedThread = 1;
-    public static final int SingleThread = 2;
 
-    @IntDef({FixedThread, CachedThread, SingleThread})
-    @Retention(RetentionPolicy.SOURCE)
-    public @interface Type {
-    }
+    private static final Map<Integer, Map<Integer, ExecutorService>> TYPE_PRIORITY_POOLS = new ConcurrentHashMap<>();
+    private static final Map<Task, ScheduledExecutorService> TASK_SCHEDULED = new ConcurrentHashMap<>();
 
-    private ExecutorService exec;
-    private ScheduledExecutorService scheduleExec;
+    private static final byte TYPE_SINGLE = -1;
+    private static final byte TYPE_CACHED = -2;
+    private static final byte TYPE_IO = -4;
+    private static final byte TYPE_CPU = -8;
 
-    private ThreadPoolUtils() {
-        throw new UnsupportedOperationException("u can't instantiate me...");
-    }
+    private static final int CPU_COUNT = Runtime.getRuntime().availableProcessors();
 
     /**
-     * ThreadPoolUtils构造函数
+     * Return whether the thread is the main thread.
      *
-     * @param type         线程池类型
-     * @param corePoolSize 只对Fixed和Scheduled线程池起效
+     * @return {@code true}: yes<br>{@code false}: no
      */
-    public ThreadPoolUtils(@Type final int type, final int corePoolSize) {
-        // 构造有定时功能的线程池
-//        new ThreadPoolExecutor(
-//                corePoolSize,
-//                Integer.MAX_VALUE,
-//                10L,
-//                TimeUnit.MILLISECONDS,
-//                new DelayedWorkQueue()
-//        );
-        scheduleExec = Executors.newScheduledThreadPool(corePoolSize);
-        switch (type) {
-            case FixedThread:
-                // 构造一个固定线程数目的线程池
-//                new ThreadPoolExecutor(
-//                        corePoolSize,
-//                        corePoolSize,
-//                        0L,
-//                        TimeUnit.MILLISECONDS,
-//                        new LinkedBlockingQueue<Runnable>()
-//                );
-                exec = Executors.newFixedThreadPool(corePoolSize);
-                break;
-            case SingleThread:
-                // 构造一个只支持一个线程的线程池,相当于newFixedThreadPool(1)
-//                new ThreadPoolExecutor(
-//                        1,
-//                        1,
-//                        0L,
-//                        TimeUnit.MILLISECONDS,
-//                        new LinkedBlockingQueue<Runnable>()
-//                );
-                exec = Executors.newSingleThreadExecutor();
-                break;
-            case CachedThread:
-                // 构造一个缓冲功能的线程池
-//                new ThreadPoolExecutor(
-//                        0,
-//                        Integer.MAX_VALUE,
-//                        60L,
-//                        TimeUnit.SECONDS,
-//                        new SynchronousQueue<Runnable>()
-//                );
-                exec = Executors.newCachedThreadPool();
-                break;
-        }
+    public static boolean isMainThread() {
+        return Looper.myLooper() == Looper.getMainLooper();
     }
 
     /**
-     * 在未来某个时间执行给定的命令
-     * <p>该命令可能在新的线程、已入池的线程或者正调用的线程中执行，这由 Executor 实现决定。</p>
+     * Return a thread pool that reuses a fixed number of threads
+     * operating off a shared unbounded queue, using the provided
+     * ThreadFactory to create new threads when needed.
      *
-     * @param command 命令
+     * @param size The size of thread in the pool.
+     * @return a fixed thread pool
      */
-    public void execute(final Runnable command) {
-        exec.execute(command);
+    public static ExecutorService getFixedPool(@IntRange(from = 1) final int size) {
+        return getPoolByTypeAndPriority(size);
     }
 
     /**
-     * 在未来某个时间执行给定的命令链表
-     * <p>该命令可能在新的线程、已入池的线程或者正调用的线程中执行，这由 Executor 实现决定。</p>
+     * Return a thread pool that reuses a fixed number of threads
+     * operating off a shared unbounded queue, using the provided
+     * ThreadFactory to create new threads when needed.
      *
-     * @param commands 命令链表
+     * @param size     The size of thread in the pool.
+     * @param priority The priority of thread in the poll.
+     * @return a fixed thread pool
      */
-    public void execute(final List<Runnable> commands) {
-        for (Runnable command : commands) {
-            exec.execute(command);
-        }
+    public static ExecutorService getFixedPool(@IntRange(from = 1) final int size,
+                                               @IntRange(from = 1, to = 10) final int priority) {
+        return getPoolByTypeAndPriority(size, priority);
     }
 
     /**
-     * 待以前提交的任务执行完毕后关闭线程池
-     * <p>启动一次顺序关闭，执行以前提交的任务，但不接受新任务。
-     * 如果已经关闭，则调用没有作用。</p>
-     */
-    public void shutDown() {
-        exec.shutdown();
-    }
-
-    /**
-     * 试图停止所有正在执行的活动任务
-     * <p>试图停止所有正在执行的活动任务，暂停处理正在等待的任务，并返回等待执行的任务列表。</p>
-     * <p>无法保证能够停止正在处理的活动执行任务，但是会尽力尝试。</p>
+     * Return a thread pool that uses a single worker thread operating
+     * off an unbounded queue, and uses the provided ThreadFactory to
+     * create a new thread when needed.
      *
-     * @return 等待执行的任务的列表
+     * @return a single thread pool
      */
-    public List<Runnable> shutDownNow() {
-        return exec.shutdownNow();
+    public static ExecutorService getSinglePool() {
+        return getPoolByTypeAndPriority(TYPE_SINGLE);
     }
 
     /**
-     * 判断线程池是否已关闭
+     * Return a thread pool that uses a single worker thread operating
+     * off an unbounded queue, and uses the provided ThreadFactory to
+     * create a new thread when needed.
      *
-     * @return {@code true}: 是<br>{@code false}: 否
+     * @param priority The priority of thread in the poll.
+     * @return a single thread pool
      */
-    public boolean isShutDown() {
-        return exec.isShutdown();
+    public static ExecutorService getSinglePool(@IntRange(from = 1, to = 10) final int priority) {
+        return getPoolByTypeAndPriority(TYPE_SINGLE, priority);
     }
 
     /**
-     * 关闭线程池后判断所有任务是否都已完成
-     * <p>注意，除非首先调用 shutdown 或 shutdownNow，否则 isTerminated 永不为 true。</p>
+     * Return a thread pool that creates new threads as needed, but
+     * will reuse previously constructed threads when they are
+     * available.
      *
-     * @return {@code true}: 是<br>{@code false}: 否
+     * @return a cached thread pool
      */
-    public boolean isTerminated() {
-        return exec.isTerminated();
-    }
-
-
-    /**
-     * 请求关闭、发生超时或者当前线程中断
-     * <p>无论哪一个首先发生之后，都将导致阻塞，直到所有任务完成执行。</p>
-     *
-     * @param timeout 最长等待时间
-     * @param unit    时间单位
-     * @return {@code true}: 请求成功<br>{@code false}: 请求超时
-     * @throws InterruptedException 终端异常
-     */
-    public boolean awaitTermination(final long timeout, final TimeUnit unit)
-            throws InterruptedException {
-        return exec.awaitTermination(timeout, unit);
+    public static ExecutorService getCachedPool() {
+        return getPoolByTypeAndPriority(TYPE_CACHED);
     }
 
     /**
-     * 提交一个Callable任务用于执行
-     * <p>如果想立即阻塞任务的等待，则可以使用{@code result = exec.submit(aCallable).get();}形式的构造。</p>
+     * Return a thread pool that creates new threads as needed, but
+     * will reuse previously constructed threads when they are
+     * available.
      *
-     * @param task 任务
-     * @param <T>  泛型
-     * @return 表示任务等待完成的Future, 该Future的{@code get}方法在成功完成时将会返回该任务的结果。
+     * @param priority The priority of thread in the poll.
+     * @return a cached thread pool
      */
-    public <T> Future<T> submit(final Callable<T> task) {
-        return exec.submit(task);
+    public static ExecutorService getCachedPool(@IntRange(from = 1, to = 10) final int priority) {
+        return getPoolByTypeAndPriority(TYPE_CACHED, priority);
     }
 
     /**
-     * 提交一个Runnable任务用于执行
+     * Return a thread pool that creates (2 * CPU_COUNT + 1) threads
+     * operating off a queue which size is 128.
      *
-     * @param task   任务
-     * @param result 返回的结果
-     * @param <T>    泛型
-     * @return 表示任务等待完成的Future, 该Future的{@code get}方法在成功完成时将会返回该任务的结果。
+     * @return a IO thread pool
      */
-    public <T> Future<T> submit(final Runnable task, final T result) {
-        return exec.submit(task, result);
+    public static ExecutorService getIoPool() {
+        return getPoolByTypeAndPriority(TYPE_CACHED);
     }
 
     /**
-     * 提交一个Runnable任务用于执行
+     * Return a thread pool that creates (2 * CPU_COUNT + 1) threads
+     * operating off a queue which size is 128.
      *
-     * @param task 任务
-     * @return 表示任务等待完成的Future, 该Future的{@code get}方法在成功完成时将会返回null结果。
+     * @param priority The priority of thread in the poll.
+     * @return a IO thread pool
      */
-    public Future<?> submit(final Runnable task) {
-        return exec.submit(task);
+    public static ExecutorService getIoPool(@IntRange(from = 1, to = 10) final int priority) {
+        return getPoolByTypeAndPriority(TYPE_CACHED, priority);
     }
 
     /**
-     * 执行给定的任务
-     * <p>当所有任务完成时，返回保持任务状态和结果的Future列表。
-     * 返回列表的所有元素的{@link Future#isDone}为{@code true}。
-     * 注意，可以正常地或通过抛出异常来终止已完成任务。
-     * 如果正在进行此操作时修改了给定的 collection，则此方法的结果是不确定的。</p>
+     * Return a thread pool that creates (CPU_COUNT + 1) threads
+     * operating off a queue which size is 128 and the maximum
+     * number of threads equals (2 * CPU_COUNT + 1).
      *
-     * @param tasks 任务集合
-     * @param <T>   泛型
-     * @return 表示任务的 Future 列表，列表顺序与给定任务列表的迭代器所生成的顺序相同，每个任务都已完成。
-     * @throws InterruptedException 如果等待时发生中断，在这种情况下取消尚未完成的任务。
+     * @return a cpu thread pool for
      */
-    public <T> List<Future<T>> invokeAll(final Collection<? extends Callable<T>> tasks)
-            throws InterruptedException {
-        return exec.invokeAll(tasks);
+    public static ExecutorService getCpuPool() {
+        return getPoolByTypeAndPriority(TYPE_CPU);
     }
 
     /**
-     * 执行给定的任务
-     * <p>当所有任务完成或超时期满时(无论哪个首先发生)，返回保持任务状态和结果的Future列表。
-     * 返回列表的所有元素的{@link Future#isDone}为{@code true}。
-     * 一旦返回后，即取消尚未完成的任务。
-     * 注意，可以正常地或通过抛出异常来终止已完成任务。
-     * 如果此操作正在进行时修改了给定的 collection，则此方法的结果是不确定的。</p>
+     * Return a thread pool that creates (CPU_COUNT + 1) threads
+     * operating off a queue which size is 128 and the maximum
+     * number of threads equals (2 * CPU_COUNT + 1).
      *
-     * @param tasks   任务集合
-     * @param timeout 最长等待时间
-     * @param unit    时间单位
-     * @param <T>     泛型
-     * @return 表示任务的 Future 列表，列表顺序与给定任务列表的迭代器所生成的顺序相同。
-     * 如果操作未超时，则已完成所有任务。如果确实超时了，则某些任务尚未完成。
-     * @throws InterruptedException 如果等待时发生中断，在这种情况下取消尚未完成的任务
+     * @param priority The priority of thread in the poll.
+     * @return a cpu thread pool for
      */
-    public <T> List<Future<T>> invokeAll(final Collection<? extends Callable<T>> tasks,
-                                         final long timeout,
-                                         final TimeUnit unit)
-            throws InterruptedException {
-        return exec.invokeAll(tasks, timeout, unit);
+    public static ExecutorService getCpuPool(@IntRange(from = 1, to = 10) final int priority) {
+        return getPoolByTypeAndPriority(TYPE_CPU, priority);
     }
 
     /**
-     * 执行给定的任务
-     * <p>如果某个任务已成功完成（也就是未抛出异常），则返回其结果。
-     * 一旦正常或异常返回后，则取消尚未完成的任务。
-     * 如果此操作正在进行时修改了给定的collection，则此方法的结果是不确定的。</p>
+     * Executes the given task in a fixed thread pool.
      *
-     * @param tasks 任务集合
-     * @param <T>   泛型
-     * @return 某个任务返回的结果
-     * @throws InterruptedException 如果等待时发生中断
-     * @throws ExecutionException   如果没有任务成功完成
+     * @param size The size of thread in the fixed thread pool.
+     * @param task The task to execute.
+     * @param <T>  The type of the task's result.
      */
-    public <T> T invokeAny(final Collection<? extends Callable<T>> tasks)
-            throws InterruptedException, ExecutionException {
-        return exec.invokeAny(tasks);
+    public static <T> void executeByFixed(@IntRange(from = 1) final int size, final Task<T> task) {
+        execute(getPoolByTypeAndPriority(size), task);
     }
 
     /**
-     * 执行给定的任务
-     * <p>如果在给定的超时期满前某个任务已成功完成（也就是未抛出异常），则返回其结果。
-     * 一旦正常或异常返回后，则取消尚未完成的任务。
-     * 如果此操作正在进行时修改了给定的collection，则此方法的结果是不确定的。</p>
+     * Executes the given task in a fixed thread pool.
      *
-     * @param tasks   任务集合
-     * @param timeout 最长等待时间
-     * @param unit    时间单位
-     * @param <T>     泛型
-     * @return 某个任务返回的结果
-     * @throws InterruptedException 如果等待时发生中断
-     * @throws ExecutionException   如果没有任务成功完成
-     * @throws TimeoutException     如果在所有任务成功完成之前给定的超时期满
+     * @param size     The size of thread in the fixed thread pool.
+     * @param task     The task to execute.
+     * @param priority The priority of thread in the poll.
+     * @param <T>      The type of the task's result.
      */
-    public <T> T invokeAny(final Collection<? extends Callable<T>> tasks,
-                           final long timeout,
-                           final TimeUnit unit)
-            throws InterruptedException, ExecutionException, TimeoutException {
-        return exec.invokeAny(tasks, timeout, unit);
+    public static <T> void executeByFixed(@IntRange(from = 1) final int size,
+                                          final Task<T> task,
+                                          @IntRange(from = 1, to = 10) final int priority) {
+        execute(getPoolByTypeAndPriority(size, priority), task);
     }
 
     /**
-     * 延迟执行Runnable命令
+     * Executes the given task in a fixed thread pool after the given delay.
      *
-     * @param command 命令
-     * @param delay   延迟时间
-     * @param unit    单位
-     * @return 表示挂起任务完成的ScheduledFuture，并且其{@code get()}方法在完成后将返回{@code null}
+     * @param size  The size of thread in the fixed thread pool.
+     * @param task  The task to execute.
+     * @param delay The time from now to delay execution.
+     * @param unit  The time unit of the delay parameter.
+     * @param <T>   The type of the task's result.
      */
-    public ScheduledFuture<?> schedule(final Runnable command,
-                                       final long delay,
-                                       final TimeUnit unit) {
-        return scheduleExec.schedule(command, delay, unit);
+    public static <T> void executeByFixedWithDelay(@IntRange(from = 1) final int size,
+                                                   final Task<T> task,
+                                                   final long delay,
+                                                   final TimeUnit unit) {
+        executeWithDelay(getPoolByTypeAndPriority(size), task, delay, unit);
     }
 
     /**
-     * 延迟执行Callable命令
+     * Executes the given task in a fixed thread pool after the given delay.
      *
-     * @param callable 命令
-     * @param delay    延迟时间
-     * @param unit     时间单位
-     * @param <V>      泛型
-     * @return 可用于提取结果或取消的ScheduledFuture
+     * @param size     The size of thread in the fixed thread pool.
+     * @param task     The task to execute.
+     * @param delay    The time from now to delay execution.
+     * @param unit     The time unit of the delay parameter.
+     * @param priority The priority of thread in the poll.
+     * @param <T>      The type of the task's result.
      */
-    public <V> ScheduledFuture<V> schedule(final Callable<V> callable,
-                                           final long delay,
-                                           final TimeUnit unit) {
-        return scheduleExec.schedule(callable, delay, unit);
+    public static <T> void executeByFixedWithDelay(@IntRange(from = 1) final int size,
+                                                   final Task<T> task,
+                                                   final long delay,
+                                                   final TimeUnit unit,
+                                                   @IntRange(from = 1, to = 10) final int priority) {
+        executeWithDelay(getPoolByTypeAndPriority(size, priority), task, delay, unit);
     }
 
     /**
-     * 延迟并循环执行命令
+     * Executes the given task in a fixed thread pool at fix rate.
      *
-     * @param command      命令
-     * @param initialDelay 首次执行的延迟时间
-     * @param period       连续执行之间的周期
-     * @param unit         时间单位
-     * @return 表示挂起任务完成的ScheduledFuture，并且其{@code get()}方法在取消后将抛出异常
+     * @param size   The size of thread in the fixed thread pool.
+     * @param task   The task to execute.
+     * @param period The period between successive executions.
+     * @param unit   The time unit of the period parameter.
+     * @param <T>    The type of the task's result.
      */
-    public ScheduledFuture<?> scheduleWithFixedRate(final Runnable command,
-                                                    final long initialDelay,
+    public static <T> void executeByFixedAtFixRate(@IntRange(from = 1) final int size,
+                                                   final Task<T> task,
+                                                   final long period,
+                                                   final TimeUnit unit) {
+        executeAtFixedRate(getPoolByTypeAndPriority(size), task, 0, period, unit);
+    }
+
+    /**
+     * Executes the given task in a fixed thread pool at fix rate.
+     *
+     * @param size     The size of thread in the fixed thread pool.
+     * @param task     The task to execute.
+     * @param period   The period between successive executions.
+     * @param unit     The time unit of the period parameter.
+     * @param priority The priority of thread in the poll.
+     * @param <T>      The type of the task's result.
+     */
+    public static <T> void executeByFixedAtFixRate(@IntRange(from = 1) final int size,
+                                                   final Task<T> task,
+                                                   final long period,
+                                                   final TimeUnit unit,
+                                                   @IntRange(from = 1, to = 10) final int priority) {
+        executeAtFixedRate(getPoolByTypeAndPriority(size, priority), task, 0, period, unit);
+    }
+
+    /**
+     * Executes the given task in a fixed thread pool at fix rate.
+     *
+     * @param size         The size of thread in the fixed thread pool.
+     * @param task         The task to execute.
+     * @param initialDelay The time to delay first execution.
+     * @param period       The period between successive executions.
+     * @param unit         The time unit of the initialDelay and period parameters.
+     * @param <T>          The type of the task's result.
+     */
+    public static <T> void executeByFixedAtFixRate(@IntRange(from = 1) final int size,
+                                                   final Task<T> task,
+                                                   long initialDelay,
+                                                   final long period,
+                                                   final TimeUnit unit) {
+        executeAtFixedRate(getPoolByTypeAndPriority(size), task, initialDelay, period, unit);
+    }
+
+    /**
+     * Executes the given task in a fixed thread pool at fix rate.
+     *
+     * @param size         The size of thread in the fixed thread pool.
+     * @param task         The task to execute.
+     * @param initialDelay The time to delay first execution.
+     * @param period       The period between successive executions.
+     * @param unit         The time unit of the initialDelay and period parameters.
+     * @param priority     The priority of thread in the poll.
+     * @param <T>          The type of the task's result.
+     */
+    public static <T> void executeByFixedAtFixRate(@IntRange(from = 1) final int size,
+                                                   final Task<T> task,
+                                                   long initialDelay,
+                                                   final long period,
+                                                   final TimeUnit unit,
+                                                   @IntRange(from = 1, to = 10) final int priority) {
+        executeAtFixedRate(getPoolByTypeAndPriority(size, priority), task, initialDelay, period, unit);
+    }
+
+    /**
+     * Executes the given task in a single thread pool.
+     *
+     * @param task The task to execute.
+     * @param <T>  The type of the task's result.
+     */
+    public static <T> void executeBySingle(final Task<T> task) {
+        execute(getPoolByTypeAndPriority(TYPE_SINGLE), task);
+    }
+
+    /**
+     * Executes the given task in a single thread pool.
+     *
+     * @param task     The task to execute.
+     * @param priority The priority of thread in the poll.
+     * @param <T>      The type of the task's result.
+     */
+    public static <T> void executeBySingle(final Task<T> task,
+                                           @IntRange(from = 1, to = 10) final int priority) {
+        execute(getPoolByTypeAndPriority(TYPE_SINGLE, priority), task);
+    }
+
+    /**
+     * Executes the given task in a single thread pool after the given delay.
+     *
+     * @param task  The task to execute.
+     * @param delay The time from now to delay execution.
+     * @param unit  The time unit of the delay parameter.
+     * @param <T>   The type of the task's result.
+     */
+    public static <T> void executeBySingleWithDelay(final Task<T> task,
+                                                    final long delay,
+                                                    final TimeUnit unit) {
+        executeWithDelay(getPoolByTypeAndPriority(TYPE_SINGLE), task, delay, unit);
+    }
+
+    /**
+     * Executes the given task in a single thread pool after the given delay.
+     *
+     * @param task     The task to execute.
+     * @param delay    The time from now to delay execution.
+     * @param unit     The time unit of the delay parameter.
+     * @param priority The priority of thread in the poll.
+     * @param <T>      The type of the task's result.
+     */
+    public static <T> void executeBySingleWithDelay(final Task<T> task,
+                                                    final long delay,
+                                                    final TimeUnit unit,
+                                                    @IntRange(from = 1, to = 10) final int priority) {
+        executeWithDelay(getPoolByTypeAndPriority(TYPE_SINGLE, priority), task, delay, unit);
+    }
+
+    /**
+     * Executes the given task in a single thread pool at fix rate.
+     *
+     * @param task   The task to execute.
+     * @param period The period between successive executions.
+     * @param unit   The time unit of the period parameter.
+     * @param <T>    The type of the task's result.
+     */
+    public static <T> void executeBySingleAtFixRate(final Task<T> task,
                                                     final long period,
                                                     final TimeUnit unit) {
-        return scheduleExec.scheduleAtFixedRate(command, initialDelay, period, unit);
+        executeAtFixedRate(getPoolByTypeAndPriority(TYPE_SINGLE), task, 0, period, unit);
     }
 
     /**
-     * 延迟并以固定休息时间循环执行命令
+     * Executes the given task in a single thread pool at fix rate.
      *
-     * @param command      命令
-     * @param initialDelay 首次执行的延迟时间
-     * @param delay        每一次执行终止和下一次执行开始之间的延迟
-     * @param unit         时间单位
-     * @return 表示挂起任务完成的ScheduledFuture，并且其{@code get()}方法在取消后将抛出异常
+     * @param task     The task to execute.
+     * @param period   The period between successive executions.
+     * @param unit     The time unit of the period parameter.
+     * @param priority The priority of thread in the poll.
+     * @param <T>      The type of the task's result.
      */
-    public ScheduledFuture<?> scheduleWithFixedDelay(final Runnable command,
-                                                     final long initialDelay,
-                                                     final long delay,
-                                                     final TimeUnit unit) {
-        return scheduleExec.scheduleWithFixedDelay(command, initialDelay, delay, unit);
+    public static <T> void executeBySingleAtFixRate(final Task<T> task,
+                                                    final long period,
+                                                    final TimeUnit unit,
+                                                    @IntRange(from = 1, to = 10) final int priority) {
+        executeAtFixedRate(getPoolByTypeAndPriority(TYPE_SINGLE, priority), task, 0, period, unit);
+    }
+
+    /**
+     * Executes the given task in a single thread pool at fix rate.
+     *
+     * @param task         The task to execute.
+     * @param initialDelay The time to delay first execution.
+     * @param period       The period between successive executions.
+     * @param unit         The time unit of the initialDelay and period parameters.
+     * @param <T>          The type of the task's result.
+     */
+    public static <T> void executeBySingleAtFixRate(final Task<T> task,
+                                                    long initialDelay,
+                                                    final long period,
+                                                    final TimeUnit unit) {
+        executeAtFixedRate(getPoolByTypeAndPriority(TYPE_SINGLE), task, initialDelay, period, unit);
+    }
+
+    /**
+     * Executes the given task in a single thread pool at fix rate.
+     *
+     * @param task         The task to execute.
+     * @param initialDelay The time to delay first execution.
+     * @param period       The period between successive executions.
+     * @param unit         The time unit of the initialDelay and period parameters.
+     * @param priority     The priority of thread in the poll.
+     * @param <T>          The type of the task's result.
+     */
+    public static <T> void executeBySingleAtFixRate(final Task<T> task,
+                                                    long initialDelay,
+                                                    final long period,
+                                                    final TimeUnit unit,
+                                                    @IntRange(from = 1, to = 10) final int priority) {
+        executeAtFixedRate(
+                getPoolByTypeAndPriority(TYPE_SINGLE, priority), task, initialDelay, period, unit
+        );
+    }
+
+    /**
+     * Executes the given task in a cached thread pool.
+     *
+     * @param task The task to execute.
+     * @param <T>  The type of the task's result.
+     */
+    public static <T> void executeByCached(final Task<T> task) {
+        execute(getPoolByTypeAndPriority(TYPE_CACHED), task);
+    }
+
+    /**
+     * Executes the given task in a cached thread pool.
+     *
+     * @param task     The task to execute.
+     * @param priority The priority of thread in the poll.
+     * @param <T>      The type of the task's result.
+     */
+    public static <T> void executeByCached(final Task<T> task,
+                                           @IntRange(from = 1, to = 10) final int priority) {
+        execute(getPoolByTypeAndPriority(TYPE_CACHED, priority), task);
+    }
+
+    /**
+     * Executes the given task in a cached thread pool after the given delay.
+     *
+     * @param task  The task to execute.
+     * @param delay The time from now to delay execution.
+     * @param unit  The time unit of the delay parameter.
+     * @param <T>   The type of the task's result.
+     */
+    public static <T> void executeByCachedWithDelay(final Task<T> task,
+                                                    final long delay,
+                                                    final TimeUnit unit) {
+        executeWithDelay(getPoolByTypeAndPriority(TYPE_CACHED), task, delay, unit);
+    }
+
+    /**
+     * Executes the given task in a cached thread pool after the given delay.
+     *
+     * @param task     The task to execute.
+     * @param delay    The time from now to delay execution.
+     * @param unit     The time unit of the delay parameter.
+     * @param priority The priority of thread in the poll.
+     * @param <T>      The type of the task's result.
+     */
+    public static <T> void executeByCachedWithDelay(final Task<T> task,
+                                                    final long delay,
+                                                    final TimeUnit unit,
+                                                    @IntRange(from = 1, to = 10) final int priority) {
+        executeWithDelay(getPoolByTypeAndPriority(TYPE_CACHED, priority), task, delay, unit);
+    }
+
+    /**
+     * Executes the given task in a cached thread pool at fix rate.
+     *
+     * @param task   The task to execute.
+     * @param period The period between successive executions.
+     * @param unit   The time unit of the period parameter.
+     * @param <T>    The type of the task's result.
+     */
+    public static <T> void executeByCachedAtFixRate(final Task<T> task,
+                                                    final long period,
+                                                    final TimeUnit unit) {
+        executeAtFixedRate(getPoolByTypeAndPriority(TYPE_CACHED), task, 0, period, unit);
+    }
+
+    /**
+     * Executes the given task in a cached thread pool at fix rate.
+     *
+     * @param task     The task to execute.
+     * @param period   The period between successive executions.
+     * @param unit     The time unit of the period parameter.
+     * @param priority The priority of thread in the poll.
+     * @param <T>      The type of the task's result.
+     */
+    public static <T> void executeByCachedAtFixRate(final Task<T> task,
+                                                    final long period,
+                                                    final TimeUnit unit,
+                                                    @IntRange(from = 1, to = 10) final int priority) {
+        executeAtFixedRate(getPoolByTypeAndPriority(TYPE_CACHED, priority), task, 0, period, unit);
+    }
+
+    /**
+     * Executes the given task in a cached thread pool at fix rate.
+     *
+     * @param task         The task to execute.
+     * @param initialDelay The time to delay first execution.
+     * @param period       The period between successive executions.
+     * @param unit         The time unit of the initialDelay and period parameters.
+     * @param <T>          The type of the task's result.
+     */
+    public static <T> void executeByCachedAtFixRate(final Task<T> task,
+                                                    long initialDelay,
+                                                    final long period,
+                                                    final TimeUnit unit) {
+        executeAtFixedRate(getPoolByTypeAndPriority(TYPE_CACHED), task, initialDelay, period, unit);
+    }
+
+    /**
+     * Executes the given task in a cached thread pool at fix rate.
+     *
+     * @param task         The task to execute.
+     * @param initialDelay The time to delay first execution.
+     * @param period       The period between successive executions.
+     * @param unit         The time unit of the initialDelay and period parameters.
+     * @param priority     The priority of thread in the poll.
+     * @param <T>          The type of the task's result.
+     */
+    public static <T> void executeByCachedAtFixRate(final Task<T> task,
+                                                    long initialDelay,
+                                                    final long period,
+                                                    final TimeUnit unit,
+                                                    @IntRange(from = 1, to = 10) final int priority) {
+        executeAtFixedRate(
+                getPoolByTypeAndPriority(TYPE_CACHED, priority), task, initialDelay, period, unit
+        );
+    }
+
+    /**
+     * Executes the given task in an IO thread pool.
+     *
+     * @param task The task to execute.
+     * @param <T>  The type of the task's result.
+     */
+    public static <T> void executeByIo(final Task<T> task) {
+        execute(getPoolByTypeAndPriority(TYPE_IO), task);
+    }
+
+    /**
+     * Executes the given task in an IO thread pool.
+     *
+     * @param task     The task to execute.
+     * @param priority The priority of thread in the poll.
+     * @param <T>      The type of the task's result.
+     */
+    public static <T> void executeByIo(final Task<T> task,
+                                       @IntRange(from = 1, to = 10) final int priority) {
+        execute(getPoolByTypeAndPriority(TYPE_IO, priority), task);
+    }
+
+    /**
+     * Executes the given task in an IO thread pool after the given delay.
+     *
+     * @param task  The task to execute.
+     * @param delay The time from now to delay execution.
+     * @param unit  The time unit of the delay parameter.
+     * @param <T>   The type of the task's result.
+     */
+    public static <T> void executeByIoWithDelay(final Task<T> task,
+                                                final long delay,
+                                                final TimeUnit unit) {
+        executeWithDelay(getPoolByTypeAndPriority(TYPE_IO), task, delay, unit);
+    }
+
+    /**
+     * Executes the given task in an IO thread pool after the given delay.
+     *
+     * @param task     The task to execute.
+     * @param delay    The time from now to delay execution.
+     * @param unit     The time unit of the delay parameter.
+     * @param priority The priority of thread in the poll.
+     * @param <T>      The type of the task's result.
+     */
+    public static <T> void executeByIoWithDelay(final Task<T> task,
+                                                final long delay,
+                                                final TimeUnit unit,
+                                                @IntRange(from = 1, to = 10) final int priority) {
+        executeWithDelay(getPoolByTypeAndPriority(TYPE_IO, priority), task, delay, unit);
+    }
+
+    /**
+     * Executes the given task in an IO thread pool at fix rate.
+     *
+     * @param task   The task to execute.
+     * @param period The period between successive executions.
+     * @param unit   The time unit of the period parameter.
+     * @param <T>    The type of the task's result.
+     */
+    public static <T> void executeByIoAtFixRate(final Task<T> task,
+                                                final long period,
+                                                final TimeUnit unit) {
+        executeAtFixedRate(getPoolByTypeAndPriority(TYPE_IO), task, 0, period, unit);
+    }
+
+    /**
+     * Executes the given task in an IO thread pool at fix rate.
+     *
+     * @param task     The task to execute.
+     * @param period   The period between successive executions.
+     * @param unit     The time unit of the period parameter.
+     * @param priority The priority of thread in the poll.
+     * @param <T>      The type of the task's result.
+     */
+    public static <T> void executeByIoAtFixRate(final Task<T> task,
+                                                final long period,
+                                                final TimeUnit unit,
+                                                @IntRange(from = 1, to = 10) final int priority) {
+        executeAtFixedRate(getPoolByTypeAndPriority(TYPE_IO, priority), task, 0, period, unit);
+    }
+
+    /**
+     * Executes the given task in an IO thread pool at fix rate.
+     *
+     * @param task         The task to execute.
+     * @param initialDelay The time to delay first execution.
+     * @param period       The period between successive executions.
+     * @param unit         The time unit of the initialDelay and period parameters.
+     * @param <T>          The type of the task's result.
+     */
+    public static <T> void executeByIoAtFixRate(final Task<T> task,
+                                                long initialDelay,
+                                                final long period,
+                                                final TimeUnit unit) {
+        executeAtFixedRate(getPoolByTypeAndPriority(TYPE_IO), task, initialDelay, period, unit);
+    }
+
+    /**
+     * Executes the given task in an IO thread pool at fix rate.
+     *
+     * @param task         The task to execute.
+     * @param initialDelay The time to delay first execution.
+     * @param period       The period between successive executions.
+     * @param unit         The time unit of the initialDelay and period parameters.
+     * @param priority     The priority of thread in the poll.
+     * @param <T>          The type of the task's result.
+     */
+    public static <T> void executeByIoAtFixRate(final Task<T> task,
+                                                long initialDelay,
+                                                final long period,
+                                                final TimeUnit unit,
+                                                @IntRange(from = 1, to = 10) final int priority) {
+        executeAtFixedRate(
+                getPoolByTypeAndPriority(TYPE_IO, priority), task, initialDelay, period, unit
+        );
+    }
+
+    /**
+     * Executes the given task in a cpu thread pool.
+     *
+     * @param task The task to execute.
+     * @param <T>  The type of the task's result.
+     */
+    public static <T> void executeByCpu(final Task<T> task) {
+        execute(getPoolByTypeAndPriority(TYPE_CPU), task);
+    }
+
+    /**
+     * Executes the given task in a cpu thread pool.
+     *
+     * @param task     The task to execute.
+     * @param priority The priority of thread in the poll.
+     * @param <T>      The type of the task's result.
+     */
+    public static <T> void executeByCpu(final Task<T> task,
+                                        @IntRange(from = 1, to = 10) final int priority) {
+        execute(getPoolByTypeAndPriority(TYPE_CPU, priority), task);
+    }
+
+    /**
+     * Executes the given task in a cpu thread pool after the given delay.
+     *
+     * @param task  The task to execute.
+     * @param delay The time from now to delay execution.
+     * @param unit  The time unit of the delay parameter.
+     * @param <T>   The type of the task's result.
+     */
+    public static <T> void executeByCpuWithDelay(final Task<T> task,
+                                                 final long delay,
+                                                 final TimeUnit unit) {
+        executeWithDelay(getPoolByTypeAndPriority(TYPE_CPU), task, delay, unit);
+    }
+
+    /**
+     * Executes the given task in a cpu thread pool after the given delay.
+     *
+     * @param task     The task to execute.
+     * @param delay    The time from now to delay execution.
+     * @param unit     The time unit of the delay parameter.
+     * @param priority The priority of thread in the poll.
+     * @param <T>      The type of the task's result.
+     */
+    public static <T> void executeByCpuWithDelay(final Task<T> task,
+                                                 final long delay,
+                                                 final TimeUnit unit,
+                                                 @IntRange(from = 1, to = 10) final int priority) {
+        executeWithDelay(getPoolByTypeAndPriority(TYPE_CPU, priority), task, delay, unit);
+    }
+
+    /**
+     * Executes the given task in a cpu thread pool at fix rate.
+     *
+     * @param task   The task to execute.
+     * @param period The period between successive executions.
+     * @param unit   The time unit of the period parameter.
+     * @param <T>    The type of the task's result.
+     */
+    public static <T> void executeByCpuAtFixRate(final Task<T> task,
+                                                 final long period,
+                                                 final TimeUnit unit) {
+        executeAtFixedRate(getPoolByTypeAndPriority(TYPE_CPU), task, 0, period, unit);
+    }
+
+    /**
+     * Executes the given task in a cpu thread pool at fix rate.
+     *
+     * @param task     The task to execute.
+     * @param period   The period between successive executions.
+     * @param unit     The time unit of the period parameter.
+     * @param priority The priority of thread in the poll.
+     * @param <T>      The type of the task's result.
+     */
+    public static <T> void executeByCpuAtFixRate(final Task<T> task,
+                                                 final long period,
+                                                 final TimeUnit unit,
+                                                 @IntRange(from = 1, to = 10) final int priority) {
+        executeAtFixedRate(getPoolByTypeAndPriority(TYPE_CPU, priority), task, 0, period, unit);
+    }
+
+    /**
+     * Executes the given task in a cpu thread pool at fix rate.
+     *
+     * @param task         The task to execute.
+     * @param initialDelay The time to delay first execution.
+     * @param period       The period between successive executions.
+     * @param unit         The time unit of the initialDelay and period parameters.
+     * @param <T>          The type of the task's result.
+     */
+    public static <T> void executeByCpuAtFixRate(final Task<T> task,
+                                                 long initialDelay,
+                                                 final long period,
+                                                 final TimeUnit unit) {
+        executeAtFixedRate(getPoolByTypeAndPriority(TYPE_CPU), task, initialDelay, period, unit);
+    }
+
+    /**
+     * Executes the given task in a cpu thread pool at fix rate.
+     *
+     * @param task         The task to execute.
+     * @param initialDelay The time to delay first execution.
+     * @param period       The period between successive executions.
+     * @param unit         The time unit of the initialDelay and period parameters.
+     * @param priority     The priority of thread in the poll.
+     * @param <T>          The type of the task's result.
+     */
+    public static <T> void executeByCpuAtFixRate(final Task<T> task,
+                                                 long initialDelay,
+                                                 final long period,
+                                                 final TimeUnit unit,
+                                                 @IntRange(from = 1, to = 10) final int priority) {
+        executeAtFixedRate(
+                getPoolByTypeAndPriority(TYPE_CPU, priority), task, initialDelay, period, unit
+        );
+    }
+
+    /**
+     * Executes the given task in a custom thread pool.
+     *
+     * @param pool The custom thread pool.
+     * @param task The task to execute.
+     * @param <T>  The type of the task's result.
+     */
+    public static <T> void executeByCustom(final ExecutorService pool, final Task<T> task) {
+        execute(pool, task);
+    }
+
+    /**
+     * Executes the given task in a custom thread pool after the given delay.
+     *
+     * @param pool  The custom thread pool.
+     * @param task  The task to execute.
+     * @param delay The time from now to delay execution.
+     * @param unit  The time unit of the delay parameter.
+     * @param <T>   The type of the task's result.
+     */
+    public static <T> void executeByCustomWithDelay(final ExecutorService pool,
+                                                    final Task<T> task,
+                                                    final long delay,
+                                                    final TimeUnit unit) {
+        executeWithDelay(pool, task, delay, unit);
+    }
+
+    /**
+     * Executes the given task in a custom thread pool at fix rate.
+     *
+     * @param pool   The custom thread pool.
+     * @param task   The task to execute.
+     * @param period The period between successive executions.
+     * @param unit   The time unit of the period parameter.
+     * @param <T>    The type of the task's result.
+     */
+    public static <T> void executeByCustomAtFixRate(final ExecutorService pool,
+                                                    final Task<T> task,
+                                                    final long period,
+                                                    final TimeUnit unit) {
+        executeAtFixedRate(pool, task, 0, period, unit);
+    }
+
+    /**
+     * Executes the given task in a custom thread pool at fix rate.
+     *
+     * @param pool         The custom thread pool.
+     * @param task         The task to execute.
+     * @param initialDelay The time to delay first execution.
+     * @param period       The period between successive executions.
+     * @param unit         The time unit of the initialDelay and period parameters.
+     * @param <T>          The type of the task's result.
+     */
+    public static <T> void executeByCustomAtFixRate(final ExecutorService pool,
+                                                    final Task<T> task,
+                                                    long initialDelay,
+                                                    final long period,
+                                                    final TimeUnit unit) {
+        executeAtFixedRate(pool, task, initialDelay, period, unit);
+    }
+
+    /**
+     * Cancel the given task.
+     *
+     * @param task The task to cancel.
+     */
+    public static void cancel(final Task task) {
+        task.cancel();
+    }
+
+    private static <T> void execute(final ExecutorService pool, final Task<T> task) {
+        executeWithDelay(pool, task, 0, TimeUnit.MILLISECONDS);
+    }
+
+    private static <T> void executeWithDelay(final ExecutorService pool,
+                                             final Task<T> task,
+                                             final long delay,
+                                             final TimeUnit unit) {
+        if (delay <= 0) {
+            getScheduledByTask(task).execute(new Runnable() {
+                @Override
+                public void run() {
+                    pool.execute(task);
+                }
+            });
+        } else {
+            getScheduledByTask(task).schedule(new Runnable() {
+                @Override
+                public void run() {
+                    pool.execute(task);
+                }
+            }, delay, unit);
+        }
+    }
+
+    private static <T> void executeAtFixedRate(final ExecutorService pool,
+                                               final Task<T> task,
+                                               long initialDelay,
+                                               final long period,
+                                               final TimeUnit unit) {
+        task.isSchedule = true;
+        getScheduledByTask(task).scheduleAtFixedRate(new Runnable() {
+            @Override
+            public void run() {
+                pool.execute(task);
+            }
+        }, initialDelay, period, unit);
+    }
+
+    private static ScheduledExecutorService getScheduledByTask(final Task task) {
+        ScheduledExecutorService scheduled = TASK_SCHEDULED.get(task);
+        if (scheduled == null) {
+            UtilsThreadFactory factory = new UtilsThreadFactory("scheduled", Thread.MAX_PRIORITY);
+            scheduled = Executors.newScheduledThreadPool(1, factory);
+            TASK_SCHEDULED.put(task, scheduled);
+        }
+        return scheduled;
+    }
+
+    private static void removeScheduleByTask(final Task task) {
+        ScheduledExecutorService scheduled = TASK_SCHEDULED.get(task);
+        if (scheduled != null) {
+            TASK_SCHEDULED.remove(task);
+            shutdownAndAwaitTermination(scheduled);
+        }
+    }
+
+    private static ExecutorService getPoolByTypeAndPriority(final int type) {
+        return getPoolByTypeAndPriority(type, Thread.NORM_PRIORITY);
+    }
+
+    private static ExecutorService getPoolByTypeAndPriority(final int type, final int priority) {
+        ExecutorService pool;
+        Map<Integer, ExecutorService> priorityPools = TYPE_PRIORITY_POOLS.get(type);
+        if (priorityPools == null) {
+            priorityPools = new ConcurrentHashMap<>();
+            pool = createPoolByTypeAndPriority(type, priority);
+            priorityPools.put(priority, pool);
+            TYPE_PRIORITY_POOLS.put(type, priorityPools);
+        } else {
+            pool = priorityPools.get(priority);
+            if (pool == null) {
+                pool = createPoolByTypeAndPriority(type, priority);
+                priorityPools.put(priority, pool);
+            }
+        }
+        return pool;
+    }
+
+    private static ExecutorService createPoolByTypeAndPriority(final int type, final int priority) {
+        switch (type) {
+            case TYPE_SINGLE:
+                return Executors.newSingleThreadExecutor(
+                        new UtilsThreadFactory("single", priority)
+                );
+            case TYPE_CACHED:
+                return Executors.newCachedThreadPool(
+                        new UtilsThreadFactory("cached", priority)
+                );
+            case TYPE_IO:
+                return new ThreadPoolExecutor(2 * CPU_COUNT + 1,
+                        2 * CPU_COUNT + 1,
+                        30, TimeUnit.SECONDS,
+                        new LinkedBlockingQueue<Runnable>(128),
+                        new UtilsThreadFactory("io", priority)
+                );
+            case TYPE_CPU:
+                return new ThreadPoolExecutor(CPU_COUNT + 1,
+                        2 * CPU_COUNT + 1,
+                        30, TimeUnit.SECONDS,
+                        new LinkedBlockingQueue<Runnable>(128),
+                        new UtilsThreadFactory("cpu", priority)
+                );
+            default:
+                return Executors.newFixedThreadPool(
+                        type,
+                        new UtilsThreadFactory("fixed(" + type + ")", priority)
+                );
+        }
+    }
+
+    private static void shutdownAndAwaitTermination(final ExecutorService pool) {
+        pool.shutdown();
+        try {
+            if (!pool.awaitTermination(60, TimeUnit.SECONDS)) {
+                pool.shutdownNow();
+                if (!pool.awaitTermination(60, TimeUnit.SECONDS)) {
+                    System.err.println("Pool did not terminate");
+                }
+            }
+        } catch (InterruptedException e) {
+            pool.shutdownNow();
+            Thread.currentThread().interrupt();
+            e.printStackTrace();
+        }
+    }
+
+    public abstract static class SimpleTask<T> extends Task<T> {
+
+        @Override
+        public void onCancel() {
+            Log.e("ThreadUtils", "onCancel: " + Thread.currentThread());
+        }
+
+        @Override
+        public void onFail(Throwable t) {
+            Log.e("ThreadUtils", "onFail: ", t);
+        }
+
+    }
+
+    public abstract static class Task<T> implements Runnable {
+
+        private boolean isSchedule;
+
+        private volatile int state;
+        private static final int NEW = 0;
+        private static final int COMPLETING = 1;
+        private static final int CANCELLED = 2;
+        private static final int EXCEPTIONAL = 3;
+
+        public Task() {
+            state = NEW;
+        }
+
+        @Nullable
+        public abstract T doInBackground() throws Throwable;
+
+        public abstract void onSuccess(@Nullable T result);
+
+        public abstract void onCancel();
+
+        public abstract void onFail(Throwable t);
+
+
+        @Override
+        public void run() {
+            try {
+                final T result = doInBackground();
+                if (state != NEW) return;
+
+                if (isSchedule) {
+                    Deliver.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            onSuccess(result);
+                        }
+                    });
+                } else {
+                    state = COMPLETING;
+                    Deliver.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            onSuccess(result);
+                            removeScheduleByTask(Task.this);
+                        }
+                    });
+                }
+            } catch (final Throwable throwable) {
+                if (state != NEW) return;
+
+                state = EXCEPTIONAL;
+                Deliver.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        onFail(throwable);
+                        removeScheduleByTask(Task.this);
+                    }
+                });
+            }
+        }
+
+        public void cancel() {
+            if (state != NEW) return;
+
+            state = CANCELLED;
+            Deliver.post(new Runnable() {
+                @Override
+                public void run() {
+                    onCancel();
+                    removeScheduleByTask(Task.this);
+                }
+            });
+        }
+    }
+
+    private static final class UtilsThreadFactory extends AtomicLong
+            implements ThreadFactory {
+        private static final AtomicInteger POOL_NUMBER = new AtomicInteger(1);
+        private final ThreadGroup group;
+        private final String namePrefix;
+        private final int priority;
+
+        UtilsThreadFactory(String prefix, int priority) {
+            SecurityManager s = System.getSecurityManager();
+            group = s != null ? s.getThreadGroup() : Thread.currentThread().getThreadGroup();
+            namePrefix = prefix + "-pool-" +
+                    POOL_NUMBER.getAndIncrement() +
+                    "-thread-";
+            this.priority = priority;
+        }
+
+        public Thread newThread(@NonNull Runnable r) {
+            Thread t = new Thread(group, r, namePrefix + getAndIncrement(), 0) {
+                @Override
+                public void run() {
+                    try {
+                        super.run();
+                    } catch (Throwable t) {
+                        Log.e("ThreadUtils", "Request threw uncaught throwable", t);
+                    }
+                }
+            };
+            if (t.isDaemon()) {
+                t.setDaemon(false);
+            }
+            t.setPriority(priority);
+            return t;
+        }
+    }
+
+    private static class Deliver {
+
+        private static final Handler MAIN_HANDLER;
+
+        static {
+            Looper looper;
+            try {
+                looper = Looper.getMainLooper();
+            } catch (Exception e) {
+                looper = null;
+            }
+            if (looper != null) {
+                MAIN_HANDLER = new Handler(looper);
+            } else {
+                MAIN_HANDLER = null;
+            }
+        }
+
+        static void post(final Runnable runnable) {
+            if (MAIN_HANDLER != null) {
+                MAIN_HANDLER.post(runnable);
+            } else {
+                runnable.run();
+            }
+        }
     }
 }

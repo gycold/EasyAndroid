@@ -1,17 +1,27 @@
 package com.easytools.tools;
 
+import android.util.Base64;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.security.InvalidKeyException;
+import java.security.Key;
+import java.security.KeyFactory;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.X509EncodedKeySpec;
 
+import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.Mac;
+import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
 
 import static com.easytools.tools.ConvertUtil.bytes2HexString;
@@ -21,6 +31,30 @@ import static com.easytools.tools.ConvertUtil.hexString2Bytes;
  * package: com.easytools.tools.EncryptUtil
  * author: gyc
  * description:加密解密相关的工具类
+ *
+ * encryptMD2, encryptMD2ToString                        : MD2 加密
+ * encryptMD5, encryptMD5ToString                        : MD5 加密
+ * encryptMD5File, encryptMD5File2String                 : MD5 加密文件
+ * encryptSHA1, encryptSHA1ToString                      : SHA1 加密
+ * encryptSHA224, encryptSHA224ToString                  : SHA224 加密
+ * encryptSHA256, encryptSHA256ToString                  : SHA256 加密
+ * encryptSHA384, encryptSHA384ToString                  : SHA384 加密
+ * encryptSHA512, encryptSHA512ToString                  : SHA512 加密
+ * encryptHmacMD5, encryptHmacMD5ToString                : HmacMD5 加密
+ * encryptHmacSHA1, encryptHmacSHA1ToString              : HmacSHA1 加密
+ * encryptHmacSHA224, encryptHmacSHA224ToString          : HmacSHA224 加密
+ * encryptHmacSHA256, encryptHmacSHA256ToString          : HmacSHA256 加密
+ * encryptHmacSHA384, encryptHmacSHA384ToString          : HmacSHA384 加密
+ * encryptHmacSHA512, encryptHmacSHA512ToString          : HmacSHA512 加密
+ * encryptDES, encryptDES2HexString, encryptDES2Base64   : DES 加密
+ * decryptDES, decryptHexStringDES, decryptBase64DES     : DES 解密
+ * encrypt3DES, encrypt3DES2HexString, encrypt3DES2Base64: 3DES 加密
+ * decrypt3DES, decryptHexString3DES, decryptBase64_3DES : 3DES 解密
+ * encryptAES, encryptAES2HexString, encryptAES2Base64   : AES 加密
+ * decryptAES, decryptHexStringAES, decryptBase64AES     : AES 解密
+ * encryptRSA, encryptRSA2HexString, encryptRSA2Base64   : RSA 加密
+ * decryptRSA, decryptHexStringRSA, decryptBase64RSA     : RSA 解密
+ *
  * time: create at 2016/11/23 11:53
  */
 
@@ -126,7 +160,7 @@ public class EncryptUtil {
      * @return 文件的16进制密文
      */
     public static String encryptMD5File2String(String filePath) {
-        return encryptMD5File2String(FileUtil.getFileByPath(filePath));
+        return encryptMD5File2String(FileUtils.getFileByPath(filePath));
     }
 
     /**
@@ -136,7 +170,7 @@ public class EncryptUtil {
      * @return 文件的MD5校验码
      */
     public static byte[] encryptMD5File(String filePath) {
-        return encryptMD5File(FileUtil.getFileByPath(filePath));
+        return encryptMD5File(FileUtils.getFileByPath(filePath));
     }
 
     /**
@@ -170,7 +204,7 @@ public class EncryptUtil {
             e.printStackTrace();
             return null;
         } finally {
-            CloseUtil.closeIO(fis);
+            CloseUtils.closeIO(fis);
         }
     }
 
@@ -582,7 +616,7 @@ public class EncryptUtil {
      * @return Base64密文
      */
     public static byte[] encryptDES2Base64(byte[] data, byte[] key) {
-        return EncodeUtil.base64Encode(encryptDES(data, key));
+        return EncodeUtils.base64Encode(encryptDES(data, key));
     }
 
     /**
@@ -615,7 +649,7 @@ public class EncryptUtil {
      * @return 明文
      */
     public static byte[] decryptBase64DES(byte[] data, byte[] key) {
-        return decryptDES(EncodeUtil.base64Decode(data), key);
+        return decryptDES(EncodeUtils.base64Decode(data), key);
     }
 
     /**
@@ -659,7 +693,7 @@ public class EncryptUtil {
      * @return Base64密文
      */
     public static byte[] encrypt3DES2Base64(byte[] data, byte[] key) {
-        return EncodeUtil.base64Encode(encrypt3DES(data, key));
+        return EncodeUtils.base64Encode(encrypt3DES(data, key));
     }
 
     /**
@@ -692,7 +726,7 @@ public class EncryptUtil {
      * @return 明文
      */
     public static byte[] decryptBase64_3DES(byte[] data, byte[] key) {
-        return decrypt3DES(EncodeUtil.base64Decode(data), key);
+        return decrypt3DES(EncodeUtils.base64Decode(data), key);
     }
 
     /**
@@ -736,7 +770,7 @@ public class EncryptUtil {
      * @return Base64密文
      */
     public static byte[] encryptAES2Base64(byte[] data, byte[] key) {
-        return EncodeUtil.base64Encode(encryptAES(data, key));
+        return EncodeUtils.base64Encode(encryptAES(data, key));
     }
 
     /**
@@ -780,7 +814,7 @@ public class EncryptUtil {
      * @return 明文
      */
     public static byte[] decryptBase64AES(byte[] data, byte[] key) {
-        return decryptAES(EncodeUtil.base64Decode(data), key);
+        return decryptAES(EncodeUtils.base64Decode(data), key);
     }
 
     /**
@@ -793,6 +827,109 @@ public class EncryptUtil {
     public static byte[] decryptHexStringAES(String data, byte[] key) {
         return decryptAES(hexString2Bytes(data), key);
     }
+
+
+    ///////////////////////////////////////////////////////////////////////////
+    // RSA encryption
+    ///////////////////////////////////////////////////////////////////////////
+    /**
+     * Return the Base64-encode bytes of RSA encryption.
+     *
+     * @param data           The data.
+     * @param key            The key.
+     * @param isPublicKey    True to use public key, false to use private key.
+     * @param transformation The name of the transformation, e.g., <i>RSA/CBC/PKCS1Padding</i>.
+     * @return the Base64-encode bytes of RSA encryption
+     */
+    public static byte[] encryptRSA2Base64(final byte[] data,
+                                           final byte[] key,
+                                           final boolean isPublicKey,
+                                           final String transformation) {
+        return base64Encode(encryptRSA(data, key, isPublicKey, transformation));
+    }
+
+    /**
+     * Return the hex string of RSA encryption.
+     *
+     * @param data           The data.
+     * @param key            The key.
+     * @param isPublicKey    True to use public key, false to use private key.
+     * @param transformation The name of the transformation, e.g., <i>RSA/CBC/PKCS1Padding</i>.
+     * @return the hex string of RSA encryption
+     */
+    public static String encryptRSA2HexString(final byte[] data,
+                                              final byte[] key,
+                                              final boolean isPublicKey,
+                                              final String transformation) {
+        return bytes2HexString(encryptRSA(data, key, isPublicKey, transformation));
+    }
+
+    /**
+     * Return the bytes of RSA encryption.
+     *
+     * @param data           The data.
+     * @param key            The key.
+     * @param isPublicKey    True to use public key, false to use private key.
+     * @param transformation The name of the transformation, e.g., <i>RSA/CBC/PKCS1Padding</i>.
+     * @return the bytes of RSA encryption
+     */
+    public static byte[] encryptRSA(final byte[] data,
+                                    final byte[] key,
+                                    final boolean isPublicKey,
+                                    final String transformation) {
+        return rsaTemplate(data, key, isPublicKey, transformation, true);
+    }
+
+    /**
+     * Return the bytes of RSA decryption for Base64-encode bytes.
+     *
+     * @param data           The data.
+     * @param key            The key.
+     * @param isPublicKey    True to use public key, false to use private key.
+     * @param transformation The name of the transformation, e.g., <i>RSA/CBC/PKCS1Padding</i>.
+     * @return the bytes of RSA decryption for Base64-encode bytes
+     */
+    public static byte[] decryptBase64RSA(final byte[] data,
+                                          final byte[] key,
+                                          final boolean isPublicKey,
+                                          final String transformation) {
+        return decryptRSA(base64Decode(data), key, isPublicKey, transformation);
+    }
+
+    /**
+     * Return the bytes of RSA decryption for hex string.
+     *
+     * @param data           The data.
+     * @param key            The key.
+     * @param isPublicKey    True to use public key, false to use private key.
+     * @param transformation The name of the transformation, e.g., <i>RSA/CBC/PKCS1Padding</i>.
+     * @return the bytes of RSA decryption for hex string
+     */
+    public static byte[] decryptHexStringRSA(final String data,
+                                             final byte[] key,
+                                             final boolean isPublicKey,
+                                             final String transformation) {
+        return decryptRSA(hexString2Bytes(data), key, isPublicKey, transformation);
+    }
+
+    /**
+     * Return the bytes of RSA decryption.
+     *
+     * @param data           The data.
+     * @param key            The key.
+     * @param isPublicKey    True to use public key, false to use private key.
+     * @param transformation The name of the transformation, e.g., <i>RSA/CBC/PKCS1Padding</i>.
+     * @return the bytes of RSA decryption
+     */
+    public static byte[] decryptRSA(final byte[] data,
+                                    final byte[] key,
+                                    final boolean isPublicKey,
+                                    final String transformation) {
+        return rsaTemplate(data, key, isPublicKey, transformation, false);
+    }
+
+
+
 
 
     /**
@@ -820,4 +957,87 @@ public class EncryptUtil {
         }
     }
 
+
+    /**
+     * Return the bytes of RSA encryption or decryption.
+     *
+     * @param data           The data.
+     * @param key            The key.
+     * @param isPublicKey    True to use public key, false to use private key.
+     * @param transformation The name of the transformation, e.g., <i>DES/CBC/PKCS1Padding</i>.
+     * @param isEncrypt      True to encrypt, false otherwise.
+     * @return the bytes of RSA encryption or decryption
+     */
+    private static byte[] rsaTemplate(final byte[] data,
+                                      final byte[] key,
+                                      final boolean isPublicKey,
+                                      final String transformation,
+                                      final boolean isEncrypt) {
+        if (data == null || data.length == 0 || key == null || key.length == 0) {
+            return null;
+        }
+        try {
+            Key rsaKey;
+            if (isPublicKey) {
+                X509EncodedKeySpec keySpec = new X509EncodedKeySpec(key);
+                rsaKey = KeyFactory.getInstance("RSA").generatePublic(keySpec);
+            } else {
+                PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(key);
+                rsaKey = KeyFactory.getInstance("RSA").generatePrivate(keySpec);
+            }
+            if (rsaKey == null) return null;
+            Cipher cipher = Cipher.getInstance(transformation);
+            cipher.init(isEncrypt ? Cipher.ENCRYPT_MODE : Cipher.DECRYPT_MODE, rsaKey);
+            int len = data.length;
+            int maxLen = isEncrypt ? 117 : 128;
+            int count = len / maxLen;
+            if (count > 0) {
+                byte[] ret = new byte[0];
+                byte[] buff = new byte[maxLen];
+                int index = 0;
+                for (int i = 0; i < count; i++) {
+                    System.arraycopy(data, index, buff, 0, maxLen);
+                    ret = joins(ret, cipher.doFinal(buff));
+                    index += maxLen;
+                }
+                if (index != len) {
+                    int restLen = len - index;
+                    buff = new byte[restLen];
+                    System.arraycopy(data, index, buff, 0, restLen);
+                    ret = joins(ret, cipher.doFinal(buff));
+                }
+                return ret;
+            } else {
+                return cipher.doFinal(data);
+            }
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (NoSuchPaddingException e) {
+            e.printStackTrace();
+        } catch (InvalidKeyException e) {
+            e.printStackTrace();
+        } catch (BadPaddingException e) {
+            e.printStackTrace();
+        } catch (IllegalBlockSizeException e) {
+            e.printStackTrace();
+        } catch (InvalidKeySpecException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private static byte[] joins(final byte[] prefix, final byte[] suffix) {
+        byte[] ret = new byte[prefix.length + suffix.length];
+        System.arraycopy(prefix, 0, ret, 0, prefix.length);
+        System.arraycopy(suffix, 0, ret, prefix.length, suffix.length);
+        return ret;
+    }
+
+    private static byte[] base64Encode(final byte[] input) {
+        return Base64.encode(input, Base64.NO_WRAP);
+    }
+
+    private static byte[] base64Decode(final byte[] input) {
+        return Base64.decode(input, Base64.NO_WRAP);
+    }
 }
