@@ -5,9 +5,10 @@
 
 使用方法：<br>
 ```
-implementation 'com.easyandroid:easytools:1.4.0'<br>
+implementation 'com.easyandroid:easytools:1.4.0'
 ```
-在自己的Application中调用Utils.init(this)进行初始化
+<br>
+然后，在自己的Application中调用`Utils.init(this);`进行初始化<br>
 
 添加混淆：<br>
 ```
