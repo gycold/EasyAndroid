@@ -1011,8 +1011,21 @@ addView        : 添加 snackbar 视图
 * ### SharedPreferences相关 -> [SpUtils.java][SpUtils.java]
 ```
 getInstance    : 获取单例
-put            : 添加缓存数据，这是一个重载方法
-getXXX         : 获取缓存数据
+
+putString      : 保存String，这是一个重载方法
+putInt         : 保存int值，这是一个重载方法
+putLong        : 保存long值，这是一个重载方法
+putFloat       : 保存float值，这是一个重载方法
+putBoolean     : 保存boolean值，这是一个重载方法
+putStringSet   : 保存类型为String的集合值
+
+getString      : 获取String值，这是一个重载方法
+getInt         : 获取int值，这是一个重载方法
+getLong        : 获取long值，这是一个重载方法
+getFloat       : 获取float值，这是一个重载方法
+getBoolean     : 获取boolean值，这是一个重载方法
+getStringSet   : 获取类型为String的集合值，这是一个重载方法
+
 getAll         : 获取所有缓存数据，以偶对象返回
 contains       : 指定数据是否被缓存
 remove         : 删除一条缓存，这是一个重载方法

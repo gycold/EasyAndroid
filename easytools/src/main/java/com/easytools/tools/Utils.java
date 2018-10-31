@@ -51,7 +51,7 @@ public class Utils {
     }
 
     /**
-     * Init utils.
+     * 初始化工具类
      * <p>Init it in the class of Application.</p>
      *
      * @param app application
@@ -68,7 +68,7 @@ public class Utils {
     }
 
     /**
-     * Return the context of Application object.
+     * 返回Application
      *
      * @return the context of Application object
      */

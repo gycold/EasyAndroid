@@ -12,6 +12,27 @@ import java.util.Set;
  * package: com.easytools.tools.SpUtils
  * author: gyc
  * description:SharedPreferences相关的工具类
+ * <p>
+ * getInstance    : 获取单例
+ * putString      : 保存String，这是一个重载方法
+ * putInt         : 保存int值，这是一个重载方法
+ * putLong        : 保存long值，这是一个重载方法
+ * putFloat       : 保存float值，这是一个重载方法
+ * putBoolean     : 保存boolean值，这是一个重载方法
+ * putStringSet   : 保存类型为String的集合值
+ * <p>
+ * getString      : 获取String值，这是一个重载方法
+ * getInt         : 获取int值，这是一个重载方法
+ * getLong        : 获取long值，这是一个重载方法
+ * getFloat       : 获取float值，这是一个重载方法
+ * getBoolean     : 获取boolean值，这是一个重载方法
+ * getStringSet   : 获取类型为String的集合值，这是一个重载方法
+ * <p>
+ * getAll         : 获取所有缓存数据，以偶对象返回
+ * contains       : 指定数据是否被缓存
+ * remove         : 删除一条缓存，这是一个重载方法
+ * clear          : 清空缓存，这是一个重载方法
+ * <p>
  * time: create at 2017/2/15 22:30
  */
 public class SpUtils {
@@ -22,14 +43,6 @@ public class SpUtils {
     //在该模式下，写入的内容会覆盖原文件的内容，如果想把新写入的内容追加到原文件中，可以使用Context.MODE_APPEND
     private static int SP_MODE = Context.MODE_PRIVATE;
     private SharedPreferences sp;
-
-    public static String getSpName() {
-        return SP_NAME;
-    }
-
-    public static void setSpName(String spName) {
-        SP_NAME = spName;
-    }
 
     //单例模式
     private static class LazyLoader {
@@ -98,7 +111,7 @@ public class SpUtils {
     }
 
     /**
-     * 保存String
+     * 保存String值
      *
      * @param key      键
      * @param value    值
@@ -135,7 +148,7 @@ public class SpUtils {
     }
 
     /**
-     * 保存int
+     * 保存int值
      *
      * @param key   键
      * @param value 值
@@ -145,7 +158,7 @@ public class SpUtils {
     }
 
     /**
-     * 保存int
+     * 保存int值
      *
      * @param key      键
      * @param value    值
@@ -341,8 +354,8 @@ public class SpUtils {
      *                 false 使用 {@link SharedPreferences.Editor#apply()}
      */
     public void putStringSet(@NonNull final String key,
-                    final Set<String> value,
-                    final boolean isCommit) {
+                             final Set<String> value,
+                             final boolean isCommit) {
         if (isCommit) {
             sp.edit().putStringSet(key, value).commit();
         } else {
@@ -354,7 +367,7 @@ public class SpUtils {
      * 获取类型为String的集合值
      *
      * @param key 键
-     * @return    返回缓存或默认值 {@code Collections.<String>emptySet()}
+     * @return 返回缓存或默认值 {@code Collections.<String>emptySet()}
      */
     public Set<String> getStringSet(@NonNull final String key) {
         return getStringSet(key, Collections.<String>emptySet());
