@@ -104,6 +104,7 @@ implementation 'com.easyandroid:easytools:1.4.1'
 ---
 
 <span id="acache">
+
 * ### 缓存相关 -> [ACache.java][ACache.java]
 ```
 get                     : 获取ACache实例
@@ -119,6 +120,7 @@ clear                   : 清除所有数据
 ```
 
 <span id="activitymanager">
+
 * ### Activity生命周期管理类 -> [ActivityManager.java][ActivityManager.java]
 ```
 registerActivityLifecycleCallbacks       : 在自己的Application注册，关联Activity生命周期
@@ -131,6 +133,7 @@ getActivityStack                         : 获取Activity栈
 ```
 
 <span id="activityutils">
+
 * ### Activity 相关 -> [ActivityUtils.java][ActivityUtils.java]
 ```
 isActivityExists               : 判断 Activity 是否存在
@@ -150,6 +153,7 @@ finishAllActivitiesExceptNewest: 结束除最新之外的所有 Activity
 ```
 
 <span id="androidutils">
+
 * ### 操作系统、SDK相关 -> [AndroidUtils.java][AndroidUtils.java]
 ```
 isNamedProcess            : 判断当前进程中是否包含指定名称的进程
