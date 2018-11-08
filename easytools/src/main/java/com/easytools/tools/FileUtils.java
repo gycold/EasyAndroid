@@ -594,7 +594,7 @@ public class FileUtils {
     public static byte[] readFile2Bytes(File file) {
         if (file == null) return null;
         try {
-            return ConvertUtil.inputStream2Bytes(new FileInputStream(file));
+            return ConvertUtils.inputStream2Bytes(new FileInputStream(file));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             return null;
@@ -658,7 +658,7 @@ public class FileUtils {
      */
     public static String getFileSize(File file) {
         if (!isFileExists(file)) return "";
-        return ConvertUtil.byte2FitSize(file.length());
+        return ConvertUtils.byte2FitSize(file.length());
     }
 
     /**

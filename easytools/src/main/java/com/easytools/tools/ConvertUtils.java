@@ -26,7 +26,7 @@ import static com.easytools.tools.ConstantUtils.KB;
 import static com.easytools.tools.ConstantUtils.MB;
 
 /**
- * package: com.easytools.tools.ConvertUtil
+ * package: com.easytools.tools.ConvertUtils
  * author: gyc
  *
  * bytes2Bits, bits2Bytes                  : bytes 与 bits 互转
@@ -46,9 +46,9 @@ import static com.easytools.tools.ConstantUtils.MB;
  * time: create at 2016/11/23 12:04
  */
 
-public class ConvertUtil {
+public class ConvertUtils {
 
-    private ConvertUtil() {
+    private ConvertUtils() {
         throw new UnsupportedOperationException("u can't instantiate me...");
     }
 

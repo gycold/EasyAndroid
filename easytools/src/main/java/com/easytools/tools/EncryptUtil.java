@@ -24,8 +24,8 @@ import javax.crypto.Mac;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
 
-import static com.easytools.tools.ConvertUtil.bytes2HexString;
-import static com.easytools.tools.ConvertUtil.hexString2Bytes;
+import static com.easytools.tools.ConvertUtils.bytes2HexString;
+import static com.easytools.tools.ConvertUtils.hexString2Bytes;
 
 /**
  * package: com.easytools.tools.EncryptUtil
