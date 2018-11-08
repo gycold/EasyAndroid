@@ -28,7 +28,7 @@ import static com.easytools.tools.ConvertUtils.bytes2HexString;
 import static com.easytools.tools.ConvertUtils.hexString2Bytes;
 
 /**
- * package: com.easytools.tools.EncryptUtil
+ * package: com.easytools.tools.EncryptUtils
  * author: gyc
  * description:加密解密相关的工具类
  *
@@ -58,9 +58,9 @@ import static com.easytools.tools.ConvertUtils.hexString2Bytes;
  * time: create at 2016/11/23 11:53
  */
 
-public class EncryptUtil {
+public class EncryptUtils {
 
-    private EncryptUtil() {
+    private EncryptUtils() {
         throw new UnsupportedOperationException("u can't instantiate me...");
     }
 

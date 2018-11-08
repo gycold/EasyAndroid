@@ -5,7 +5,7 @@
 
 使用方法：<br>
 ```
-implementation 'com.easyandroid:easytools:1.4.1'
+implementation 'com.easyandroid:easytools:1.4.2'
 
 然后，在自己的Application中调用Utils.init(this);进行初始化
 ```
@@ -51,7 +51,7 @@ implementation 'com.easyandroid:easytools:1.4.1'
 + [27、屏幕显示相关](#displayutils)
 + [28、双击识别器](#doubleclickexitdetector)
 + [29、编码解码相关](#encodeutils)
-+ [30、加密解密相关](#encryptutil)
++ [30、加密解密相关](#encryptutils)
 + [31、文件的IO流相关](#fileioutils)
 + [32、针对Android 7版本以上 FileProvider做适配](#fileprovider7)
 + [33、文件操作相关](#fileutils)
@@ -106,7 +106,7 @@ implementation 'com.easyandroid:easytools:1.4.1'
 
 <span id="acache">
 
-* ### 缓存相关 -> [ACache.java][ACache.java]
+* ### 缓存相关 -> [ACache.java][ACache.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 get                     : 获取ACache实例
 put                     : 保存
@@ -122,7 +122,7 @@ clear                   : 清除所有数据
 
 <span id="activitymanager">
 
-* ### Activity生命周期管理类 -> [ActivityManager.java][ActivityManager.java]
+* ### Activity生命周期管理类 -> [ActivityManager.java][ActivityManager.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 registerActivityLifecycleCallbacks       : 在自己的Application注册，关联Activity生命周期
 currentActivity                          : 获取当前affinity栈顶Activity
@@ -135,7 +135,7 @@ getActivityStack                         : 获取Activity栈
 
 <span id="activityutils">
 
-* ### Activity 相关 -> [ActivityUtils.java][ActivityUtils.java]
+* ### Activity 相关 -> [ActivityUtils.java][ActivityUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 isActivityExists               : 判断 Activity 是否存在
 startActivity                  : 启动 Activity
@@ -155,7 +155,7 @@ finishAllActivitiesExceptNewest: 结束除最新之外的所有 Activity
 
 <span id="androidutils">
 
-* ### 操作系统、SDK相关 -> [AndroidUtils.java][AndroidUtils.java]
+* ### 操作系统、SDK相关 -> [AndroidUtils.java][AndroidUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 isNamedProcess            : 判断当前进程中是否包含指定名称的进程
 gc                        : 清理后台进程与服务
@@ -169,7 +169,7 @@ getSDKVersion             : 获取手机系统SDK版本
 
 <span id="animationutils">
 
-* ### 动画相关的工具类 -> [AnimationUtils.java][AnimationUtils.java]
+* ### 动画相关的工具类 -> [AnimationUtils.java][AnimationUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 getRotateAnimation              : 获取一个旋转的补间动画
 getRotateAnimationByCenter      : 获取一个根据视图自身中心点旋转的补间动画
@@ -182,7 +182,7 @@ getAmplificationAnimation       : 获取一个放大动画
 
 <span id="apputils">
 
-* ### App相关工具类 -> [AppUtils.java][AppUtils.java]
+* ### App相关工具类 -> [AppUtils.java][AppUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 registerAppStatusChangedListener  : 注册 App 前后台切换监听器
 unregisterAppStatusChangedListener: 注销 App 前后台切换监听器
@@ -215,7 +215,7 @@ getAppsInfo                       : 获取所有已安装 App 信息
 
 <span id="arrayutils">
 
-* ### 关于数组的各种排序算法 -> [ArrayUtils.java][ArrayUtils.java]
+* ### 关于数组的各种排序算法 -> [ArrayUtils.java][ArrayUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 isEmpty               : 判断数组是否为空
 search                : 在数组objects中搜索元素element
@@ -231,7 +231,7 @@ toString              : 将给定的数组转换成字符串
 
 <span id="assetdatabaseopenhelper">
 
-* ### Assets目录数据库相关 -> [AssetDatabaseOpenHelper.java][AssetDatabaseOpenHelper.java]
+* ### Assets目录数据库相关 -> [AssetDatabaseOpenHelper.java][AssetDatabaseOpenHelper.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 getWriteableDatabase       : 创建或打开一个数据库
 getReadableDatabase        : 创建或打开一个只读数据库
@@ -241,7 +241,7 @@ getFromAssets              : 获取asset文件下的资源文件信息
 
 <span id="badgeutils">
 
-* ### 设置Badge数字角标 -> [BadgeUtils.java][BadgeUtils.java]
+* ### 设置Badge数字角标 -> [BadgeUtils.java][BadgeUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 setBadgeCount             : 设置Badge 目前支持Launcher：MIUI、Sony、Samsung、LG、HTC、Nova 需要这些权限，需要相关权限
 setBadgeOfMIUI            : 设置MIUI的Badge
@@ -255,7 +255,7 @@ resetBadgeCount           : 重置Badge
 
 <span id="barutils">
 
-* ### 状态栏相关 -> [BarUtils.java][BarUtils.java]
+* ### 状态栏相关 -> [BarUtils.java][BarUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 setTransparentStatusBar    : 隐藏状态栏
 hideStatusBar              : 获取状态栏高度
@@ -268,7 +268,7 @@ hideNotificationBar        : 隐藏通知栏
 
 <span id="base64utils">
 
-* ### Base64相关 -> [Base64Utils.java][Base64Utils.java]
+* ### Base64相关 -> [Base64Utils.java][Base64Utils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 encode                 : 编码
 encodeToString         : 编码
@@ -279,7 +279,7 @@ decode2String          : 解码
 
 <span id="bitmaputils">
 
-* ### Bitmap相关 -> [BitmapUtils.java][BitmapUtils.java]
+* ### Bitmap相关 -> [BitmapUtils.java][BitmapUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 bitmap2Byte                       : bitmap转字节数组
 byte2Bitmap                       : 字节数组转bitmap
@@ -333,14 +333,14 @@ yuvLandscapeToPortrait            : 将YUV格式的图片的源数据从横屏�
 
 <span id="checkadapter">
 
-* ### 选择适配器 -> [CheckAdapter.java][CheckAdapter.java]
+* ### 选择适配器 -> [CheckAdapter.java][CheckAdapter.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 
 ```
 
 <span id="checkutils">
 
-* ### 数据验证相关 -> [CheckUtils.java][CheckUtils.java]
+* ### 数据验证相关 -> [CheckUtils.java][CheckUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 valiObjectIsNull         : 验证对象是否为空
 valiStringLength         : 验证字符串的长度是在指定范围内
@@ -365,7 +365,7 @@ valiFileByWriteBefore    : 在执行写入之前对指定的文件对象进行�
 
 <span id="classutils">
 
-* ### 类操作相关 -> [ClassUtils.java][ClassUtils.java]
+* ### 类操作相关 -> [ClassUtils.java][ClassUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 newInstance            : 根据对象的类（Class）新建一个实例对象，用于反射
 forName                : 动态加载类，返回Class类的对象，这个Class就是所有反射操作的源头
@@ -394,7 +394,7 @@ convertCompatibleType  : 兼容类型转换。null值是OK的。如果不需要�
 
 <span id="cleanutils">
 
-* ### 清除缓存/文件相关工具类 -> [CleanUtils.java][CleanUtils.java]
+* ### 清除缓存/文件相关工具类 -> [CleanUtils.java][CleanUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 cleanInternalCache   : 清除内部缓存
 cleanInternalFiles   : 清除内部文件
@@ -411,7 +411,7 @@ getFormatSize        : 格式化值大小
 
 <span id="clipboardutils">
 
-* ### 剪贴板相关工具类 -> [ClipboardUtils.java][ClipboardUtils.java]
+* ### 剪贴板相关工具类 -> [ClipboardUtils.java][ClipboardUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 copyText        : 复制文本到剪贴板
 getText         : 获取剪贴板的文本
@@ -423,21 +423,21 @@ getIntent       : 获取剪贴板的意图
 
 <span id="closeutils">
 
-* ### 关闭操作流相关 -> [CloseUtils.java][CloseUtils.java]
+* ### 关闭操作流相关 -> [CloseUtils.java][CloseUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 closeIO         : 关闭IO
 ```
 
 <span id="constantutils">
 
-* ### 常量相关 -> [ConstantUtils.java][ConstantUtils.java]
+* ### 常量相关 -> [ConstantUtils.java][ConstantUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 常用单位常量
 ```
 
 <span id="convertutils">
 
-* ### 转换操作相关 -> [ConvertUtils.java][ConvertUtils.java]
+* ### 转换操作相关 -> [ConvertUtils.java][ConvertUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 bytes2Bits, bits2Bytes                  : bytes 与 bits 互转
 bytes2Chars, chars2Bytes                : bytes 与 chars 互转
@@ -460,21 +460,21 @@ sp2px, px2sp                            : sp 与 px 互转
 
 <span id="countdown">
 
-* ### 倒计时 -> [Countdown.java][Countdown.java]
+* ### 倒计时 -> [Countdown.java][Countdown.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 倒计时
 ```
 
 <span id="crashutils">
 
-* ### 崩溃相关 -> [CrashUtils.java][CrashUtils.java]
+* ### 崩溃相关 -> [CrashUtils.java][CrashUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 捕获崩溃信息，保存在本地txt文件，在Application中调用初始化方法init()即可
 ```
 
 <span id="dateutils">
 
-* ### 日期操作相关 -> [DateUtils.java][DateUtils.java]
+* ### 日期操作相关 -> [DateUtils.java][DateUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 str2Date         : 字符串转为Date
 date2Str         : Date转为字符串
@@ -502,7 +502,7 @@ parse            : 使用用户格式提取字符串日期
 
 <span id="deviceutils">
 
-* ### 设备信息相关 -> [DeviceUtils.java][DeviceUtils.java]
+* ### 设备信息相关 -> [DeviceUtils.java][DeviceUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 getSDKVersion                    : 获取设备系统版本号
 getAndroidID                     : 获取设备AndroidID
@@ -541,21 +541,21 @@ getCMDOutputString               : 获取命令输出字符串.
 
 <span id="deviceuuidfactory">
 
-* ### 使用UUID生成手机唯一标示 -> [DeviceUuidFactory.java][DeviceUuidFactory.java]
+* ### 使用UUID生成手机唯一标示 -> [DeviceUuidFactory.java][DeviceUuidFactory.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 getDeviceUuid       : 生成手机唯一标示
 ```
 
 <span id="dialogutils">
 
-* ### 弹框相关 -> [DialogUtils.java][DialogUtils.java]
+* ### 弹框相关 -> [DialogUtils.java][DialogUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 弹框相关
 ```
 
 <span id="displayutils">
 
-* ### 屏幕显示相关 -> [DisplayUtils.java][DisplayUtils.java]
+* ### 屏幕显示相关 -> [DisplayUtils.java][DisplayUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 getRealScreenWidthPixels   : 获取屏幕真实尺寸，包含虚拟按键
 getRealScreenHeightPixels  : 获取屏幕真实尺寸，包含虚拟按键
@@ -586,7 +586,7 @@ isAdaptScreen              : 是否适配屏幕
 
 <span id="doubleclickexitdetector">
 
-* ### 双击识别器 -> [DoubleClickExitDetector.java][DoubleClickExitDetector.java]
+* ### 双击识别器 -> [DoubleClickExitDetector.java][DoubleClickExitDetector.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 click                      : 当两次点击时间间隔小于有效间隔时间时就会返回true，否则返回false
 setEffectiveIntervalTime   : 设置有效间隔时间，单位毫秒
@@ -595,7 +595,7 @@ setHintMessage             : 设置提示消息
 
 <span id="encodeutils">
 
-* ### 编码解码相关 -> [EncodeUtils.java][EncodeUtils.java]
+* ### 编码解码相关 -> [EncodeUtils.java][EncodeUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 urlEncode          : URL 编码
 urlDecode          : URL 解码
@@ -606,9 +606,9 @@ htmlEncode         : Html 编码
 htmlDecode         : Html 解码
 ```
 
-<span id="encryptutil">
+<span id="encryptutils">
 
-* ### 加密解密相关 -> [EncryptUtil.java][EncryptUtil.java]
+* ### 加密解密相关 -> [EncryptUtils.java][EncryptUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 encryptMD2, encryptMD2ToString                        : MD2 加密
 encryptMD5, encryptMD5ToString                        : MD5 加密
@@ -636,7 +636,7 @@ decryptRSA, decryptHexStringRSA, decryptBase64RSA     : RSA 解密
 
 <span id="fileioutils">
 
-* ### 文件的IO流相关 -> [FileIOUtils.java][FileIOUtils.java]
+* ### 文件的IO流相关 -> [FileIOUtils.java][FileIOUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 writeFileFromIS            : 将输入流写入文件
 writeFileFromBytesByStream : 将字节数组写入文件
@@ -653,7 +653,7 @@ setBufferSize              : 设置缓冲区尺寸
 
 <span id="fileprovider7">
 
-* ### 针对Android 7版本以上 FileProvider做适配 -> [FileProvider7.java][FileProvider7.java]
+* ### 针对Android 7版本以上 FileProvider做适配 -> [FileProvider7.java][FileProvider7.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 拍照            : 仅需改变一行：Uri fileUri = FileProvider7.getUriForFile(context, file);
 安装apk         : 仅需改变一行：FileProvider7.setIntentDataAndType(context, intent, "application/vnd.android.package-archive", file, true);
@@ -661,7 +661,7 @@ setBufferSize              : 设置缓冲区尺寸
 
 <span id="fileutils">
 
-* ### 文件操作相关 -> [FileUtils.java][FileUtils.java]
+* ### 文件操作相关 -> [FileUtils.java][FileUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 getFileByPath                 : 根据文件路径获取文件
 isFileExists                  : 根据路径判断文件是否存在
@@ -692,7 +692,7 @@ getMimeType                   : 获取本地文件的媒体类型
 
 <span id="fragmentutils">
 
-* ### Fragment相关 -> [FragmentUtils.java][FragmentUtils.java]
+* ### Fragment相关 -> [FragmentUtils.java][FragmentUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 add                   : 新增 fragment
 show                  : 显示 fragment
@@ -722,7 +722,7 @@ setBackground         : 设置背景
 
 <span id="gsonutils">
 
-* ### Gson转换相关 -> [GsonUtils.java][GsonUtils.java]
+* ### Gson转换相关 -> [GsonUtils.java][GsonUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 json2Bean     : JSON格式字符串转为实体类
 bean2Json     : 实体类转为JSON格式的字符串
@@ -731,7 +731,7 @@ json2List     : JSON格式字符串转换为实体类数组
 
 <span id="hexutils">
 
-* ### 16进制转换相关 -> [HexUtils.java][HexUtils.java]
+* ### 16进制转换相关 -> [HexUtils.java][HexUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 encodeHex          : 字节数组转换为十六进制字符数组
 encodeHexStr       : 字节数组转换为十六进制字符串
@@ -741,14 +741,14 @@ toDigit            : 十六进制字符转换成一个整数
 
 <span id="imageloader">
 
-* ### 图片加载器 -> [ImageLoader.java][ImageLoader.java]
+* ### 图片加载器 -> [ImageLoader.java][ImageLoader.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 图片加载的工具类，采用线程池
 ```
 
 <span id="intentutils">
 
-* ### 意图相关工具类 -> [IntentUtils.java][IntentUtils.java]
+* ### 意图相关工具类 -> [IntentUtils.java][IntentUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 isIntentAvailable                : 判断意图是否可用
 getInstallAppIntent              : 获取安装 App（支持 6.0）的意图
@@ -764,7 +764,7 @@ getCaptureIntent                 : 获取拍照的意图
 
 <span id="jsonutils">
 
-* ### JSON操作相关 -> [JSONUtils.java][JSONUtils.java]
+* ### JSON操作相关 -> [JSONUtils.java][JSONUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 getLong                 : get Long
 getInt                  : get Int
@@ -783,7 +783,7 @@ parseKeyAndValueToMap   : parse key-value pairs to map
 
 <span id="keyboardutils">
 
-* ### 软键盘相关 -> [KeyboardUtils.java][KeyboardUtils.java]
+* ### 软键盘相关 -> [KeyboardUtils.java][KeyboardUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 showSoftInput                     : 显示软键盘
 showSoftInputUsingToggle          : 显示软键盘用 toggle
@@ -800,7 +800,7 @@ clickBlankArea2HideSoftInput      : 点击屏幕空白区域隐藏软键盘
 
 <span id="logutils">
 
-* ### 打印日志 -> [LogUtils.java][LogUtils.java]
+* ### 打印日志 -> [LogUtils.java][LogUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 getConfig                : 获取 log 配置
 Config.setLogSwitch      : 设置 log 总开关
@@ -838,13 +838,13 @@ xml                      : log 字符串之 xml
 
 <span id="looptimer">
 
-* ### 循环定时器 -> [LoopTimer.java][LoopTimer.java]
+* ### 循环定时器 -> [LoopTimer.java][LoopTimer.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 ```
 
 <span id="lunarutils">
 
-* ### 阴历阳历相关 -> [LunarUtils.java][LunarUtils.java]
+* ### 阴历阳历相关 -> [LunarUtils.java][LunarUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 lunarYearToGanZhi       : 农历年份转干支
 LunarToSolar            : 农历转公历
@@ -853,7 +853,7 @@ SolarToLunar            : 公历转农历
 
 <span id="m3u8parserutils">
 
-* ### m3u8文件解析类 -> [M3U8ParserUtils.java][M3U8ParserUtils.java]
+* ### m3u8文件解析类 -> [M3U8ParserUtils.java][M3U8ParserUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 parseString           : 解析m3u8的ts下载地址
 getM3u8Key            : 获取m3u8文件中的uri对应的key
@@ -861,7 +861,7 @@ getM3u8Key            : 获取m3u8文件中的uri对应的key
 
 <span id="maputils">
 
-* ### 偶对象相关 -> [MapUtils.java][MapUtils.java]
+* ### 偶对象相关 -> [MapUtils.java][MapUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 isEmpty                     : is null or its size is 0
 putMapNotEmptyKey           : add key-value pair to map, and key need not null or empty
@@ -875,7 +875,7 @@ toJson                      : join map
 
 <span id="md5utils">
 
-* ### 获取MD5相关 -> [MD5Utils.java][MD5Utils.java]
+* ### 获取MD5相关 -> [MD5Utils.java][MD5Utils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 getDigest      : 获取 MessageDigest 实例
 md5            : 获取md5
@@ -883,7 +883,7 @@ md5            : 获取md5
 
 <span id="mediaplayerutils">
 
-* ### 音频播放相关 -> [MediaPlayerUtils.java][MediaPlayerUtils.java]
+* ### 音频播放相关 -> [MediaPlayerUtils.java][MediaPlayerUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 getMediaPlayer       : 获取 MediaPlayer 实例
 playAudio            : 播放音频文件
@@ -892,7 +892,7 @@ stopAudio            : 停止播放音频文件
 
 <span id="memoryfilehelper">
 
-* ### 共享内存相关 -> [MemoryFileHelper.java][MemoryFileHelper.java]
+* ### 共享内存相关 -> [MemoryFileHelper.java][MemoryFileHelper.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 createMemoryFile          : 创建共享内存对象
 openMemoryFile            : 打开共享内存
@@ -902,7 +902,7 @@ getFileDescriptor         : 获取共享内存的文件描述符
 
 <span id="metadatautils">
 
-* ### 元数据相关 -> [MetaDataUtils.java][MetaDataUtils.java]
+* ### 元数据相关 -> [MetaDataUtils.java][MetaDataUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 getMetaDataInApp     : 获取 application 的 meta-data 值
 getMetaDataInActivity: 获取 activity 的 meta-data 值
@@ -912,7 +912,7 @@ getMetaDataInReceiver: 获取 receiver 的 meta-data 值
 
 <span id="money">
 
-* ### 单币种货币类，处理货币算术、币种和取整 -> [Money.java][Money.java]
+* ### 单币种货币类，处理货币算术、币种和取整 -> [Money.java][Money.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 Money                     : 构造器
 getAmount                 : 获取本货币对象代表的金额数，以元为单位。
@@ -943,7 +943,7 @@ dump                      : 生成本对象内部变量的字符串表示，用�
 
 <span id="networkutils">
 
-* ### 手机网络相关 -> [NetworkUtils.java][NetworkUtils.java]
+* ### 手机网络相关 -> [NetworkUtils.java][NetworkUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 openWirelessSettings  : 打开网络设置界面
 isConnected           : 判断网络是否连接
@@ -968,7 +968,7 @@ getServerAddressByWifi: 根据 WiFi 获取服务端 IP 地址
 
 <span id="notificationutils">
 
-* ### Notification相关 -> [NotificationUtils.java][NotificationUtils.java]
+* ### Notification相关 -> [NotificationUtils.java][NotificationUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 createNotificationChannel  : 8.0以上，获取NotificationChannel对象
 getManager                 : 获取 NotificationManager
@@ -979,7 +979,7 @@ sendNotification           : 设置通知信息
 
 <span id="objectutils">
 
-* ### 对象相关 -> [ObjectUtils.java][ObjectUtils.java]
+* ### 对象相关 -> [ObjectUtils.java][ObjectUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 isEmpty         : 判断是否为空
 isNotEmpty      : 判断是否不为空
@@ -991,7 +991,7 @@ hashCode        : 获取对象的哈希值
 
 <span id="paletteutils">
 
-* ### 提取颜色的帮助类 -> [PaletteUtils.java][PaletteUtils.java]
+* ### 提取颜色的帮助类 -> [PaletteUtils.java][PaletteUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 init                  : 初始化对象
 changedImageViewShape : 创建Drawable对象
@@ -1001,7 +1001,7 @@ colorBurn             : 颜色加深处理
 
 <span id="pathutils">
 
-* ### 目录路径相关 -> [PathUtils.java][PathUtils.java]
+* ### 目录路径相关 -> [PathUtils.java][PathUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 getRootPath                    : 获取根路径
 getDataPath                    : 获取数据路径
@@ -1043,7 +1043,7 @@ getExternalAppObbPath          : 获取外存应用 OBB 路径
 
 <span id="permissionutils">
 
-* ### 权限相关 -> [PermissionUtils.java][PermissionUtils.java]
+* ### 权限相关 -> [PermissionUtils.java][PermissionUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 getPermissions          : 获取应用权限
 isGranted               : 判断权限是否被授予
@@ -1057,7 +1057,7 @@ request                 : 开始请求
 
 <span id="pollingutils">
 
-* ### 轮询相关工具类 -> [PollingUtils.java][PollingUtils.java]
+* ### 轮询相关工具类 -> [PollingUtils.java][PollingUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 startPollingService     : 开启轮询服务
 stopPollingService      : 停止轮询
@@ -1065,7 +1065,7 @@ stopPollingService      : 停止轮询
 
 <span id="preconditions">
 
-* ### 判断先决条件 -> [Preconditions.java][Preconditions.java]
+* ### 判断先决条件 -> [Preconditions.java][Preconditions.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 isEmpty                    : 判断list数据是否为空
 isNotEmpty                 : 判断list数据是否不为空
@@ -1081,7 +1081,7 @@ checkArrayElementsInRange  : 判决浮点数组中的所有元素都在指定的
 
 <span id="processutils">
 
-* ### 进程相关 -> [ProcessUtils.java][ProcessUtils.java]
+* ### 进程相关 -> [ProcessUtils.java][ProcessUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 getForegroundProcessName  : 获取前台线程包名
 killAllBackgroundProcesses: 杀死所有的后台服务进程
@@ -1092,7 +1092,7 @@ getCurrentProcessName     : 获取当前进程名称
 
 <span id="randomutils">
 
-* ### 随机数相关 -> [RandomUtils.java][RandomUtils.java]
+* ### 随机数相关 -> [RandomUtils.java][RandomUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 getRandomNumbersAndLetters  : 获取固定长度的随机数（大小写字母、整数）
 getRandomNumbers            : 获取固定长度数据（仅数字）
@@ -1107,7 +1107,7 @@ shuffle                     : 洗牌算法，随机排列指定数组
 
 <span id="reflectutils">
 
-* ### 反射相关 -> [ReflectUtils.java][ReflectUtils.java]
+* ### 反射相关 -> [ReflectUtils.java][ReflectUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 reflect        : 设置要反射的类
 newInstance    : 实例化反射对象
@@ -1123,7 +1123,7 @@ setField       : 设置属性
 
 <span id="regexutils">
 
-* ### 正则表达式相关 -> [RegexUtils.java][RegexUtils.java]
+* ### 正则表达式相关 -> [RegexUtils.java][RegexUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 isMobileSimple   : 验证手机号（简单）
 isMobileExact    : 验证手机号（精确）
@@ -1145,7 +1145,7 @@ getReplaceAll    : 替换所有正则匹配的部分
 
 <span id="resourceutils">
 
-* ### 资源操作相关 -> [ResourceUtils.java][ResourceUtils.java]
+* ### 资源操作相关 -> [ResourceUtils.java][ResourceUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 copyFileFromAssets: 从 assets 中拷贝文件
 readAssets2String : 从 assets 中读取字符串
@@ -1157,7 +1157,7 @@ readRaw2List      : 从 raw 中按行读取字符串
 
 <span id="roundutils">
 
-* ### 四舍五入相关 -> [RoundUtils.java][RoundUtils.java]
+* ### 四舍五入相关 -> [RoundUtils.java][RoundUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 round               : 四舍五入操作
 twoStringPoint      : 四舍五入操作保留小数点后两位
@@ -1170,7 +1170,7 @@ getMoneyStr         : 获取money类型的字符串，这是一个重载方法
 
 <span id="sdcardutils">
 
-* ### SD卡相关 -> [SDCardUtils.java][SDCardUtils.java]
+* ### SD卡相关 -> [SDCardUtils.java][SDCardUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 isSDCardEnable          : 判断SD卡是否可用
 getDataPath             : 获取SD卡Data路径
@@ -1186,7 +1186,7 @@ getSDCardInfo           : 获取SD卡信息
 
 <span id="serviceutils">
 
-* ### 服务相关 -> [ServiceUtils.java][ServiceUtils.java]
+* ### 服务相关 -> [ServiceUtils.java][ServiceUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 getAllRunningServices   : 返回正在运行的服务
 startService            : 开启服务
@@ -1198,21 +1198,21 @@ isServiceRunning        : 监测服务是否正在运行
 
 <span id="shellutils">
 
-* ### Shell相关 -> [ShellUtils.java][ShellUtils.java]
+* ### Shell相关 -> [ShellUtils.java][ShellUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 execCmd : 在 root 下执行命令，这是一个重载方法
 ```
 
 <span id="smsutils">
 
-* ### 短信相关 -> [SMSUtils.java][SMSUtils.java]
+* ### 短信相关 -> [SMSUtils.java][SMSUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 send       : 发送短信
 ```
 
 <span id="snackbarutils">
 
-* ### Snackbar相关 -> [SnackbarUtils.java][SnackbarUtils.java]
+* ### Snackbar相关 -> [SnackbarUtils.java][SnackbarUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 with           : 设置 snackbar 依赖 view
 setMessage     : 设置消息
@@ -1233,7 +1233,7 @@ addView        : 添加 snackbar 视图
 
 <span id="sputils">
 
-* ### SharedPreferences相关 -> [SpUtils.java][SpUtils.java]
+* ### SharedPreferences相关 -> [SpUtils.java][SpUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 getInstance    : 获取单例
 
@@ -1259,7 +1259,7 @@ clear          : 清空缓存，这是一个重载方法
 
 <span id="statusbarutils">
 
-* ### 状态栏相关 -> [StatusBarUtils.java][StatusBarUtils.java]
+* ### 状态栏相关 -> [StatusBarUtils.java][StatusBarUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 setColor                              : 设置状态栏颜色
 setColorForSwipeBack                  : 为滑动返回界面设置状态栏颜色，这是一个重载方法
@@ -1281,7 +1281,7 @@ hideFakeStatusBarView                 : 隐藏伪状态栏 View
 
 <span id="stringutils">
 
-* ### 字符串相关 -> [StringUtils.java][StringUtils.java]
+* ### 字符串相关 -> [StringUtils.java][StringUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 isEmpty                : 判断字符串是否为null或长度为0（不包含空格，即如果有空格，则返回false）
 isSpace                : 判断字符串是否为null或全为空格（如果有空格，则返回true）
@@ -1301,7 +1301,7 @@ isNumeric              : 判断字符串是否只包含unicode数字
 
 <span id="threadpoolutils">
 
-* ### 线程操作相关 -> [ThreadPoolUtils.java][ThreadPoolUtils.java] ->[ThreadPoolUtilsTest.java]
+* ### 线程操作相关 -> [ThreadPoolUtils.java][ThreadPoolUtils.java] ->[ThreadPoolUtilsTest.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 isMainThread            : 判断当前是否主线程
 getFixedPool            : 获取固定线程池
@@ -1332,7 +1332,7 @@ cancel                  : 取消任务的执行
 
 <span id="toastmaster">
 
-* ### Toast工具相关 -> [ToastMaster.java][ToastMaster.java]
+* ### Toast工具相关 -> [ToastMaster.java][ToastMaster.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 setGravity     : 设置吐司位置
 setBgColor     : 设置背景颜色
@@ -1348,7 +1348,7 @@ cancel         : 取消吐司显示
 
 <span id="toastutils">
 
-* ### Toast简单工具类 -> [ToastUtils.java][ToastUtils.java]
+* ### Toast简单工具类 -> [ToastUtils.java][ToastUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 showToast     : 显示吐司
 cancel        : 取消吐司
@@ -1356,14 +1356,14 @@ cancel        : 取消吐司
 
 <span id="utils">
 
-* ### 初始化Application，在Application之中调用init方法 -> [Utils.java][Utils.java]
+* ### 初始化Application，在Application之中调用init方法 -> [Utils.java][Utils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 init            : 初始化Application
 ```
 
 <span id="viewutils">
 
-* ### 视图工具 -> [ViewUtils.java][ViewUtils.java]
+* ### 视图工具 -> [ViewUtils.java][ViewUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 forceGetViewSize : 在 onCreate 中获取视图的尺寸
 measureView      : 测量视图尺寸
@@ -1377,14 +1377,14 @@ setLayout        : 设置控件所在的位置YY，并且不改变宽高，XY为
 
 <span id="weakhandler">
 
-* ### 弱引用的Handler，防止内存泄漏，用法与Handler一致 -> [WeakHandler.java][WeakHandler.java]
+* ### 弱引用的Handler，防止内存泄漏，用法与Handler一致 -> [WeakHandler.java][WeakHandler.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 
 ```
 
 <span id="webviewutils">
 
-* ### WebView常用设置 -> [WebViewUtils.java][WebViewUtils.java]
+* ### WebView常用设置 -> [WebViewUtils.java][WebViewUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 enableAdaptive                              : 开启自适应功能
 disableAdaptive                             : 禁用自适应功能
@@ -1399,7 +1399,7 @@ goBack                                      : 返回
 
 <span id="ziputils">
 
-* ### 文件压缩相关 -> [ZipUtils.java][ZipUtils.java]
+* ### 文件压缩相关 -> [ZipUtils.java][ZipUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 zipFiles          : 批量压缩文件
 zipFile           : 压缩文件
@@ -1469,7 +1469,7 @@ getComments       : 获取压缩文件中的注释链表
 
 [EncodeUtils.java]: https://github.com/gycold/EasyAndroid/blob/master/easytools/src/main/java/com/easytools/tools/EncodeUtils.java
 
-[EncryptUtil.java]: https://github.com/gycold/EasyAndroid/blob/master/easytools/src/main/java/com/easytools/tools/EncryptUtil.java
+[EncryptUtils.java]: https://github.com/gycold/EasyAndroid/blob/master/easytools/src/main/java/com/easytools/tools/EncryptUtils.java
 
 [FileIOUtils.java]: https://github.com/gycold/EasyAndroid/blob/master/easytools/src/main/java/com/easytools/tools/FileIOUtils.java
 

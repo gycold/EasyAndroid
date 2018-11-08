@@ -6,7 +6,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.easytools.tools.EncodeUtils;
-import com.easytools.tools.EncryptUtil;
+import com.easytools.tools.EncryptUtils;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -31,6 +31,6 @@ public class MainActivity extends AppCompatActivity {
 
         String s = EncodeUtils.urlEncodeWithRFC3986(s2);
         System.out.println(s);
-        System.out.println(EncryptUtil.encryptSHA1ToString(s));
+        System.out.println(EncryptUtils.encryptSHA1ToString(s));
     }
 }
