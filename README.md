@@ -20,6 +20,7 @@ implementation 'com.easyandroid:easytools:1.4.1'
 ---
 
 <span id="目录">
+
 ### 目录
 + [1、缓存相关](#acache)
 + [2、Activity生命周期管理类](#activitymanager)
@@ -167,6 +168,7 @@ getSDKVersion             : 获取手机系统SDK版本
 ```
 
 <span id="animationutils">
+
 * ### 动画相关的工具类 -> [AnimationUtils.java][AnimationUtils.java]
 ```
 getRotateAnimation              : 获取一个旋转的补间动画
@@ -179,6 +181,7 @@ getAmplificationAnimation       : 获取一个放大动画
 ```
 
 <span id="apputils">
+
 * ### App相关工具类 -> [AppUtils.java][AppUtils.java]
 ```
 registerAppStatusChangedListener  : 注册 App 前后台切换监听器
@@ -211,6 +214,7 @@ getAppsInfo                       : 获取所有已安装 App 信息
 ```
 
 <span id="arrayutils">
+
 * ### 关于数组的各种排序算法 -> [ArrayUtils.java][ArrayUtils.java]
 ```
 isEmpty               : 判断数组是否为空
@@ -226,6 +230,7 @@ toString              : 将给定的数组转换成字符串
 ```
 
 <span id="assetdatabaseopenhelper">
+
 * ### Assets目录数据库相关 -> [AssetDatabaseOpenHelper.java][AssetDatabaseOpenHelper.java]
 ```
 getWriteableDatabase       : 创建或打开一个数据库
@@ -235,6 +240,7 @@ getFromAssets              : 获取asset文件下的资源文件信息
 ```
 
 <span id="badgeutils">
+
 * ### 设置Badge数字角标 -> [BadgeUtils.java][BadgeUtils.java]
 ```
 setBadgeCount             : 设置Badge 目前支持Launcher：MIUI、Sony、Samsung、LG、HTC、Nova 需要这些权限，需要相关权限
@@ -248,6 +254,7 @@ resetBadgeCount           : 重置Badge
 ```
 
 <span id="barutils">
+
 * ### 状态栏相关 -> [BarUtils.java][BarUtils.java]
 ```
 setTransparentStatusBar    : 隐藏状态栏
@@ -260,6 +267,7 @@ hideNotificationBar        : 隐藏通知栏
 ```
 
 <span id="base64utils">
+
 * ### Base64相关 -> [Base64Utils.java][Base64Utils.java]
 ```
 encode                 : 编码
@@ -270,6 +278,7 @@ decode2String          : 解码
 ```
 
 <span id="bitmaputils">
+
 * ### Bitmap相关 -> [BitmapUtils.java][BitmapUtils.java]
 ```
 bitmap2Byte                       : bitmap转字节数组
@@ -323,12 +332,14 @@ yuvLandscapeToPortrait            : 将YUV格式的图片的源数据从横屏�
 ```
 
 <span id="checkadapter">
+
 * ### 选择适配器 -> [CheckAdapter.java][CheckAdapter.java]
 ```
 
 ```
 
 <span id="checkutils">
+
 * ### 数据验证相关 -> [CheckUtils.java][CheckUtils.java]
 ```
 valiObjectIsNull         : 验证对象是否为空
@@ -353,6 +364,7 @@ valiFileByWriteBefore    : 在执行写入之前对指定的文件对象进行�
 ```
 
 <span id="classutils">
+
 * ### 类操作相关 -> [ClassUtils.java][ClassUtils.java]
 ```
 newInstance            : 根据对象的类（Class）新建一个实例对象，用于反射
@@ -381,6 +393,7 @@ convertCompatibleType  : 兼容类型转换。null值是OK的。如果不需要�
 ```
 
 <span id="cleanutils">
+
 * ### 清除缓存/文件相关工具类 -> [CleanUtils.java][CleanUtils.java]
 ```
 cleanInternalCache   : 清除内部缓存
@@ -397,6 +410,7 @@ getFormatSize        : 格式化值大小
 ```
 
 <span id="clipboardutils">
+
 * ### 剪贴板相关工具类 -> [ClipboardUtils.java][ClipboardUtils.java]
 ```
 copyText        : 复制文本到剪贴板
@@ -408,18 +422,21 @@ getIntent       : 获取剪贴板的意图
 ```
 
 <span id="closeutils">
+
 * ### 关闭操作流相关 -> [CloseUtils.java][CloseUtils.java]
 ```
 closeIO         : 关闭IO
 ```
 
 <span id="constantutils">
+
 * ### 常量相关 -> [ConstantUtils.java][ConstantUtils.java]
 ```
 常用单位常量
 ```
 
 <span id="convertutils">
+
 * ### 转换操作相关 -> [ConvertUtils.java][ConvertUtils.java]
 ```
 bytes2Bits, bits2Bytes                  : bytes 与 bits 互转
@@ -442,18 +459,21 @@ sp2px, px2sp                            : sp 与 px 互转
 ```
 
 <span id="countdown">
+
 * ### 倒计时 -> [Countdown.java][Countdown.java]
 ```
 倒计时
 ```
 
 <span id="crashutils">
+
 * ### 崩溃相关 -> [CrashUtils.java][CrashUtils.java]
 ```
 捕获崩溃信息，保存在本地txt文件，在Application中调用初始化方法init()即可
 ```
 
 <span id="dateutils">
+
 * ### 日期操作相关 -> [DateUtils.java][DateUtils.java]
 ```
 str2Date         : 字符串转为Date
@@ -481,6 +501,7 @@ parse            : 使用用户格式提取字符串日期
 ```
 
 <span id="deviceutils">
+
 * ### 设备信息相关 -> [DeviceUtils.java][DeviceUtils.java]
 ```
 getSDKVersion                    : 获取设备系统版本号
@@ -519,18 +540,21 @@ getCMDOutputString               : 获取命令输出字符串.
 ```
 
 <span id="deviceuuidfactory">
+
 * ### 使用UUID生成手机唯一标示 -> [DeviceUuidFactory.java][DeviceUuidFactory.java]
 ```
 getDeviceUuid       : 生成手机唯一标示
 ```
 
 <span id="dialogutils">
+
 * ### 弹框相关 -> [DialogUtils.java][DialogUtils.java]
 ```
 弹框相关
 ```
 
 <span id="displayutils">
+
 * ### 屏幕显示相关 -> [DisplayUtils.java][DisplayUtils.java]
 ```
 getRealScreenWidthPixels   : 获取屏幕真实尺寸，包含虚拟按键
@@ -561,6 +585,7 @@ isAdaptScreen              : 是否适配屏幕
 ```
 
 <span id="doubleclickexitdetector">
+
 * ### 双击识别器 -> [DoubleClickExitDetector.java][DoubleClickExitDetector.java]
 ```
 click                      : 当两次点击时间间隔小于有效间隔时间时就会返回true，否则返回false
@@ -569,6 +594,7 @@ setHintMessage             : 设置提示消息
 ```
 
 <span id="encodeutils">
+
 * ### 编码解码相关 -> [EncodeUtils.java][EncodeUtils.java]
 ```
 urlEncode          : URL 编码
@@ -581,6 +607,7 @@ htmlDecode         : Html 解码
 ```
 
 <span id="encryptutil">
+
 * ### 加密解密相关 -> [EncryptUtil.java][EncryptUtil.java]
 ```
 encryptMD2, encryptMD2ToString                        : MD2 加密
@@ -608,6 +635,7 @@ decryptRSA, decryptHexStringRSA, decryptBase64RSA     : RSA 解密
 ```
 
 <span id="fileioutils">
+
 * ### 文件的IO流相关 -> [FileIOUtils.java][FileIOUtils.java]
 ```
 writeFileFromIS            : 将输入流写入文件
@@ -624,6 +652,7 @@ setBufferSize              : 设置缓冲区尺寸
 ```
 
 <span id="fileprovider7">
+
 * ### 针对Android 7版本以上 FileProvider做适配 -> [FileProvider7.java][FileProvider7.java]
 ```
 拍照            : 仅需改变一行：Uri fileUri = FileProvider7.getUriForFile(context, file);
@@ -631,6 +660,7 @@ setBufferSize              : 设置缓冲区尺寸
 ```
 
 <span id="fileutils">
+
 * ### 文件操作相关 -> [FileUtils.java][FileUtils.java]
 ```
 getFileByPath                 : 根据文件路径获取文件
@@ -661,6 +691,7 @@ getMimeType                   : 获取本地文件的媒体类型
 ```
 
 <span id="fragmentutils">
+
 * ### Fragment相关 -> [FragmentUtils.java][FragmentUtils.java]
 ```
 add                   : 新增 fragment
@@ -690,6 +721,7 @@ setBackground         : 设置背景
 ```
 
 <span id="gsonutils">
+
 * ### Gson转换相关 -> [GsonUtils.java][GsonUtils.java]
 ```
 json2Bean     : JSON格式字符串转为实体类
@@ -698,6 +730,7 @@ json2List     : JSON格式字符串转换为实体类数组
 ```
 
 <span id="hexutils">
+
 * ### 16进制转换相关 -> [HexUtils.java][HexUtils.java]
 ```
 encodeHex          : 字节数组转换为十六进制字符数组
@@ -707,12 +740,14 @@ toDigit            : 十六进制字符转换成一个整数
 ```
 
 <span id="imageloader">
+
 * ### 图片加载器 -> [ImageLoader.java][ImageLoader.java]
 ```
 图片加载的工具类，采用线程池
 ```
 
 <span id="intentutils">
+
 * ### 意图相关工具类 -> [IntentUtils.java][IntentUtils.java]
 ```
 isIntentAvailable                : 判断意图是否可用
@@ -728,6 +763,7 @@ getCaptureIntent                 : 获取拍照的意图
 ```
 
 <span id="jsonutils">
+
 * ### JSON操作相关 -> [JSONUtils.java][JSONUtils.java]
 ```
 getLong                 : get Long
@@ -746,6 +782,7 @@ parseKeyAndValueToMap   : parse key-value pairs to map
 ```
 
 <span id="keyboardutils">
+
 * ### 软键盘相关 -> [KeyboardUtils.java][KeyboardUtils.java]
 ```
 showSoftInput                     : 显示软键盘
@@ -762,6 +799,7 @@ clickBlankArea2HideSoftInput      : 点击屏幕空白区域隐藏软键盘
 ```
 
 <span id="logutils">
+
 * ### 打印日志 -> [LogUtils.java][LogUtils.java]
 ```
 getConfig                : 获取 log 配置
@@ -799,11 +837,13 @@ xml                      : log 字符串之 xml
 ```
 
 <span id="looptimer">
+
 * ### 循环定时器 -> [LoopTimer.java][LoopTimer.java]
 ```
 ```
 
 <span id="lunarutils">
+
 * ### 阴历阳历相关 -> [LunarUtils.java][LunarUtils.java]
 ```
 lunarYearToGanZhi       : 农历年份转干支
@@ -812,6 +852,7 @@ SolarToLunar            : 公历转农历
 ```
 
 <span id="m3u8parserutils">
+
 * ### m3u8文件解析类 -> [M3U8ParserUtils.java][M3U8ParserUtils.java]
 ```
 parseString           : 解析m3u8的ts下载地址
@@ -819,6 +860,7 @@ getM3u8Key            : 获取m3u8文件中的uri对应的key
 ```
 
 <span id="maputils">
+
 * ### 偶对象相关 -> [MapUtils.java][MapUtils.java]
 ```
 isEmpty                     : is null or its size is 0
@@ -832,6 +874,7 @@ toJson                      : join map
 ```
 
 <span id="md5utils">
+
 * ### 获取MD5相关 -> [MD5Utils.java][MD5Utils.java]
 ```
 getDigest      : 获取 MessageDigest 实例
@@ -839,6 +882,7 @@ md5            : 获取md5
 ```
 
 <span id="mediaplayerutils">
+
 * ### 音频播放相关 -> [MediaPlayerUtils.java][MediaPlayerUtils.java]
 ```
 getMediaPlayer       : 获取 MediaPlayer 实例
@@ -847,6 +891,7 @@ stopAudio            : 停止播放音频文件
 ```
 
 <span id="memoryfilehelper">
+
 * ### 共享内存相关 -> [MemoryFileHelper.java][MemoryFileHelper.java]
 ```
 createMemoryFile          : 创建共享内存对象
@@ -856,6 +901,7 @@ getFileDescriptor         : 获取共享内存的文件描述符
 ```
 
 <span id="metadatautils">
+
 * ### 元数据相关 -> [MetaDataUtils.java][MetaDataUtils.java]
 ```
 getMetaDataInApp     : 获取 application 的 meta-data 值
@@ -865,6 +911,7 @@ getMetaDataInReceiver: 获取 receiver 的 meta-data 值
 ```
 
 <span id="money">
+
 * ### 单币种货币类，处理货币算术、币种和取整 -> [Money.java][Money.java]
 ```
 Money                     : 构造器
@@ -895,6 +942,7 @@ dump                      : 生成本对象内部变量的字符串表示，用�
 ```
 
 <span id="networkutils">
+
 * ### 手机网络相关 -> [NetworkUtils.java][NetworkUtils.java]
 ```
 openWirelessSettings  : 打开网络设置界面
@@ -919,6 +967,7 @@ getServerAddressByWifi: 根据 WiFi 获取服务端 IP 地址
 ```
 
 <span id="notificationutils">
+
 * ### Notification相关 -> [NotificationUtils.java][NotificationUtils.java]
 ```
 createNotificationChannel  : 8.0以上，获取NotificationChannel对象
@@ -929,6 +978,7 @@ sendNotification           : 设置通知信息
 ```
 
 <span id="objectutils">
+
 * ### 对象相关 -> [ObjectUtils.java][ObjectUtils.java]
 ```
 isEmpty         : 判断是否为空
@@ -940,6 +990,7 @@ hashCode        : 获取对象的哈希值
 ```
 
 <span id="paletteutils">
+
 * ### 提取颜色的帮助类 -> [PaletteUtils.java][PaletteUtils.java]
 ```
 init                  : 初始化对象
@@ -949,6 +1000,7 @@ colorBurn             : 颜色加深处理
 ```
 
 <span id="pathutils">
+
 * ### 目录路径相关 -> [PathUtils.java][PathUtils.java]
 ```
 getRootPath                    : 获取根路径
@@ -990,6 +1042,7 @@ getExternalAppObbPath          : 获取外存应用 OBB 路径
 ```
 
 <span id="permissionutils">
+
 * ### 权限相关 -> [PermissionUtils.java][PermissionUtils.java]
 ```
 getPermissions          : 获取应用权限
@@ -1003,6 +1056,7 @@ request                 : 开始请求
 ```
 
 <span id="pollingutils">
+
 * ### 轮询相关工具类 -> [PollingUtils.java][PollingUtils.java]
 ```
 startPollingService     : 开启轮询服务
@@ -1010,6 +1064,7 @@ stopPollingService      : 停止轮询
 ```
 
 <span id="preconditions">
+
 * ### 判断先决条件 -> [Preconditions.java][Preconditions.java]
 ```
 isEmpty                    : 判断list数据是否为空
@@ -1025,6 +1080,7 @@ checkArrayElementsInRange  : 判决浮点数组中的所有元素都在指定的
 ```
 
 <span id="processutils">
+
 * ### 进程相关 -> [ProcessUtils.java][ProcessUtils.java]
 ```
 getForegroundProcessName  : 获取前台线程包名
@@ -1035,6 +1091,7 @@ getCurrentProcessName     : 获取当前进程名称
 ```
 
 <span id="randomutils">
+
 * ### 随机数相关 -> [RandomUtils.java][RandomUtils.java]
 ```
 getRandomNumbersAndLetters  : 获取固定长度的随机数（大小写字母、整数）
@@ -1049,6 +1106,7 @@ shuffle                     : 洗牌算法，随机排列指定数组
 ```
 
 <span id="reflectutils">
+
 * ### 反射相关 -> [ReflectUtils.java][ReflectUtils.java]
 ```
 reflect        : 设置要反射的类
@@ -1064,6 +1122,7 @@ setField       : 设置属性
 ```
 
 <span id="regexutils">
+
 * ### 正则表达式相关 -> [RegexUtils.java][RegexUtils.java]
 ```
 isMobileSimple   : 验证手机号（简单）
@@ -1085,6 +1144,7 @@ getReplaceAll    : 替换所有正则匹配的部分
 ```
 
 <span id="resourceutils">
+
 * ### 资源操作相关 -> [ResourceUtils.java][ResourceUtils.java]
 ```
 copyFileFromAssets: 从 assets 中拷贝文件
@@ -1096,6 +1156,7 @@ readRaw2List      : 从 raw 中按行读取字符串
 ```
 
 <span id="roundutils">
+
 * ### 四舍五入相关 -> [RoundUtils.java][RoundUtils.java]
 ```
 round               : 四舍五入操作
@@ -1108,6 +1169,7 @@ getMoneyStr         : 获取money类型的字符串，这是一个重载方法
 ```
 
 <span id="sdcardutils">
+
 * ### SD卡相关 -> [SDCardUtils.java][SDCardUtils.java]
 ```
 isSDCardEnable          : 判断SD卡是否可用
@@ -1123,6 +1185,7 @@ getSDCardInfo           : 获取SD卡信息
 ```
 
 <span id="serviceutils">
+
 * ### 服务相关 -> [ServiceUtils.java][ServiceUtils.java]
 ```
 getAllRunningServices   : 返回正在运行的服务
@@ -1134,18 +1197,21 @@ isServiceRunning        : 监测服务是否正在运行
 ```
 
 <span id="shellutils">
+
 * ### Shell相关 -> [ShellUtils.java][ShellUtils.java]
 ```
 execCmd : 在 root 下执行命令，这是一个重载方法
 ```
 
 <span id="smsutils">
+
 * ### 短信相关 -> [SMSUtils.java][SMSUtils.java]
 ```
 send       : 发送短信
 ```
 
 <span id="snackbarutils">
+
 * ### Snackbar相关 -> [SnackbarUtils.java][SnackbarUtils.java]
 ```
 with           : 设置 snackbar 依赖 view
@@ -1166,6 +1232,7 @@ addView        : 添加 snackbar 视图
 ```
 
 <span id="sputils">
+
 * ### SharedPreferences相关 -> [SpUtils.java][SpUtils.java]
 ```
 getInstance    : 获取单例
@@ -1191,6 +1258,7 @@ clear          : 清空缓存，这是一个重载方法
 ```
 
 <span id="statusbarutils">
+
 * ### 状态栏相关 -> [StatusBarUtils.java][StatusBarUtils.java]
 ```
 setColor                              : 设置状态栏颜色
@@ -1212,6 +1280,7 @@ hideFakeStatusBarView                 : 隐藏伪状态栏 View
 ```
 
 <span id="stringutils">
+
 * ### 字符串相关 -> [StringUtils.java][StringUtils.java]
 ```
 isEmpty                : 判断字符串是否为null或长度为0（不包含空格，即如果有空格，则返回false）
@@ -1231,6 +1300,7 @@ isNumeric              : 判断字符串是否只包含unicode数字
 ```
 
 <span id="threadpoolutils">
+
 * ### 线程操作相关 -> [ThreadPoolUtils.java][ThreadPoolUtils.java] ->[ThreadPoolUtilsTest.java]
 ```
 isMainThread            : 判断当前是否主线程
@@ -1261,6 +1331,7 @@ cancel                  : 取消任务的执行
 ```
 
 <span id="toastmaster">
+
 * ### Toast工具相关 -> [ToastMaster.java][ToastMaster.java]
 ```
 setGravity     : 设置吐司位置
@@ -1276,6 +1347,7 @@ cancel         : 取消吐司显示
 ```
 
 <span id="toastutils">
+
 * ### Toast简单工具类 -> [ToastUtils.java][ToastUtils.java]
 ```
 showToast     : 显示吐司
@@ -1283,12 +1355,14 @@ cancel        : 取消吐司
 ```
 
 <span id="utils">
+
 * ### 初始化Application，在Application之中调用init方法 -> [Utils.java][Utils.java]
 ```
 init            : 初始化Application
 ```
 
 <span id="viewutils">
+
 * ### 视图工具 -> [ViewUtils.java][ViewUtils.java]
 ```
 forceGetViewSize : 在 onCreate 中获取视图的尺寸
@@ -1302,12 +1376,14 @@ setLayout        : 设置控件所在的位置YY，并且不改变宽高，XY为
 ```
 
 <span id="weakhandler">
+
 * ### 弱引用的Handler，防止内存泄漏，用法与Handler一致 -> [WeakHandler.java][WeakHandler.java]
 ```
 
 ```
 
 <span id="webviewutils">
+
 * ### WebView常用设置 -> [WebViewUtils.java][WebViewUtils.java]
 ```
 enableAdaptive                              : 开启自适应功能
@@ -1322,6 +1398,7 @@ goBack                                      : 返回
 ```
 
 <span id="ziputils">
+
 * ### 文件压缩相关 -> [ZipUtils.java][ZipUtils.java]
 ```
 zipFiles          : 批量压缩文件
