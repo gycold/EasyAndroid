@@ -2,6 +2,8 @@ package com.easytools.tools;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * package: com.easytools.tools.StringUtils
@@ -124,6 +126,21 @@ public class StringUtils {
             chars[len - i - 1] = c;
         }
         return new String(chars);
+    }
+
+    /**
+     * 去掉字符串里的回车（\n）、水平制表符(\t)、空格(\s)和换行（\r）
+     * @param str
+     * @return
+     */
+    public static String replaceBlank(String str) {
+        String dest = "";
+        if (str!=null) {
+            Pattern p = Pattern.compile("\\s*|\t|\r|\n");
+            Matcher m = p.matcher(str);
+            dest = m.replaceAll("");
+        }
+        return dest;
     }
 
 
