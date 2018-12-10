@@ -102,6 +102,7 @@ implementation 'com.easyandroid:easytools:1.4.2'
 + [78、弱引用的Handler，防止内存泄漏，用法与Handler一致](#weakhandler)
 + [79、WebView常用设置](#webviewutils)
 + [80、文件压缩相关](#ziputils)
++ [81、打印长日志](#longlogutils)
 ---
 
 <span id="acache">
@@ -1409,6 +1410,9 @@ getFilesPath      : 获取压缩文件中的文件路径链表
 getComments       : 获取压缩文件中的注释链表
 ```
 
+<span id="longlogutils">
+
+* ### 打印长日志 -> [LongLogUtils.java][LongLogUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 
 
 [ACache.java]: https://github.com/gycold/EasyAndroid/blob/master/easytools/src/main/java/com/easytools/tools/ACache.java
@@ -1571,6 +1575,8 @@ getComments       : 获取压缩文件中的注释链表
 [WebViewUtils.java]: https://github.com/gycold/EasyAndroid/blob/master/easytools/src/main/java/com/easytools/tools/WebViewUtils.java
 
 [ZipUtils.java]: https://github.com/gycold/EasyAndroid/blob/master/easytools/src/main/java/com/easytools/tools/ZipUtils.java
+
+[LongLogUtils.java]: https://github.com/gycold/EasyAndroid/blob/master/easytools/src/main/java/com/easytools/tools/LongLogUtils.java
 
 一行代码搞定Android7.0以上版本 FileProvider的使用：
  ![image](https://github.com/gycold/EasyAndroid/raw/master/pictures/fileprovider.png)
