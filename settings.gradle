@@ -1,1 +1,1 @@
-include ':app', ':easytools', ':easyviews'
+include ':app', ':easytools'

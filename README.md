@@ -5,7 +5,7 @@
 
 使用方法：<br>
 ```
-implementation 'com.easyandroid:easytools:1.4.2'
+implementation 'com.easyandroid:easytools:1.4.3'
 
 然后，在自己的Application中调用Utils.init(this);进行初始化
 ```
