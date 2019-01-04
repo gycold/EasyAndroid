@@ -3,9 +3,11 @@ package com.easyandroid;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
+import com.easytools.tools.DateUtils;
 import com.easytools.tools.LongLogUtils;
 
 
@@ -33,6 +35,9 @@ public class TestActivity extends BaseActivity {
         smallKeyboardUtil = new PopupKeyboardUtil(self());
         smallKeyboardUtil.attachTo(edittext1, false);
         LongLogUtils.d(str);
+
+        Log.d("年月日时分秒", DateUtils.getCurDateTime());
+        Log.d("年月日", DateUtils.getCurDate());
     }
 
     public void onClickView(View view) {

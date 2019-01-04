@@ -1,9 +1,10 @@
 package com.easytools.tools;
 
+import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.view.animation.RotateAnimation;
 import android.view.animation.Animation.AnimationListener;
+import android.view.animation.RotateAnimation;
 import android.view.animation.ScaleAnimation;
 
 /**
@@ -305,6 +306,78 @@ public class AnimationUtils {
     public static ScaleAnimation getAmplificationAnimation(AnimationListener animationListener) {
         return getAmplificationAnimation(DEFAULT_ANIMATION_DURATION,
                 animationListener);
-
     }
+
+    public static AlphaAnimation HIDE_ANIM;//渐隐动画
+    public static AlphaAnimation SHOW_ANIM;//渐显动画
+
+    /**
+     * 设置View的渐隐动画
+     *
+     * @param view
+     * @param duration
+     */
+    public static void setHideAnimation(View view, int duration) {
+        if (null == view || duration < 0) {
+            return;
+        }
+
+        if (null != HIDE_ANIM) {
+            HIDE_ANIM.cancel();
+        }
+        // 监听动画结束的操作
+        HIDE_ANIM = new AlphaAnimation(1.0f, 0.0f);
+        HIDE_ANIM.setDuration(duration);
+        HIDE_ANIM.setFillAfter(true);
+        HIDE_ANIM.setAnimationListener(new AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation arg0) {
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation arg0) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animation arg0) {
+                view.setVisibility(View.GONE);
+            }
+        });
+        view.startAnimation(HIDE_ANIM);
+    }
+
+    /**
+     * 设置View的渐显动画
+     *
+     * @param view
+     * @param duration
+     */
+    public void setShowAnimation(View view, int duration) {
+        if (null == view || duration < 0) {
+            return;
+        }
+        if (null != SHOW_ANIM) {
+            SHOW_ANIM.cancel();
+        }
+        SHOW_ANIM = new AlphaAnimation(0.0f, 1.0f);
+        SHOW_ANIM.setDuration(duration);
+        SHOW_ANIM.setFillAfter(true);
+        SHOW_ANIM.setAnimationListener(new AnimationListener() {
+
+            @Override
+            public void onAnimationStart(Animation arg0) {
+                view.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation arg0) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animation arg0) {
+            }
+        });
+        view.startAnimation(SHOW_ANIM);
+    }
+
 }

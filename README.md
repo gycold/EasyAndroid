@@ -481,7 +481,8 @@ str2Date         : 字符串转为Date
 date2Str         : Date转为字符串
 str2Calendar     : 字符串转为Calendar
 calendar2Str     : Calendar转为字符串
-getCurDateStr    : 返回当前的日期和时间
+getCurDate       : 返回当前的日期，这是一个重载方法，可指定格式
+getCurDateTime   : 返回当前的日期和时间
 getMillon        : 返回当前时间字符串
 getDay           : 返回给定天的字符串
 getSMillon       : 返回给定时间的毫秒字符串

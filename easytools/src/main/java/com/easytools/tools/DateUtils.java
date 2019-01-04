@@ -201,14 +201,21 @@ public class DateUtils {
     /**
      * 返回当前的日期和时间
      *
-     * @return 如：2017-1-15 16:37:15
+     * @return 如：2019-01-04 13:51:27
      */
-    public static String getCurDateStr() {
+    public static String getCurDateTime() {
         Calendar c = Calendar.getInstance();
-        c.setTime(new Date());
-        return c.get(Calendar.YEAR) + "-" + (c.get(Calendar.MONTH) + 1) + "-" +
-                c.get(Calendar.DAY_OF_MONTH) + " " + c.get(Calendar.HOUR_OF_DAY) +
-                ":" + c.get(Calendar.MINUTE) + ":" + c.get(Calendar.SECOND);
+        return calendar2Str(c, FORMAT_YMDHMS);
+    }
+
+    /**
+     * 返回当前的日期
+     *
+     * @return 如：2019-01-04
+     */
+    public static String getCurDate() {
+        Calendar c = Calendar.getInstance();
+        return calendar2Str(c, FORMAT_YMD);
     }
 
     /**
@@ -216,7 +223,7 @@ public class DateUtils {
      * @param format    格式化的类型
      * @return  返回格式化之后的事件
      */
-    public static String getCurDateStr(String format) {
+    public static String getCurDate(String format) {
         Calendar c = Calendar.getInstance();
         return calendar2Str(c, format);
     }
