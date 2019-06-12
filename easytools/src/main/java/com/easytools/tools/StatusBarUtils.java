@@ -7,14 +7,19 @@ import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.ColorInt;
 import android.support.annotation.IntRange;
+import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.widget.DrawerLayout;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 
 import com.easytools.R;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
 /**
  * package: com.easytools.tools.StatusBarUtils
@@ -22,12 +27,12 @@ import com.easytools.R;
  * description:为Android App 设置状态栏的工具类，
  * 可以在4.4及其以上系统中实现 沉浸式状态栏/状态栏变色，支持设置状态栏透明度，可以满足设计师的各种要求
  * 如：
- *     设置状态栏颜色   --> StatusBarUtils.setColor(Activity activity, int color)
- *     设置状态栏半透明 --> StatusBarUtils.setTranslucent(Activity activity, int statusBarAlpha)
- *     设置状态栏全透明 --> StatusBarUtils.setTransparent(Activity activity)
- *     为包含 DrawerLayout 的界面设置状态栏颜色（也可以设置半透明和全透明）--> StatusBarUtils.setColorForDrawerLayout(Activity activity, DrawerLayout drawerLayout, int color)
- *     为使用 ImageView 作为头部的界面设置状态栏透明 --> StatusBarUtils.setTranslucentForImageView(Activity activity, int statusBarAlpha, View needOffsetView)
- *
+ * 设置状态栏颜色   --> StatusBarUtils.setColor(Activity activity, int color)
+ * 设置状态栏半透明 --> StatusBarUtils.setTranslucent(Activity activity, int statusBarAlpha)
+ * 设置状态栏全透明 --> StatusBarUtils.setTransparent(Activity activity)
+ * 为包含 DrawerLayout 的界面设置状态栏颜色（也可以设置半透明和全透明）--> StatusBarUtils.setColorForDrawerLayout(Activity activity, DrawerLayout drawerLayout, int color)
+ * 为使用 ImageView 作为头部的界面设置状态栏透明 --> StatusBarUtils.setTranslucentForImageView(Activity activity, int statusBarAlpha, View needOffsetView)
+ * <p>
  * time: create at 2018/1/20 0020 10:27
  */
 
@@ -128,7 +133,7 @@ public class StatusBarUtils {
     }
 
     /**
-     * 设置状态栏纯色，不加半透明效果
+     * 设置状态栏纯色 不加半透明效果
      *
      * @param activity 需要设置的 activity
      * @param color    状态栏颜色值
@@ -517,6 +522,64 @@ public class StatusBarUtils {
         View fakeTranslucentView = decorView.findViewById(FAKE_TRANSLUCENT_VIEW_ID);
         if (fakeTranslucentView != null) {
             fakeTranslucentView.setVisibility(View.GONE);
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.M)
+    public static void setLightMode(Activity activity) {
+        setMIUIStatusBarDarkIcon(activity, true);
+        setMeizuStatusBarDarkIcon(activity, true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            activity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.M)
+    public static void setDarkMode(Activity activity) {
+        setMIUIStatusBarDarkIcon(activity, false);
+        setMeizuStatusBarDarkIcon(activity, false);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            activity.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+        }
+    }
+
+    /**
+     * 修改 MIUI V6  以上状态栏颜色
+     */
+    private static void setMIUIStatusBarDarkIcon(@NonNull Activity activity, boolean darkIcon) {
+        Class<? extends Window> clazz = activity.getWindow().getClass();
+        try {
+            Class<?> layoutParams = Class.forName("android.view.MiuiWindowManager$LayoutParams");
+            Field field = layoutParams.getField("EXTRA_FLAG_STATUS_BAR_DARK_MODE");
+            int darkModeFlag = field.getInt(layoutParams);
+            Method extraFlagField = clazz.getMethod("setExtraFlags", int.class, int.class);
+            extraFlagField.invoke(activity.getWindow(), darkIcon ? darkModeFlag : 0, darkModeFlag);
+        } catch (Exception e) {
+            //e.printStackTrace();
+        }
+    }
+
+    /**
+     * 修改魅族状态栏字体颜色 Flyme 4.0
+     */
+    private static void setMeizuStatusBarDarkIcon(@NonNull Activity activity, boolean darkIcon) {
+        try {
+            WindowManager.LayoutParams lp = activity.getWindow().getAttributes();
+            Field darkFlag = WindowManager.LayoutParams.class.getDeclaredField("MEIZU_FLAG_DARK_STATUS_BAR_ICON");
+            Field meizuFlags = WindowManager.LayoutParams.class.getDeclaredField("meizuFlags");
+            darkFlag.setAccessible(true);
+            meizuFlags.setAccessible(true);
+            int bit = darkFlag.getInt(null);
+            int value = meizuFlags.getInt(lp);
+            if (darkIcon) {
+                value |= bit;
+            } else {
+                value &= ~bit;
+            }
+            meizuFlags.setInt(lp, value);
+            activity.getWindow().setAttributes(lp);
+        } catch (Exception e) {
+            //e.printStackTrace();
         }
     }
 

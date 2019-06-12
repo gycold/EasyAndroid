@@ -47,7 +47,7 @@ publish {
     userOrg = 'easyandroid'//bintray.com用户名
     groupId = 'com.easyandroid'//jcenter上的路径
     artifactId = 'easytools'//项目名称
-    publishVersion = '1.4.4'//版本号
+    publishVersion = '1.4.5'//版本号
     desc = 'Oh hi, this is a nice description for a project, right?'//描述
     website = 'https://github.com/gycold/EasyAndroid.git'//网站
 }
