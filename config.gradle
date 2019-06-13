@@ -21,6 +21,11 @@ ext {
             espressoSdkVersion      : "3.0.2",
     ]
 
+    jdk = [
+            sourceCompatibility: JavaVersion.VERSION_1_8,
+            targetCompatibility: JavaVersion.VERSION_1_8
+    ]
+
     dependencies = [
             //support
             "appcompat-v7"                 : "com.android.support:appcompat-v7:${version["androidSupportSdkVersion"]}",

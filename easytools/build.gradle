@@ -23,11 +23,12 @@ android {
     lintOptions {
         abortOnError false
     }
-    
+
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility = rootProject.ext.jdk["sourceCompatibility"]
+        targetCompatibility = rootProject.ext.jdk["targetCompatibility"]
     }
+
 }
 
 dependencies {
