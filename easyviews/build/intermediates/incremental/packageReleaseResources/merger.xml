@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="3"><dataSet config="main$Generated" generated="true"><source path="F:\Projects\MyGithub\EasyAndroid\easyviews\src\main\res"/><source path="F:\Projects\MyGithub\EasyAndroid\easyviews\build\generated\res\rs\release"/><source path="F:\Projects\MyGithub\EasyAndroid\easyviews\build\generated\res\resValues\release"/></dataSet><dataSet config="main" generated-set="main$Generated"><source path="F:\Projects\MyGithub\EasyAndroid\easyviews\src\main\res"><file name="anim_marquee_in" path="F:\Projects\MyGithub\EasyAndroid\easyviews\src\main\res\anim\anim_marquee_in.xml" qualifiers="" type="anim"/><file name="anim_marquee_out" path="F:\Projects\MyGithub\EasyAndroid\easyviews\src\main\res\anim\anim_marquee_out.xml" qualifiers="" type="anim"/><file name="basepopup_fade_in" path="F:\Projects\MyGithub\EasyAndroid\easyviews\src\main\res\anim\basepopup_fade_in.xml" qualifiers="" type="anim"/><file name="basepopup_fade_out" path="F:\Projects\MyGithub\EasyAndroid\easyviews\src\main\res\anim\basepopup_fade_out.xml" qualifiers="" type="anim"/><file name="dd_mask_in" path="F:\Projects\MyGithub\EasyAndroid\easyviews\src\main\res\anim\dd_mask_in.xml" qualifiers="" type="anim"/><file name="dd_mask_out" path="F:\Projects\MyGithub\EasyAndroid\easyviews\src\main\res\anim\dd_mask_out.xml" qualifiers="" type="anim"/><file name="dd_menu_in" path="F:\Projects\MyGithub\EasyAndroid\easyviews\src\main\res\anim\dd_menu_in.xml" qualifiers="" type="anim"/><file name="dd_menu_out" path="F:\Projects\MyGithub\EasyAndroid\easyviews\src\main\res\anim\dd_menu_out.xml" qualifiers="" type="anim"/><file name="fade_in_center" path="F:\Projects\MyGithub\EasyAndroid\easyviews\src\main\res\anim\fade_in_center.xml" qualifiers="" type="anim"/><file name="fade_out_center" path="F:\Projects\MyGithub\EasyAndroid\easyviews\src\main\res\anim\fade_out_center.xml" qualifiers="" type="anim"/><file name="slide_in_bottom" path="F:\Projects\MyGithub\EasyAndroid\easyviews\src\main\res\anim\slide_in_bottom.xml" qualifiers="" type="anim"/><file name="slide_out_bottom" path="F:\Projects\MyGithub\EasyAndroid\easyviews\src\main\res\anim\slide_out_bottom.xml" qualifiers="" type="anim"/><file name="bg_actionsheet_cancel" path="F:\Projects\MyGithub\EasyAndroid\easyviews\src\main\res\drawable\bg_actionsheet_cancel.xml" qualifiers="" type="drawable"/><file name="bg_actionsheet_header" path="F:\Projects\MyGithub\EasyAndroid\easyviews\src\main\res\drawable\bg_actionsheet_header.xml" qualifiers="" type="drawable"/><file name="bg_alertbutton_bottom" path="F:\Projects\MyGithub\EasyAndroid\easyviews\src\main\res\drawable\bg_alertbutton_bottom.xml" qualifiers="" type="drawable"/><file name="bg_alertbutton_left" path="F:\Projects\MyGithub\EasyAndroid\easyviews\src\main\res\drawable\bg_alertbutton_left.xml" qualifiers="" type="drawable"/><file name="bg_alertbutton_none" path="F:\Projects\MyGithub\EasyAndroid\easyviews\src\main\res\drawable\bg_alertbutton_none.xml" qualifiers="" type="drawable"/><file name="bg_alertbutton_right" path="F:\Projects\MyGithub\EasyAndroid\easyviews\src\main\res\drawable\bg_alertbutton_right.xml" qualifiers="" type="drawable"/><file name="bg_alertview_alert" path="F:\Projects\MyGithub\EasyAndroid\easyviews\src\main\res\drawable\bg_alertview_alert.xml" qualifiers="" type="drawable"/><file name="clock" path="F:\Projects\MyGithub\EasyAndroid\easyviews\src\main\res\drawable\clock.png" qualifiers="" type="drawable"/><file name="dialog_style" path="F:\Projects\MyGithub\EasyAndroid\easyviews\src\main\res\drawable\dialog_style.xml" qualifiers="" type="drawable"/><file name="hotsale" path="F:\Projects\MyGithub\EasyAndroid\easyviews\src\main\res\drawable\hotsale.png" qualifiers="" type="drawable"/><file name="ic_filter" path="F:\Projects\MyGithub\EasyAndroid\easyviews\src\main\res\drawable\ic_filter.png" qualifiers="" type="drawable"/><file name="dialog_layout" path="F:\Projects\MyGithub\EasyAndroid\easyviews\src\main\res\layout\dialog_layout.xml" qualifiers="" type="layout"/><file name="include_alertheader" path="F:\Projects\MyGithub\EasyAndroid\easyviews\src\main\res\layout\include_alertheader.xml" qualifiers="" type="layout"/><file name="item_alertbutton" path="F:\Projects\MyGithub\EasyAndroid\easyviews\src\main\res\layout\item_alertbutton.xml" qualifiers="" type="layout"/><file name="layout_alertview" path="F:\Projects\MyGithub\EasyAndroid\easyviews\src\main\res\layout\layout_alertview.xml" qualifiers="" type="layout"/><file name="layout_alertview_actionsheet" path="F:\Projects\MyGithub\EasyAndroid\easyviews\src\main\res\layout\layout_alertview_actionsheet.xml" qualifiers="" type="layout"/><file name="layout_alertview_alert" path="F:\Projects\MyGithub\EasyAndroid\easyviews\src\main\res\layout\layout_alertview_alert.xml" qualifiers="" type="layout"/><file name="layout_alertview_alert_horizontal" path="F:\Projects\MyGithub\EasyAndroid\easyviews\src\main\res\layout\layout_alertview_alert_horizontal.xml" qualifiers="" type="layout"/><file name="layout_alertview_alert_vertical" path="F:\Projects\MyGithub\EasyAndroid\easyviews\src\main\res\layout\layout_alertview_alert_vertical.xml" qualifiers="" type="layout"/><file path="F:\Projects\MyGithub\EasyAndroid\easyviews\src\main\res\values\attrs.xml" qualifiers=""><declare-styleable name="MultiShapeView">
+        <attr format="enum" name="shape">
+            <enum name="rect" value="1"/>
+            <enum name="circle" value="2"/>
+        </attr>
+        <attr format="dimension" name="border_width"/>
+        <attr format="color" name="border_color"/>
+        <attr format="color" name="cover_color"/>
+        <attr format="dimension" name="round_radius"/>
+    </declare-styleable><declare-styleable name="CircleImageView">
+        <attr format="dimension" name="civ_border_width"/>
+        <attr format="color" name="civ_border_color"/>
+        <attr format="boolean" name="civ_border_overlay"/>
+        <attr format="color" name="civ_fill_color"/>
+    </declare-styleable><declare-styleable name="ProgressWheel">
+        <attr format="boolean" name="matProg_progressIndeterminate"/>
+        <attr format="color" name="matProg_barColor"/>
+        <attr format="color" name="matProg_rimColor"/>
+        <attr format="dimension" name="matProg_rimWidth"/>
+        <attr format="float" name="matProg_spinSpeed"/>
+        <attr format="integer" name="matProg_barSpinCycleTime"/>
+        <attr format="dimension" name="matProg_circleRadius"/>
+        <attr format="boolean" name="matProg_fillRadius"/>
+        <attr format="dimension" name="matProg_barWidth"/>
+        <attr format="boolean" name="matProg_linearProgress"/>
+    </declare-styleable><declare-styleable name="DropDownMenu">
+        <attr format="color" name="ddunderlineColor"/>
+        <attr format="color" name="dddividerColor"/>
+        <attr format="color" name="ddtextSelectedColor"/>
+        <attr format="color" name="ddtextUnselectedColor"/>
+        <attr format="color" name="ddmenuBackgroundColor"/>
+        <attr format="color" name="ddmaskColor"/>
+        <attr format="dimension" name="ddmenuTextSize"/>
+        <attr format="reference" name="ddmenuSelectedIcon"/>
+        <attr format="reference" name="ddmenuUnselectedIcon"/>
+        <attr format="float" name="ddmenuMenuHeightPercent"/>
+        <attr format="dimension" name="ddmenuHeight"/>
+        <attr format="dimension" name="ddmenuIconHeight"/>
+        <attr format="dimension" name="ddmuneIconWidth"/>
+        <attr format="dimension" name="ddmenuIconMarginLeft"/>
+        <attr format="dimension" name="ddmenuIconMarginTop"/>
+    </declare-styleable><declare-styleable name="MarqueeViewStyle">
+        <attr format="integer|reference" name="mvInterval"/>
+        <attr format="integer|reference" name="mvAnimDuration"/>
+        <attr format="dimension|reference" name="mvTextSize"/>
+        <attr format="color|reference" name="mvTextColor"/>
+        <attr format="boolean" name="mvSingleLine"/>
+        <attr name="mvGravity">
+            <enum name="left" value="0"/>
+            <enum name="center" value="1"/>
+            <enum name="right" value="2"/>
+        </attr>
+    </declare-styleable><declare-styleable name="MovingImageView">
+        <attr format="integer" name="miv_speed"/>
+        <attr format="integer" name="miv_repetitions"/>
+        <attr format="float" name="miv_max_relative_size"/>
+        <attr format="float" name="miv_min_relative_offset"/>
+        <attr format="integer" name="miv_start_delay"/>
+        <attr format="boolean" name="miv_load_on_create"/>
+    </declare-styleable><declare-styleable name="MovingImageViewTheme">
+        <attr format="reference" name="movingImageViewStyle"/>
+    </declare-styleable><declare-styleable name="SimpleTagImageView">
+        <attr format="dimension" name="simple_corner_distance"/>
+        <attr format="dimension" name="simple_tag_width"/>
+        <attr format="color" name="simple_tag_background_color"/>
+        <attr format="string" name="simple_tag_text"/>
+        <attr format="dimension" name="simple_tag_textSize"/>
+        <attr format="color" name="simple_tag_textColor"/>
+        <attr format="enum" name="simple_tag_textStyle">
+            <enum name="NORMAL" value="0"/>
+            <enum name="BOLD" value="1"/>
+            <enum name="ITALIC" value="2"/>
+            <enum name="BOLD_ITALIC" value="3"/>
+        </attr>
+        <attr format="enum" name="simple_tag_orientation">
+            <enum name="left_top" value="0"/>
+            <enum name="right_top" value="1"/>
+            <enum name="left_bottom" value="2"/>
+            <enum name="right_bottom" value="3"/>
+        </attr>
+        <attr format="boolean" name="simple_tag_enable"/>
+        <attr format="dimension" name="simple_tag_round_radius"/>
+    </declare-styleable></file><file path="F:\Projects\MyGithub\EasyAndroid\easyviews\src\main\res\values\colors.xml" qualifiers=""><color name="bgColor_overlay">#60000000</color><color name="bgColor_alertview_alert">#f8f8f8</color><color name="bgColor_alertview_alert_start">#f0f0f0</color><color name="textColor_alert_title">#000000</color><color name="textColor_actionsheet_title">#8f8f8f</color><color name="textColor_alert_msg">#000000</color><color name="textColor_actionsheet_msg">#8f8f8f</color><color name="bgColor_divier">#d7d7db</color><color name="textColor_alert_button_cancel">#007aff</color><color name="textColor_alert_button_destructive">#ff3b30</color><color name="textColor_alert_button_others">#007aff</color><color name="bgColor_alert_button_press">#EAEAEA</color><color name="bgColor_actionsheet_cancel_nor">#ffffff</color><color name="font_text_dialog_gray">#D4D4D4</color></file><file path="F:\Projects\MyGithub\EasyAndroid\easyviews\src\main\res\values\dimens.xml" qualifiers=""><dimen name="textSize_alert_title">22sp</dimen><dimen name="textSize_actionsheet_title">14sp</dimen><dimen name="height_alert_title">60dp</dimen><dimen name="height_actionsheet_title">40dp</dimen><dimen name="textSize_alert_msg">15sp</dimen><dimen name="textSize_actionsheet_msg">14sp</dimen><dimen name="marginBottom_alert_msg">25dp</dimen><dimen name="marginBottom_actionsheet_msg">14dp</dimen><dimen name="margin_alert_left_right">40dp</dimen><dimen name="margin_actionsheet_left_right">10dp</dimen><dimen name="size_divier">1dp</dimen><dimen name="height_alert_button">48dp</dimen><dimen name="textSize_alert_button">18sp</dimen><dimen name="radius_alertview">15px</dimen><dimen name="flag_left">60dp</dimen><dimen name="header_divider_height">2dp</dimen><dimen name="header_height">24dp</dimen><dimen name="header_textsize">22sp</dimen></file><file path="F:\Projects\MyGithub\EasyAndroid\easyviews\src\main\res\values\integers.xml" qualifiers=""><integer name="animation_default_duration">300</integer></file><file path="F:\Projects\MyGithub\EasyAndroid\easyviews\src\main\res\values\styles.xml" qualifiers=""><style name="AlertActivity_AlertStyle" parent="android:Theme.Dialog">
+        
+        
+        <item name="android:windowFrame">@null</item>
+        
+        <item name="android:windowIsFloating">true</item>
+        
+        <item name="android:windowIsTranslucent">true</item>
+        
+        <item name="android:windowNoTitle">true</item>
+        
+        <item name="android:windowBackground">@android:color/transparent</item>
+        
+        <item name="android:backgroundDimEnabled">true</item>
+    </style><style name="PopupAnimaFade" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/basepopup_fade_in</item>
+        <item name="android:windowExitAnimation">@anim/basepopup_fade_out</item>
+    </style></file></source><source path="F:\Projects\MyGithub\EasyAndroid\easyviews\build\generated\res\rs\release"/><source path="F:\Projects\MyGithub\EasyAndroid\easyviews\build\generated\res\resValues\release"/></dataSet><dataSet config="release$Generated" generated="true"><source path="F:\Projects\MyGithub\EasyAndroid\easyviews\src\release\res"/></dataSet><dataSet config="release" generated-set="release$Generated"><source path="F:\Projects\MyGithub\EasyAndroid\easyviews\src\release\res"/></dataSet><mergedItems><configuration qualifiers=""><declare-styleable name="CircleImageView"><attr format="dimension" name="civ_border_width"/><attr format="color" name="civ_border_color"/><attr format="boolean" name="civ_border_overlay"/><attr format="color" name="civ_fill_color"/></declare-styleable><declare-styleable name="MarqueeViewStyle"><attr format="integer|reference" name="mvInterval"/><attr format="integer|reference" name="mvAnimDuration"/><attr format="dimension|reference" name="mvTextSize"/><attr format="color|reference" name="mvTextColor"/><attr format="boolean" name="mvSingleLine"/><attr name="mvGravity">
+            <enum name="left" value="0"/>
+            <enum name="center" value="1"/>
+            <enum name="right" value="2"/>
+        </attr></declare-styleable><declare-styleable name="MovingImageView"><attr format="integer" name="miv_speed"/><attr format="integer" name="miv_repetitions"/><attr format="float" name="miv_max_relative_size"/><attr format="float" name="miv_min_relative_offset"/><attr format="integer" name="miv_start_delay"/><attr format="boolean" name="miv_load_on_create"/></declare-styleable><declare-styleable name="SimpleTagImageView"><attr format="dimension" name="simple_corner_distance"/><attr format="dimension" name="simple_tag_width"/><attr format="color" name="simple_tag_background_color"/><attr format="string" name="simple_tag_text"/><attr format="dimension" name="simple_tag_textSize"/><attr format="color" name="simple_tag_textColor"/><attr format="enum" name="simple_tag_textStyle">
+            <enum name="NORMAL" value="0"/>
+            <enum name="BOLD" value="1"/>
+            <enum name="ITALIC" value="2"/>
+            <enum name="BOLD_ITALIC" value="3"/>
+        </attr><attr format="enum" name="simple_tag_orientation">
+            <enum name="left_top" value="0"/>
+            <enum name="right_top" value="1"/>
+            <enum name="left_bottom" value="2"/>
+            <enum name="right_bottom" value="3"/>
+        </attr><attr format="boolean" name="simple_tag_enable"/><attr format="dimension" name="simple_tag_round_radius"/></declare-styleable><declare-styleable name="ProgressWheel"><attr format="boolean" name="matProg_progressIndeterminate"/><attr format="color" name="matProg_barColor"/><attr format="color" name="matProg_rimColor"/><attr format="dimension" name="matProg_rimWidth"/><attr format="float" name="matProg_spinSpeed"/><attr format="integer" name="matProg_barSpinCycleTime"/><attr format="dimension" name="matProg_circleRadius"/><attr format="boolean" name="matProg_fillRadius"/><attr format="dimension" name="matProg_barWidth"/><attr format="boolean" name="matProg_linearProgress"/></declare-styleable><declare-styleable name="MovingImageViewTheme"><attr format="reference" name="movingImageViewStyle"/></declare-styleable><declare-styleable name="DropDownMenu"><attr format="color" name="ddunderlineColor"/><attr format="color" name="dddividerColor"/><attr format="color" name="ddtextSelectedColor"/><attr format="color" name="ddtextUnselectedColor"/><attr format="color" name="ddmenuBackgroundColor"/><attr format="color" name="ddmaskColor"/><attr format="dimension" name="ddmenuTextSize"/><attr format="reference" name="ddmenuSelectedIcon"/><attr format="reference" name="ddmenuUnselectedIcon"/><attr format="float" name="ddmenuMenuHeightPercent"/><attr format="dimension" name="ddmenuHeight"/><attr format="dimension" name="ddmenuIconHeight"/><attr format="dimension" name="ddmuneIconWidth"/><attr format="dimension" name="ddmenuIconMarginLeft"/><attr format="dimension" name="ddmenuIconMarginTop"/></declare-styleable><declare-styleable name="MultiShapeView"><attr format="enum" name="shape">
+            <enum name="rect" value="1"/>
+            <enum name="circle" value="2"/>
+        </attr><attr format="dimension" name="border_width"/><attr format="color" name="border_color"/><attr format="color" name="cover_color"/><attr format="dimension" name="round_radius"/></declare-styleable></configuration></mergedItems></merger>

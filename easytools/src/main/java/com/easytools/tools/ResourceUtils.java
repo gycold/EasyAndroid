@@ -1,6 +1,7 @@
 package com.easytools.tools;
 
 import android.support.annotation.RawRes;
+import android.support.v4.content.ContextCompat;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -331,5 +332,23 @@ public class ResourceUtils {
                 e.printStackTrace();
             }
         }
+    }
+
+    /**
+     * 根据资源id获取color
+     * @param resId
+     * @return
+     */
+    public static int getColor(int resId) {
+        return ContextCompat.getColor(Utils.getApp().getApplicationContext(), resId);
+    }
+
+    /**
+     * 根据资源id获取字符串
+     * @param resId
+     * @return
+     */
+    public static String getString(int resId) {
+        return Utils.getApp().getResources().getString(resId);
     }
 }

@@ -1,0 +1,43 @@
+-- Merging decision tree log ---
+manifest
+ADDED from F:\Projects\MyGithub\EasyAndroid\easyviews\src\main\AndroidManifest.xml:1:1-9:12
+INJECTED from F:\Projects\MyGithub\EasyAndroid\easyviews\src\main\AndroidManifest.xml:1:1-9:12
+INJECTED from F:\Projects\MyGithub\EasyAndroid\easyviews\src\main\AndroidManifest.xml:1:1-9:12
+INJECTED from F:\Projects\MyGithub\EasyAndroid\easyviews\src\main\AndroidManifest.xml:1:1-9:12
+INJECTED from F:\Projects\MyGithub\EasyAndroid\easyviews\src\main\AndroidManifest.xml:1:1-9:12
+INJECTED from F:\Projects\MyGithub\EasyAndroid\easyviews\src\main\AndroidManifest.xml:1:1-9:12
+INJECTED from F:\Projects\MyGithub\EasyAndroid\easyviews\src\main\AndroidManifest.xml:1:1-9:12
+	package
+		ADDED from F:\Projects\MyGithub\EasyAndroid\easyviews\src\main\AndroidManifest.xml:1:70-99
+		INJECTED from F:\Projects\MyGithub\EasyAndroid\easyviews\src\main\AndroidManifest.xml
+		INJECTED from F:\Projects\MyGithub\EasyAndroid\easyviews\src\main\AndroidManifest.xml
+	android:versionName
+		INJECTED from F:\Projects\MyGithub\EasyAndroid\easyviews\src\main\AndroidManifest.xml
+		ADDED from F:\Projects\MyGithub\EasyAndroid\easyviews\src\main\AndroidManifest.xml:1:1-9:12
+		INJECTED from F:\Projects\MyGithub\EasyAndroid\easyviews\src\main\AndroidManifest.xml
+	android:versionCode
+		INJECTED from F:\Projects\MyGithub\EasyAndroid\easyviews\src\main\AndroidManifest.xml
+		ADDED from F:\Projects\MyGithub\EasyAndroid\easyviews\src\main\AndroidManifest.xml:1:1-9:12
+		INJECTED from F:\Projects\MyGithub\EasyAndroid\easyviews\src\main\AndroidManifest.xml
+	xmlns:android
+		ADDED from F:\Projects\MyGithub\EasyAndroid\easyviews\src\main\AndroidManifest.xml:1:11-69
+application
+ADDED from F:\Projects\MyGithub\EasyAndroid\easyviews\src\main\AndroidManifest.xml:3:5-7:19
+	android:supportsRtl
+		ADDED from F:\Projects\MyGithub\EasyAndroid\easyviews\src\main\AndroidManifest.xml:5:9-35
+	android:allowBackup
+		ADDED from F:\Projects\MyGithub\EasyAndroid\easyviews\src\main\AndroidManifest.xml:4:9-35
+uses-sdk
+INJECTED from F:\Projects\MyGithub\EasyAndroid\easyviews\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from F:\Projects\MyGithub\EasyAndroid\easyviews\src\main\AndroidManifest.xml
+INJECTED from F:\Projects\MyGithub\EasyAndroid\easyviews\src\main\AndroidManifest.xml
+INJECTED from F:\Projects\MyGithub\EasyAndroid\easyviews\src\main\AndroidManifest.xml
+INJECTED from F:\Projects\MyGithub\EasyAndroid\easyviews\src\main\AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from F:\Projects\MyGithub\EasyAndroid\easyviews\src\main\AndroidManifest.xml
+		ADDED from F:\Projects\MyGithub\EasyAndroid\easyviews\src\main\AndroidManifest.xml
+		INJECTED from F:\Projects\MyGithub\EasyAndroid\easyviews\src\main\AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from F:\Projects\MyGithub\EasyAndroid\easyviews\src\main\AndroidManifest.xml
+		ADDED from F:\Projects\MyGithub\EasyAndroid\easyviews\src\main\AndroidManifest.xml
+		INJECTED from F:\Projects\MyGithub\EasyAndroid\easyviews\src\main\AndroidManifest.xml

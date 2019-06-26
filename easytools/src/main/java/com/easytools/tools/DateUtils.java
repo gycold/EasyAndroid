@@ -219,6 +219,29 @@ public class DateUtils {
     }
 
     /**
+     * 将给定时间以"yyyy-MM-dd"的格式进行转换
+     * @param time
+     * @return
+     */
+    public static String getDateByTime(long time) {
+        SimpleDateFormat sdf = new SimpleDateFormat(FORMAT_YMD);
+        Date date = new Date(time);
+        return sdf.format(date);
+    }
+
+    /**
+     * 通过给定格式，将指定时间进行转换
+     * @param time
+     * @param format
+     * @return
+     */
+    public static String getDateByFormat(long time, String format) {
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
+        Date date = new Date(time);
+        return sdf.format(date);
+    }
+
+    /**
      * 获得当前日期的字符串格式
      * @param format    格式化的类型
      * @return  返回格式化之后的事件
@@ -257,18 +280,6 @@ public class DateUtils {
     // 格式到毫秒
     public static String getSMillon(long time) {
         return new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS").format(time);
-    }
-
-    /**
-     * 时间转换
-     * @param time
-     * @param format
-     * @return
-     */
-    public static String getDateByLong(long time, String format) {
-        SimpleDateFormat sdf = new SimpleDateFormat(format);
-        Date date = new Date(time);
-        return sdf.format(date);
     }
 
     /**

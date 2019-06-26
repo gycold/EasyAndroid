@@ -92,17 +92,19 @@ implementation 'com.easyandroid:easytools:1.4.5'
 + [68、短信相关](#smsutils)
 + [69、Snackbar相关](#snackbarutils)
 + [70、SharedPreferences相关](#sputils)
-+ [71、状态栏相关](#statusbarutils)
-+ [72、字符串相关](#stringutils)
-+ [73、线程操作相关](#threadpoolutils)
-+ [74、Toast工具相关](#toastmaster)
-+ [75、Toast简单工具类](#toastutils)
-+ [76、初始化Application，在Application之中调用init方法](#utils)
-+ [77、视图工具](#viewutils)
-+ [78、弱引用的Handler，防止内存泄漏，用法与Handler一致](#weakhandler)
-+ [79、WebView常用设置](#webviewutils)
-+ [80、文件压缩相关](#ziputils)
-+ [81、打印长日志](#longlogutils)
++ [71、状态栏背景色](#statusbarutils)
++ [72、状态栏字体颜色模式](#statustextutils)
++ [73、字符串相关](#stringutils)
++ [74、线程操作相关](#threadpoolutils)
++ [75、时间经历工具类](#timeutils)
++ [76、Toast工具相关](#toastmaster)
++ [77、Toast简单工具类](#toastutils)
++ [78、初始化Application，在Application之中调用init方法](#utils)
++ [79、视图工具](#viewutils)
++ [80、弱引用的Handler，防止内存泄漏，用法与Handler一致](#weakhandler)
++ [81、WebView常用设置](#webviewutils)
++ [82、文件压缩相关](#ziputils)
++ [83、打印长日志](#longlogutils)
 ---
 
 <span id="acache">
@@ -481,12 +483,13 @@ str2Date         : 字符串转为Date
 date2Str         : Date转为字符串
 str2Calendar     : 字符串转为Calendar
 calendar2Str     : Calendar转为字符串
-getCurDate       : 返回当前的日期，这是一个重载方法，可指定格式
-getCurDateTime   : 返回当前的日期和时间
+getCurDate       : 返回当前的日期，这是一个重载方法，可指定格式，如：2019-01-04
+getCurDateTime   : 返回当前的日期和时间：2019-01-04 13:51:27
+getDateByTime    : 将给定时间以"yyyy-MM-dd"的格式进行转换
+getDateByFormat  : 通过给定格式，将指定时间进行转换
 getMillon        : 返回当前时间字符串
 getDay           : 返回给定天的字符串
 getSMillon       : 返回给定时间的毫秒字符串
-getDateByLong    : 时间转换
 addMonth         : 在日期上增加数个整月
 addDay           : 在日期上增加天数
 getNextHour      : 获取距现在某一小时的时刻，例如：h=-1为上一个小时，h=1为下一个小时
@@ -1281,6 +1284,13 @@ setTranslucentForImageViewInFragment  : 为 fragment 头部是 ImageView 的设�
 hideFakeStatusBarView                 : 隐藏伪状态栏 View
 ```
 
+<span id="statustextutils">
+
+* ### 状态栏相关 -> [StatusTextUtils.java][StatusTextUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
+```
+StatusBarLightMode(Activity activity, boolean dark)              : dark=true黑色模式，dark=false白色模式
+```
+
 <span id="stringutils">
 
 * ### 字符串相关 -> [StringUtils.java][StringUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
@@ -1330,6 +1340,13 @@ executeByCustom         : 在自定义线程池执行任务
 executeByCustomWithDelay: 在自定义线程池延时执行任务
 executeByCustomAtFixRate: 在自定义线程池按固定频率执行任务
 cancel                  : 取消任务的执行
+```
+
+<span id="timeutils">
+
+* ### 时间经历工具类 -> [TimeUtils.java][TimeUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
+```
+format       : 输入时间毫秒数，输出时间差，如：1分钟前、3小时前、5天前、3月前、1年前等
 ```
 
 <span id="toastmaster">
@@ -1558,10 +1575,14 @@ getComments       : 获取压缩文件中的注释链表
 
 [StatusBarUtils.java]: https://github.com/gycold/EasyAndroid/blob/master/easytools/src/main/java/com/easytools/tools/StatusBarUtils.java
 
+[StatusTextUtils.java]: https://github.com/gycold/EasyAndroid/blob/master/easytools/src/main/java/com/easytools/tools/StatusTextUtils.java
+
 [StringUtils.java]: https://github.com/gycold/EasyAndroid/blob/master/easytools/src/main/java/com/easytools/tools/StringUtils.java
 
 [ThreadPoolUtils.java]: https://github.com/gycold/EasyAndroid/blob/master/easytools/src/main/java/com/easytools/tools/ThreadPoolUtils.java
 [ThreadPoolUtilsTest.java]: https://github.com/gycold/EasyAndroid/blob/master/easytools/src/test/java/com/easytools/tools/ThreadPoolUtilsTest.java
+
+[TimeUtils.java]: https://github.com/gycold/EasyAndroid/blob/master/easytools/src/main/java/com/easytools/tools/TimeUtils.java
 
 [ToastMaster.java]: https://github.com/gycold/EasyAndroid/blob/master/easytools/src/main/java/com/easytools/tools/ToastMaster.java
 

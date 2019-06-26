@@ -4,8 +4,10 @@ import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
+import android.view.animation.DecelerateInterpolator;
 import android.view.animation.RotateAnimation;
 import android.view.animation.ScaleAnimation;
+import android.view.animation.TranslateAnimation;
 
 /**
  * package: com.easytools.tools.AnimationUtils
@@ -380,4 +382,33 @@ public class AnimationUtils {
         view.startAnimation(SHOW_ANIM);
     }
 
+    /**
+     * View设置VISIABLE后的底部弹出动画
+     * @param view
+     */
+    public static void slidInBottom(View view) {
+        TranslateAnimation showAnim = new TranslateAnimation(
+                Animation.RELATIVE_TO_SELF,0.0f,
+                Animation.RELATIVE_TO_SELF, 0.0f,
+                Animation.RELATIVE_TO_SELF, 1.0f,
+                Animation.RELATIVE_TO_SELF, 0.0f);
+        showAnim.setDuration(200);
+        showAnim.setInterpolator(new DecelerateInterpolator());
+        view.startAnimation(showAnim);
+    }
+
+    /**
+     * View设置GONE后的底部滑出动画
+     * @param view
+     */
+    public static void slidOutBottom(View view) {
+        TranslateAnimation goneAnim = new TranslateAnimation(
+                Animation.RELATIVE_TO_SELF,0.0f,
+                Animation.RELATIVE_TO_SELF, 0.0f,
+                Animation.RELATIVE_TO_SELF, 0.0f,
+                Animation.RELATIVE_TO_SELF, 1.0f);
+        goneAnim.setDuration(200);
+        goneAnim.setInterpolator(new DecelerateInterpolator());
+        view.startAnimation(goneAnim);
+    }
 }

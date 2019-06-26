@@ -6,9 +6,11 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.easytools.tools.DateUtils;
 import com.easytools.tools.LongLogUtils;
+import com.easytools.tools.TimeUtils;
 
 
 /**
@@ -38,6 +40,19 @@ public class TestActivity extends BaseActivity {
 
         Log.d("年月日时分秒", DateUtils.getCurDateTime());
         Log.d("年月日", DateUtils.getCurDate());
+
+        TextView tv1 = findViewById(R.id.tv1);
+        TextView tv2 = findViewById(R.id.tv2);
+        TextView tv3 = findViewById(R.id.tv3);
+        TextView tv4 = findViewById(R.id.tv4);
+        TextView tv5 = findViewById(R.id.tv5);
+        long time = System.currentTimeMillis();
+        tv1.setText(TimeUtils.format(time - TimeUtils.ONE_MINUTE));
+        tv2.setText(TimeUtils.format(time - TimeUtils.ONE_HOUR + 500));
+        tv3.setText(TimeUtils.format(time - TimeUtils.ONE_WEEK));
+        tv4.setText(TimeUtils.format(time - TimeUtils.ONE_WEEK * 5));
+        tv5.setText(TimeUtils.format(time - TimeUtils.ONE_WEEK * 24));
+
     }
 
     public void onClickView(View view) {
