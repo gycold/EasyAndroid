@@ -5,7 +5,7 @@
 
 使用方法：<br>
 ```
-implementation 'com.easyandroid:easytools:1.4.6'
+implementation 'com.easyandroid:easytools:1.4.7'
 
 然后，在自己的Application中调用Utils.init(this);进行初始化
 ```
@@ -1347,6 +1347,7 @@ cancel                  : 取消任务的执行
 * ### 时间经历工具类 -> [TimeUtils.java][TimeUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 format       : 输入时间毫秒数，输出时间差，如：1分钟前、3小时前、5天前、3月前、1年前等
+getTime      : 输入时间秒，获得时间，格式为00:00:00
 ```
 
 <span id="toastmaster">
