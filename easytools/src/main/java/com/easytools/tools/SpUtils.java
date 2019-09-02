@@ -1,5 +1,6 @@
 package com.easytools.tools;
 
+import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
@@ -37,6 +38,7 @@ import java.util.Set;
  */
 public class SpUtils {
 
+    private static Application APP;
     private static String SP_NAME = "";
 
     //默认操作模式，代表该文件是私有数据，只能被应用本身访问。一般sp只是用该模式。
@@ -46,7 +48,7 @@ public class SpUtils {
 
     //单例模式
     private static class LazyLoader {
-        private static final SpUtils INSTANCE = new SpUtils(SP_NAME, SP_MODE);
+        private static final SpUtils INSTANCE = new SpUtils(APP, SP_NAME, SP_MODE);
     }
 
     /**
@@ -55,7 +57,7 @@ public class SpUtils {
      * @return 返回单例
      */
     public static SpUtils getInstance() {
-        return getInstance(SP_NAME, Context.MODE_PRIVATE);
+        return getInstance(null, SP_NAME, Context.MODE_PRIVATE);
     }
 
     /**
@@ -65,7 +67,7 @@ public class SpUtils {
      * @return 返回单例 {@link SpUtils}
      */
     public static SpUtils getInstance(final int mode) {
-        return getInstance(SP_NAME, mode);
+        return getInstance(null, SP_NAME, mode);
     }
 
     /**
@@ -75,17 +77,23 @@ public class SpUtils {
      * @return 返回单例 {@link SpUtils}
      */
     public static SpUtils getInstance(String spName) {
-        return getInstance(spName, Context.MODE_PRIVATE);
+        return getInstance(null, spName, Context.MODE_PRIVATE);
+    }
+
+    public static SpUtils getInstance(Application application, String spName) {
+        return getInstance(application, spName, Context.MODE_PRIVATE);
     }
 
     /**
      * 获取单例 {@link SpUtils}
      *
-     * @param spName sp名称
-     * @param mode   操作模式
+     * @param application Application
+     * @param spName      sp名称
+     * @param mode        操作模式
      * @return 返回单例 {@link SpUtils}
      */
-    public static SpUtils getInstance(String spName, final int mode) {
+    public static SpUtils getInstance(Application application, String spName, final int mode) {
+        APP = application;
         SP_NAME = spName;
         SP_MODE = mode;
         if (StringUtils.isEmpty(SP_NAME)) SP_NAME = "SpUtils";
@@ -98,6 +106,14 @@ public class SpUtils {
 
     private SpUtils(final String spName, final int mode) {
         sp = Utils.getApp().getSharedPreferences(spName, mode);
+    }
+
+    private SpUtils(Application application, final String spName, final int mode) {
+        if (application == null) {
+            sp = Utils.getApp().getSharedPreferences(spName, mode);
+        } else {
+            sp = application.getSharedPreferences(spName, mode);
+        }
     }
 
     /**
