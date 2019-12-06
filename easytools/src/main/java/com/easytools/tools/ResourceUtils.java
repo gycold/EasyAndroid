@@ -336,6 +336,7 @@ public class ResourceUtils {
 
     /**
      * 根据资源id获取color
+     *
      * @param resId
      * @return
      */
@@ -345,10 +346,22 @@ public class ResourceUtils {
 
     /**
      * 根据资源id获取字符串
+     *
      * @param resId
      * @return
      */
     public static String getString(int resId) {
         return Utils.getApp().getResources().getString(resId);
+    }
+
+    /**
+     * 根据资源id获取字符串
+     *
+     * @param resId
+     * @param formatArgs
+     * @return
+     */
+    public static String getString(int resId, Object... formatArgs) {
+        return Utils.getApp().getResources().getString(resId, formatArgs);
     }
 }

@@ -35,6 +35,7 @@ dependencies {
     implementation rootProject.ext.dependencies["appcompat-v7"]
     testImplementation rootProject.ext.dependencies["junit"]
     implementation project(':easytools')
+    implementation 'com.facebook.stetho:stetho:1.5.0'
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
     releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
     testImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
