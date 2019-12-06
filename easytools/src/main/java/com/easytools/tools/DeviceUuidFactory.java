@@ -42,33 +42,24 @@ public class DeviceUuidFactory {
         if (uuid == null) {
             synchronized (DeviceUuidFactory.class) {
                 if (uuid == null) {
-                    final SharedPreferences prefs = context
-                            .getSharedPreferences(PREFS_FILE, 0);
+                    final SharedPreferences prefs = context.getSharedPreferences(PREFS_FILE, 0);
                     final String id = prefs.getString(PREFS_DEVICE_ID, null);
                     if (id != null) {
                         // Use the ids previously computed and stored in the
                         // prefs file
                         uuid = UUID.fromString(id);
                     } else {
-                        final String androidId = Settings.Secure.getString(
-                                context.getContentResolver(), Settings.Secure.ANDROID_ID);
+                        final String androidId = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
                         // Use the Android ID unless it's broken, in which case
                         // fallback on deviceId,
                         // unless it's not available, then fallback on a random
                         // number which we store to a prefs file
                         try {
                             if (!"9774d56d682e549c".equals(androidId)) {
-                                uuid = UUID.nameUUIDFromBytes(androidId
-                                        .getBytes("utf8"));
+                                uuid = UUID.nameUUIDFromBytes(androidId.getBytes("utf8"));
                             } else {
-                                final String deviceId = (
-                                        (TelephonyManager) context
-                                                .getSystemService(Context.TELEPHONY_SERVICE))
-                                        .getDeviceId();
-                                uuid = deviceId != null ? UUID
-                                        .nameUUIDFromBytes(deviceId
-                                                .getBytes("utf8")) : UUID
-                                        .randomUUID();
+                                final String deviceId = ((TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId();
+                                uuid = deviceId != null ? UUID.nameUUIDFromBytes(deviceId.getBytes("utf8")) : UUID.randomUUID();
                             }
                         } catch (UnsupportedEncodingException e) {
                             throw new RuntimeException(e);
