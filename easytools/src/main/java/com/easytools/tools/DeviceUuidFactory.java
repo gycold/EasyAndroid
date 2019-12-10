@@ -129,6 +129,7 @@ public class DeviceUuidFactory {
 
     /**
      * 给出一个不变和基本不重复的UUID方法
+     *
      * @return
      */
     public static UUID getUUID() {

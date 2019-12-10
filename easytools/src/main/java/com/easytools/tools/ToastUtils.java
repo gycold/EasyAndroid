@@ -11,7 +11,7 @@ import android.widget.Toast;
 
 public class ToastUtils {
 
-    private static Toast toast = null; //Toast的对象！
+    private static Toast toast = null;
 
     public static void showToast(String msg) {
         if (toast == null) {
@@ -19,6 +19,7 @@ public class ToastUtils {
         } else {
             toast.setText(msg);
         }
+        if (toast.getView().isShown()) return;
         toast.show();
     }
 
