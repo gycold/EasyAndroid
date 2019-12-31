@@ -15,3 +15,6 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+-keep class com.easytools.tools.DialogUtils {*;}
+-dontwarn com.easytools.tools.**
+-keep class com.easytools.constant.**{*;}

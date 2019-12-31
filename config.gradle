@@ -1,24 +1,37 @@
 ext {
 
     android = [
-            compileSdkVersion: 28,
-            buildToolsVersion: "28.0.3",
-            minSdkVersion    : 15,
-            targetSdkVersion : 28,
+            compileSdkVersion: 29,
+            buildToolsVersion: "29.0.2",
+            minSdkVersion    : 19,
+            targetSdkVersion : 29,
             versionCode      : 1,
             versionName      : "1.0.0"
     ]
 
     version = [
-            androidSupportSdkVersion: "28.0.0",
-            retrofitSdkVersion      : "2.3.0",
-            okhttp3SdkVersion       : "3.9.1",
-            glideSdkVersion         : "4.6.1",
-            butterknifeSdkVersion   : "8.8.1",
+            androidSupportSdkVersion: "29.0.2",
+            retrofitSdkVersion      : "2.5.0",
+            okhttp3SdkVersion       : "3.13.1",
+            glideSdkVersion         : "4.10.0",
+            butterknifeSdkVersion   : "10.2.0",
             rxlifecycleSdkVersion   : "1.0",
             rxlifecycle2SdkVersion  : "2.2.1",
+            rxlifecycle3SdkVersion  : "3.0.0",
             canarySdkVersion        : "1.5.4",
-            espressoSdkVersion      : "3.0.2",
+            espressoSdkVersion      : "3.1.1",
+    ]
+
+    androidx = [
+            appcompatSdkVersion       : "1.1.0",
+            materialSdkVersion        : "1.2.0-alpha03",
+            legacySupportV4SdkVersion : "1.0.0",
+            cardviewSdkVersion        : "1.0.0",
+            annotationSdkVersion      : "1.1.0",
+            recyclerviewSdkVersion    : "1.1.0",
+            constraintlayoutSdkVersion: "1.1.3",
+            exifinterfaceSdkVersion   : "1.1.0",
+            paletteSdkVersion         : "1.0.0"
     ]
 
     jdk = [
@@ -34,8 +47,19 @@ ext {
             "cardview-v7"                  : "com.android.support:cardview-v7:${version["androidSupportSdkVersion"]}",
             "annotations"                  : "com.android.support:support-annotations:${version["androidSupportSdkVersion"]}",
             "recyclerview-v7"              : "com.android.support:recyclerview-v7:${version["androidSupportSdkVersion"]}",
-            "palette"                      : "com.android.support:palette-v7:${version["androidSupportSdkVersion"]}",
+            "palette-v7"                   : "com.android.support:palette-v7:${version["androidSupportSdkVersion"]}",
             "constraint-layout"            : "com.android.support.constraint:constraint-layout:1.1.3",
+
+            //androidx
+            "appcompat"                    : "androidx.appcompat:appcompat:${androidx["appcompatSdkVersion"]}",
+            "material"                     : "com.google.android.material:material:${androidx["materialSdkVersion"]}",
+            "legacy-support-v4"            : "androidx.legacy:legacy-support-v4:${androidx["legacySupportV4SdkVersion"]}",
+            "cardview"                     : "androidx.cardview:cardview:${androidx["cardviewSdkVersion"]}",
+            "annotation"                   : "androidx.annotation:annotation:${androidx["annotationSdkVersion"]}",
+            "recyclerview"                 : "androidx.recyclerview:recyclerview:${androidx["recyclerviewSdkVersion"]}",
+            "constraintlayout"             : "androidx.constraintlayout:constraintlayout:${androidx["constraintlayoutSdkVersion"]}",
+            "exifinterface"                : "androidx.exifinterface:exifinterface:${androidx["exifinterfaceSdkVersion"]}",
+            "palette"                      : "androidx.palette:palette:${androidx["paletteSdkVersion"]}",
 
             //network
             "retrofit"                     : "com.squareup.retrofit2:retrofit:${version["retrofitSdkVersion"]}",

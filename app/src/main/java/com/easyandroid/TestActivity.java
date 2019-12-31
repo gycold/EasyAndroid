@@ -14,7 +14,6 @@ import com.easytools.tools.RandomUtils;
 import com.easytools.tools.RoundUtils;
 import com.easytools.tools.SpUtils;
 import com.easytools.tools.TimeUtils;
-import com.facebook.stetho.Stetho;
 
 
 /**
@@ -58,7 +57,6 @@ public class TestActivity extends BaseActivity {
         tv3.setText(RandomUtils.getRandom(2) + "");
         tv4.setText(TimeUtils.getTime(5000));
         tv5.setText(TimeUtils.getTime(108000));
-        Stetho.initializeWithDefaults(this);
 
         spUtils = SpUtils.getInstance("test-cache");
 

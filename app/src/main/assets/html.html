@@ -1,0 +1,59 @@
+<body>
+<h3>html模块</h3>
+<p>
+    <input type="button" id="enter" value="调用安卓的方法" onclick="onClick();"/>
+</p>
+<p>
+    <h3 id="showmsg"></h3>
+</p>
+<script>
+
+       // 注册事件监听
+       function connectWebViewJavascriptBridge(callback) {
+           if (window.WebViewJavascriptBridge) {
+               callback(WebViewJavascriptBridge)
+           } else {
+               document.addEventListener(
+                   'WebViewJavascriptBridgeReady'
+                   , function() {
+                       callback(WebViewJavascriptBridge)
+                   },
+                   false
+               );
+           }
+       }
+
+       // 发送消息给Android
+       function onClick() {
+           var data = document.getElementById("showmsg").value;
+
+            window.WebViewJavascriptBridge.callHandler(
+               'functionInAndroid'
+               , {'param': "js传给Android的数据"}
+               , function(responseData) {
+                    document.getElementById("showmsg").innerHTML = responseData;
+               }
+           );
+       }
+
+
+        // 在JS中注册默认的Handler
+       connectWebViewJavascriptBridge(function(bridge) {
+            //初始化
+           bridge.init(function(message, responseCallback) {
+               var data = {
+                   'Javascript Responds': 'HelloWorld'
+               };
+               responseCallback(data);
+           });
+
+            //接收安卓发来的消息 并返回给安卓通知
+           bridge.registerHandler("functionInJs", function(data, responseCallback) {
+               document.getElementById("showmsg").innerHTML = data;
+               var responseData = "js回传给Android的数据";
+               responseCallback(responseData);
+           });
+       })
+
+    </script>
+</body>

@@ -33,9 +33,16 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
+//    //以下是系统支持库
+//    compileOnly rootProject.ext.dependencies["appcompat-v7"]
+//    compileOnly rootProject.ext.dependencies["design"]
+//    compileOnly rootProject.ext.dependencies["palette-v7"]
+//    compileOnly rootProject.ext.dependencies["gson"]
+
+    //从2.0.0开始，升级为AndroidX，放弃support库
     //以下是系统支持库
-    compileOnly rootProject.ext.dependencies["appcompat-v7"]
-    compileOnly rootProject.ext.dependencies["design"]
+    compileOnly rootProject.ext.dependencies["appcompat"]
+    compileOnly rootProject.ext.dependencies["material"]
     compileOnly rootProject.ext.dependencies["palette"]
     compileOnly rootProject.ext.dependencies["gson"]
 }

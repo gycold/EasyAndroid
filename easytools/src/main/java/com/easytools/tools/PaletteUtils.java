@@ -6,7 +6,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
-import android.support.v7.graphics.Palette;
+
+import androidx.palette.graphics.Palette;
 
 /**
  * package: com.easytools.tools.PaletteUtils
