@@ -977,10 +977,11 @@ getServerAddressByWifi: 根据 WiFi 获取服务端 IP 地址
 * ### Notification相关 -> [NotificationUtils.java][NotificationUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 createNotificationChannel  : 8.0以上，获取NotificationChannel对象
-getManager                 : 获取 NotificationManager
-getChannelNotification     : 8.0以上，获取Notification.Builder
-getNotification_25         : 8.0以下，获取NotificationCompat.Builder
-sendNotification           : 设置通知信息
+getNotificationBuilder     : 获取 NotificationBuilder
+showNotification           : 显示一条消息
+nofity                     : 显示一条消息
+cancle                     : 设置通知信息
+getNotification            :获取Notification实例
 ```
 
 <span id="objectutils">
