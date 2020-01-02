@@ -3,7 +3,8 @@ package com.easytools.tools;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 import java.util.Collections;
 import java.util.Map;

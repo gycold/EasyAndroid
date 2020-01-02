@@ -32,7 +32,7 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     androidTestImplementation rootProject.ext.dependencies["espresso-core"]
-    implementation rootProject.ext.dependencies["appcompat-v7"]
+    implementation rootProject.ext.dependencies["appcompat"]
     implementation 'com.jaredrummler:android-processes:1.1.1'
     implementation 'com.github.lzyzsd:jsbridge:1.0.4'
     testImplementation rootProject.ext.dependencies["junit"]

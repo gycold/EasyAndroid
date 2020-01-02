@@ -1,7 +1,8 @@
 package com.easytools.tools;
 
-import android.support.annotation.RawRes;
-import android.support.v4.content.ContextCompat;
+
+import androidx.annotation.RawRes;
+import androidx.core.content.ContextCompat;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;

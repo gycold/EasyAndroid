@@ -11,9 +11,10 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.os.Process;
 import android.provider.Settings;
-import android.support.annotation.NonNull;
-import android.support.annotation.RequiresPermission;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresPermission;
 
 import java.util.Arrays;
 import java.util.Collections;
