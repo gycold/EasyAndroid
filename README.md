@@ -4,8 +4,9 @@
 包含各种工具类的集合，会不定期更新，欢迎贡献code
 
 使用方法：<br>
+2.0.0以后，放弃了support库，请使用AndroidX
 ```
-implementation 'com.easyandroid:easytools:1.5.2'
+implementation 'com.easyandroid:easytools:2.0.0'
 
 然后，在自己的Application中调用Utils.init(this);进行初始化
 ```
