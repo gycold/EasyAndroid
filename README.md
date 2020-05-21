@@ -6,7 +6,7 @@
 使用方法：<br>
 2.0.0以后，放弃了support库，请使用AndroidX
 ```
-implementation 'com.easyandroid:easytools:2.0.0'
+implementation 'com.easyandroid:easytools:2.0.1'
 
 然后，在自己的Application中调用Utils.init(this);进行初始化
 ```
@@ -133,6 +133,7 @@ currentActivity                          : 获取当前affinity栈顶Activity
 closeActivity                            : 关闭Activity
 closeAllActivity                         : 关闭所有Activity
 closeActivityByName                      : 通过传入完整包.类名，关闭Activity
+closeOtherActivities                     : 通过传入完整包.类名，关闭其他的所有Activity
 getCurrentActivityName                   : 获取当前Activity名称
 getActivityStack                         : 获取Activity栈
 ```
@@ -1269,6 +1270,7 @@ clear          : 清空缓存，这是一个重载方法
 * ### 状态栏相关 -> [StatusBarUtils.java][StatusBarUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 setColor                              : 设置状态栏颜色
+setStatusBarColor                     : 设置状态栏颜色
 setColorForSwipeBack                  : 为滑动返回界面设置状态栏颜色，这是一个重载方法
 setColorNoTranslucent                 : 设置状态栏纯色，不加半透明效果
 setColorDiff                          : 设置状态栏颜色(5.0以下无半透明效果,不建议使用)

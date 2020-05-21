@@ -10,10 +10,10 @@ ext {
     ]
 
     version = [
-            androidSupportSdkVersion: "29.0.2",
+            androidSupportSdkVersion: "28.0.0",
             retrofitSdkVersion      : "2.5.0",
             okhttp3SdkVersion       : "3.13.1",
-            glideSdkVersion         : "4.10.0",
+            glideSdkVersion         : "4.11.0",
             butterknifeSdkVersion   : "10.2.0",
             rxandroidSdkVersion     : "1.2.1",
             rxjavaSdkVersion        : "1.3.0",
@@ -29,15 +29,20 @@ ext {
     ]
 
     androidx = [
-            appcompatSdkVersion       : "1.1.0",
-            materialSdkVersion        : "1.2.0-alpha03",
+            appcompatSdkVersion       : "1.2.0-rc01",
+            materialSdkVersion        : "1.2.0-alpha06",
             legacySupportV4SdkVersion : "1.0.0",
             cardviewSdkVersion        : "1.0.0",
             annotationSdkVersion      : "1.1.0",
-            recyclerviewSdkVersion    : "1.1.0",
-            constraintlayoutSdkVersion: "1.1.3",
-            exifinterfaceSdkVersion   : "1.1.0",
-            paletteSdkVersion         : "1.0.0"
+            recyclerviewSdkVersion    : "1.2.0-alpha03",
+            fragmentSdkVersion        : "1.3.0-alpha04",
+            constraintlayoutSdkVersion: "2.0.0-beta6",
+            exifinterfaceSdkVersion   : "1.3.0-alpha01",
+            multidexSdkVersion        : "2.0.1",
+            paletteSdkVersion         : "1.0.0",
+            espressoSdkVersion        : "3.3.0-beta01",
+            junitSdkVersion           : "1.1.2-beta01",
+            gridlayoutSdkVersion      : "1.0.0"
     ]
 
     jdk = [
@@ -57,15 +62,19 @@ ext {
             "constraint-layout"            : "com.android.support.constraint:constraint-layout:1.1.3",
 
             //androidx
-            "appcompat"                    : "androidx.appcompat:appcompat:${androidx["appcompatSdkVersion"]}",
-            "material"                     : "com.google.android.material:material:${androidx["materialSdkVersion"]}",
-            "legacy-support-v4"            : "androidx.legacy:legacy-support-v4:${androidx["legacySupportV4SdkVersion"]}",
-            "cardview"                     : "androidx.cardview:cardview:${androidx["cardviewSdkVersion"]}",
-            "annotation"                   : "androidx.annotation:annotation:${androidx["annotationSdkVersion"]}",
-            "recyclerview"                 : "androidx.recyclerview:recyclerview:${androidx["recyclerviewSdkVersion"]}",
-            "constraintlayout"             : "androidx.constraintlayout:constraintlayout:${androidx["constraintlayoutSdkVersion"]}",
-            "exifinterface"                : "androidx.exifinterface:exifinterface:${androidx["exifinterfaceSdkVersion"]}",
-            "palette"                      : "androidx.palette:palette:${androidx["paletteSdkVersion"]}",
+            "appcompat"                     : "androidx.appcompat:appcompat:${androidx["appcompatSdkVersion"]}",
+            "material"                      : "com.google.android.material:material:${androidx["materialSdkVersion"]}",
+            "legacy-support-v4"             : "androidx.legacy:legacy-support-v4:${androidx["legacySupportV4SdkVersion"]}",
+            "cardview"                      : "androidx.cardview:cardview:${androidx["cardviewSdkVersion"]}",
+            "annotation"                    : "androidx.annotation:annotation:${androidx["annotationSdkVersion"]}",
+            "recyclerview"                  : "androidx.recyclerview:recyclerview:${androidx["recyclerviewSdkVersion"]}",
+            "fragment"                      : "androidx.fragment:fragment:${androidx["fragmentSdkVersion"]}",
+            "constraintlayout"              : "androidx.constraintlayout:constraintlayout:${androidx["constraintlayoutSdkVersion"]}",
+            "exifinterface"                 : "androidx.exifinterface:exifinterface:${androidx["exifinterfaceSdkVersion"]}",
+            "multidex"                      : "androidx.multidex:multidex:${androidx["multidexSdkVersion"]}",
+            "palette"                       : "androidx.palette:palette:${androidx["paletteSdkVersion"]}",
+            "junit-x"                       : "androidx.test.ext:junit:${androidx["junitSdkVersion"]}",
+            "espresso-core-x"               : "androidx.test.espresso:espresso-core:${androidx["espressoSdkVersion"]}",
 
             //network
             "retrofit"                     : "com.squareup.retrofit2:retrofit:${version["retrofitSdkVersion"]}",
