@@ -8,9 +8,15 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.easytools.tools.PathUtils;
 import com.github.lzyzsd.jsbridge.BridgeHandler;
 import com.github.lzyzsd.jsbridge.BridgeWebView;
 import com.github.lzyzsd.jsbridge.CallBackFunction;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 /**
  * package: com.easyandroid.TestJsActivity
@@ -22,6 +28,9 @@ public class TestJsActivity extends AppCompatActivity {
 
     TextView tvJs, tvShowmsg;
     BridgeWebView webview;
+
+    FileWriter fw = null;
+    BufferedWriter bw = null;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,9 +51,33 @@ public class TestJsActivity extends AppCompatActivity {
         callJs();
         registerInJs();
 
+
+        int type = 0;
+        String logPath = PathUtils.getExternalStoragePath() + File.separator + "公文下载路径WIFI版.txt";
+        try {
+            fw = new FileWriter(logPath, true);
+            bw = new BufferedWriter(fw);
+
+            for (int i = 0; i < 10; i++) {
+                String url = "";
+                if (type == 0) {//批件
+                    url = "http://www.baidu.com" + i;
+                }
+                bw.write(url + "\n");
+            }
+        } catch (IOException e) {
+        } finally {
+            try {
+                bw.close();
+                fw.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 
-    private void callJs(){
+    private void callJs() {
         tvJs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

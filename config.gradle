@@ -2,7 +2,7 @@ ext {
 
     android = [
             compileSdkVersion: 29,
-            buildToolsVersion: "29.0.2",
+            buildToolsVersion: "29.0.3",
             minSdkVersion    : 19,
             targetSdkVersion : 29,
             versionCode      : 1,
@@ -29,19 +29,19 @@ ext {
     ]
 
     androidx = [
-            appcompatSdkVersion       : "1.2.0-rc01",
-            materialSdkVersion        : "1.2.0-alpha06",
+            appcompatSdkVersion       : "1.2.0",
+            materialSdkVersion        : "1.2.1",
             legacySupportV4SdkVersion : "1.0.0",
             cardviewSdkVersion        : "1.0.0",
             annotationSdkVersion      : "1.1.0",
-            recyclerviewSdkVersion    : "1.2.0-alpha03",
-            fragmentSdkVersion        : "1.3.0-alpha04",
-            constraintlayoutSdkVersion: "2.0.0-beta6",
-            exifinterfaceSdkVersion   : "1.3.0-alpha01",
+            recyclerviewSdkVersion    : "1.1.0",
+            fragmentSdkVersion        : "1.2.5",
+            constraintlayoutSdkVersion: "2.0.4",
+            exifinterfaceSdkVersion   : "1.3.1",
             multidexSdkVersion        : "2.0.1",
             paletteSdkVersion         : "1.0.0",
-            espressoSdkVersion        : "3.3.0-beta01",
-            junitSdkVersion           : "1.1.2-beta01",
+            espressoSdkVersion        : "3.3.0",
+            junitSdkVersion           : "1.1.2",
             gridlayoutSdkVersion      : "1.0.0"
     ]
 
@@ -119,7 +119,7 @@ ext {
             //tools
             "eventbus"                     : "org.greenrobot:eventbus:3.1.1",
             "otto"                         : "com.squareup:otto:1.3.8",
-            "gson"                         : "com.google.code.gson:gson:2.8.5",
+            "gson"                         : "com.google.code.gson:gson:2.8.6",
             "javax.annotation"             : "javax.annotation:jsr250-api:1.0",
             "easyandroid"                  : "com.easyandroid:easytools:${version["easyAndroidSdkVersion"]}",
             "okio"                         : "com.squareup.okio:okio:2.2.2",

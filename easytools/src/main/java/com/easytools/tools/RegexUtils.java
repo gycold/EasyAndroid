@@ -11,6 +11,7 @@ import static com.easytools.tools.ConstantUtils.REGEX_EMAIL;
 import static com.easytools.tools.ConstantUtils.REGEX_IDCARD15;
 import static com.easytools.tools.ConstantUtils.REGEX_IDCARD18;
 import static com.easytools.tools.ConstantUtils.REGEX_IP;
+import static com.easytools.tools.ConstantUtils.REGEX_IP_PORT;
 import static com.easytools.tools.ConstantUtils.REGEX_MOBILE_EXACT;
 import static com.easytools.tools.ConstantUtils.REGEX_MOBILE_SIMPLE;
 import static com.easytools.tools.ConstantUtils.REGEX_TEL;
@@ -132,13 +133,23 @@ public class RegexUtils {
     }
 
     /**
-     * 验证IP地址
+     * 验证IP地址，无端口号
      *
      * @param input 待验证文本
      * @return {@code true}: 匹配<br>{@code false}: 不匹配
      */
     public static boolean isIP(CharSequence input) {
         return isMatch(REGEX_IP, input);
+    }
+
+    /**
+     * 验证IP地址和端口号
+     *
+     * @param input
+     * @return
+     */
+    public static boolean isIPWithPort(CharSequence input) {
+        return isMatch(REGEX_IP_PORT, input);
     }
 
     /**

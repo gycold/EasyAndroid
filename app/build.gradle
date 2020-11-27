@@ -33,11 +33,9 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     androidTestImplementation rootProject.ext.dependencies["espresso-core"]
     implementation rootProject.ext.dependencies["appcompat"]
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'com.jaredrummler:android-processes:1.1.1'
     implementation 'com.github.lzyzsd:jsbridge:1.0.4'
     testImplementation rootProject.ext.dependencies["junit"]
     implementation project(':easytools')
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.3'
-    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.3'
-    testImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.3'
 }

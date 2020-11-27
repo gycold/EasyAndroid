@@ -6,7 +6,7 @@
 使用方法：<br>
 2.0.0以后，放弃了support库，请使用AndroidX
 ```
-implementation 'com.easyandroid:easytools:2.0.1'
+implementation 'com.easyandroid:easytools:2.0.2'
 
 然后，在自己的Application中调用Utils.init(this);进行初始化
 ```
@@ -1144,6 +1144,7 @@ isZh             : 验证汉字
 isUsername       : 验证用户名
 isDate           : 验证yyyy-MM-dd格式的日期校验，已考虑平闰年
 isIP             : 验证IP地址
+isIPWithPort     : 验证IP地址和端口号
 isMatch          : 判断是否匹配正则
 getMatches       : 获取正则匹配的部分
 getSplits        : 获取正则匹配分组
