@@ -7,10 +7,11 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
-import android.support.annotation.RequiresPermission;
 import android.telephony.TelephonyManager;
 import android.text.format.Formatter;
 import android.util.Log;
+
+import androidx.annotation.RequiresPermission;
 
 import java.lang.reflect.Method;
 import java.net.InetAddress;

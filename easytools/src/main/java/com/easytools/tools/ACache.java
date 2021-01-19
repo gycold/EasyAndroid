@@ -7,9 +7,10 @@ import android.graphics.Canvas;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.WorkerThread;
 import android.util.Base64;
 import android.util.Log;
+
+import androidx.annotation.WorkerThread;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

@@ -66,28 +66,57 @@ public class ActivityManager {
     /**
      * close a specific activity by its complete name.
      *
-     * @param name For example: com.jude.utils.Activity_B
+     * @param name For example: com.jude.ui.Activity_B
      */
-    public static void closeActivityByName(String name) {
+    public static void closeActivityByName(String name) throws ClassNotFoundException{
+        if (activityStack.isEmpty()){
+            throw new ClassNotFoundException("Activity栈为空");
+        }
+
         int index = activityStack.size() - 1;
 
         while (true) {
             Activity activity = activityStack.get(index);
 
-            if (null == activity) {
-                break;
-            }
-
             String activityName = activity.getComponentName().getClassName();
             if (!TextUtils.equals(name, activityName)) {
                 index--;
                 if (index < 0) {//avoid index out of bound.
-                    break;
+                    throw new ClassNotFoundException(name + "不存在");
                 }
                 continue;
             }
             closeActivity(activity);
             break;
+        }
+    }
+
+    /**
+     * close all activities but except the specified activity by name
+     *
+     * @param name For example: com.jude.ui.Activity_B
+     */
+    public static void closeOtherActivities(String name) throws ClassNotFoundException{
+        if (activityStack.isEmpty()){
+            throw new ClassNotFoundException("Activity栈为空");
+        }
+
+        int index = activityStack.size() - 1;
+        while (true) {
+            Activity activity = activityStack.get(index);
+            String activityName = activity.getComponentName().getClassName();
+
+            index--;
+            if (TextUtils.equals(name, activityName)) {
+                if (index < 0) {
+                    break;
+                }
+                continue;
+            }
+            closeActivity(activity);
+            if (index < 0) {
+                break;
+            }
         }
     }
 
@@ -98,7 +127,7 @@ public class ActivityManager {
         Activity activity = currentActivity();
         String name = "";
         if (activity != null) {
-            name = activity.getComponentName().getClassName().toString();
+            name = activity.getComponentName().getClassName();
         }
         return name;
     }

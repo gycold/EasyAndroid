@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/EasyAndroid.iml" filepath="$PROJECT_DIR$/EasyAndroid.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/easytools/easytools.iml" filepath="$PROJECT_DIR$/easytools/easytools.iml" />
+      <module fileurl="file://$PROJECT_DIR$/EasyAndroid.iml" filepath="$PROJECT_DIR$/EasyAndroid.iml" group="EasyAndroid" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="EasyAndroid/app" />
+      <module fileurl="file://$PROJECT_DIR$/easytools/easytools.iml" filepath="$PROJECT_DIR$/easytools/easytools.iml" group="EasyAndroid/easytools" />
     </modules>
   </component>
 </project>

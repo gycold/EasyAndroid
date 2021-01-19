@@ -2,11 +2,12 @@ package com.easyandroid;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
 
 import com.easytools.tools.DateUtils;
 import com.easytools.tools.LongLogUtils;
@@ -14,7 +15,6 @@ import com.easytools.tools.RandomUtils;
 import com.easytools.tools.RoundUtils;
 import com.easytools.tools.SpUtils;
 import com.easytools.tools.TimeUtils;
-import com.facebook.stetho.Stetho;
 
 
 /**
@@ -58,7 +58,6 @@ public class TestActivity extends BaseActivity {
         tv3.setText(RandomUtils.getRandom(2) + "");
         tv4.setText(TimeUtils.getTime(5000));
         tv5.setText(TimeUtils.getTime(108000));
-        Stetho.initializeWithDefaults(this);
 
         spUtils = SpUtils.getInstance("test-cache");
 

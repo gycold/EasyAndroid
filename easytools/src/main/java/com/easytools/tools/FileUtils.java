@@ -1,5 +1,9 @@
 package com.easytools.tools;
 
+import android.content.ContentResolver;
+import android.content.res.AssetFileDescriptor;
+import android.net.Uri;
+import android.os.Build;
 import android.text.TextUtils;
 import android.webkit.MimeTypeMap;
 
@@ -35,18 +39,8 @@ public class FileUtils {
      * @param filePath 文件路径
      * @return 文件
      */
-    public static File getFileByPath(String filePath) {
+    public static File getFileByPath(final String filePath) {
         return StringUtils.isSpace(filePath) ? null : new File(filePath);
-    }
-
-    /**
-     * 根据路径判断文件是否存在
-     *
-     * @param filePath 文件路径
-     * @return {@code true}: 存在<br>{@code false}: 不存在
-     */
-    public static boolean isFileExists(String filePath) {
-        return isFileExists(getFileByPath(filePath));
     }
 
     /**
@@ -55,8 +49,53 @@ public class FileUtils {
      * @param file 文件
      * @return {@code true}: 存在<br>{@code false}: 不存在
      */
-    public static boolean isFileExists(File file) {
-        return file != null && file.exists();
+    public static boolean isFileExists(final File file) {
+        if (file == null) return false;
+        if (file.exists()) {
+            return true;
+        }
+        return isFileExists(file.getAbsolutePath());
+    }
+
+    /**
+     * 根据路径判断文件是否存在
+     *
+     * @param filePath 文件路径
+     * @return {@code true}: 存在<br>{@code false}: 不存在
+     */
+    public static boolean isFileExists(final String filePath) {
+        File file = getFileByPath(filePath);
+        if (file == null) return false;
+        if (file.exists()) {
+            return true;
+        }
+        return isFileExistsApi29(filePath);
+    }
+
+    /**
+     * 当sdk >= 29时，判断文件是否存在
+     *
+     * @param filePath
+     * @return
+     */
+    public static boolean isFileExistsApi29(String filePath) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            try {
+                Uri uri = Uri.parse(filePath);
+                ContentResolver cr = Utils.getApp().getContentResolver();
+                AssetFileDescriptor afd = cr.openAssetFileDescriptor(uri, "r");
+                if (afd == null) return false;
+                try {
+                    afd.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } catch (FileNotFoundException e) {
+                return false;
+            }
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -345,8 +384,7 @@ public class FileUtils {
      * @param isRecursive 是否递归进子目录
      * @return 文件链表
      */
-    public static List<File> listFilesInDirWithFilter(String dirPath, String suffix, boolean
-            isRecursive) {
+    public static List<File> listFilesInDirWithFilter(String dirPath, String suffix, boolean isRecursive) {
         return listFilesInDirWithFilter(getFileByPath(dirPath), suffix, isRecursive);
     }
 
@@ -359,8 +397,7 @@ public class FileUtils {
      * @param isRecursive 是否递归进子目录
      * @return 文件链表
      */
-    public static List<File> listFilesInDirWithFilter(File dir, String suffix, boolean
-            isRecursive) {
+    public static List<File> listFilesInDirWithFilter(File dir, String suffix, boolean isRecursive) {
         if (isRecursive) return listFilesInDirWithFilter(dir, suffix);
         if (dir == null || !isDir(dir)) return null;
         List<File> list = new ArrayList<>();
@@ -420,8 +457,7 @@ public class FileUtils {
      * @param isRecursive 是否递归进子目录
      * @return 文件链表
      */
-    public static List<File> listFilesInDirWithFilter(String dirPath, FilenameFilter filter,
-                                                      boolean isRecursive) {
+    public static List<File> listFilesInDirWithFilter(String dirPath, FilenameFilter filter, boolean isRecursive) {
         return listFilesInDirWithFilter(getFileByPath(dirPath), filter, isRecursive);
     }
 
@@ -433,8 +469,7 @@ public class FileUtils {
      * @param isRecursive 是否递归进子目录
      * @return 文件链表
      */
-    public static List<File> listFilesInDirWithFilter(File dir, FilenameFilter filter, boolean
-            isRecursive) {
+    public static List<File> listFilesInDirWithFilter(File dir, FilenameFilter filter, boolean isRecursive) {
         if (isRecursive) return listFilesInDirWithFilter(dir, filter);
         if (dir == null || !isDir(dir)) return null;
         List<File> list = new ArrayList<>();
@@ -688,8 +723,7 @@ public class FileUtils {
      * @param closeables closeable
      */
     public static void closeIO(Closeable... closeables) {
-        if (closeables == null)
-            return;
+        if (closeables == null) return;
         try {
             for (Closeable closeable : closeables) {
                 if (closeable != null) {
@@ -737,8 +771,7 @@ public class FileUtils {
      */
     public static void renameFile(String oldPath, String newPath) {
         try {
-            if (!TextUtils.isEmpty(oldPath) && !TextUtils.isEmpty(newPath)
-                    && !oldPath.equals(newPath)) {
+            if (!TextUtils.isEmpty(oldPath) && !TextUtils.isEmpty(newPath) && !oldPath.equals(newPath)) {
                 File fileOld = new File(oldPath);
                 File fileNew = new File(newPath);
                 fileOld.renameTo(fileNew);
@@ -923,8 +956,7 @@ public class FileUtils {
      */
     public static boolean writeFile(String filePath, InputStream stream, boolean append) {
 
-        return writeFile(filePath != null ? new File(filePath) : null, stream,
-                append);
+        return writeFile(filePath != null ? new File(filePath) : null, stream, append);
     }
 
     /**
@@ -989,6 +1021,7 @@ public class FileUtils {
 
     /**
      * 去掉文档扩展名
+     *
      * @param filename
      * @return
      */

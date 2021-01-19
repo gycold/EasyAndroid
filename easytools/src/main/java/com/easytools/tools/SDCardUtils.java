@@ -40,22 +40,28 @@ public class SDCardUtils {
      * @return SD卡Data路径，即："/data/"
      */
     public static String getDataPath() {
-        if (!isSDCardEnable()){
+        if (!isSDCardEnable()) {
             throw new RuntimeException("sdcard disabled!");
         }
         return Environment.getDataDirectory().getPath() + File.separator;
     }
 
     /**
-     * 获取SD卡路径
+     * 获取SD卡路径，
+     * 在API 29，getExternalStorageDirectory已过期，谷歌建议使用Context#getExternalFilesDir代替它，
+     * 例如，getExternalFilesDir(null)得到一个：/storage/emulated/0/Android/data/yourPackageName/files 这样的路径
+     * 这个目录会在应用被卸载的时候删除，而且访问这个目录不需要动态申请STORAGE权限。
      * <p>一般是/storage/emulated/0/</p>
      *
      * @return SD卡路径
      */
+    @Deprecated
     public static String getSDCardPath() {
-        if (!isSDCardEnable()){
+        if (!isSDCardEnable()) {
             throw new RuntimeException("sdcard disabled!");
         }
+        //
+//        return Environment.getExternalStorageDirectory().getPath() + File.separator;
         return Environment.getExternalStorageDirectory().getPath() + File.separator;
     }
 
@@ -66,7 +72,7 @@ public class SDCardUtils {
      * @param context
      * @param fileName
      */
-    public static void savePic(Context context, String fileName){
+    public static void savePic(Context context, String fileName) {
         if (!isSDCardEnable()) {
             throw new RuntimeException("sdcard disabled!");
         }
@@ -92,7 +98,7 @@ public class SDCardUtils {
      * @return SD卡路径
      */
     public static String getSDCardPathByCmd() {
-        if (!isSDCardEnable()){
+        if (!isSDCardEnable()) {
             throw new RuntimeException("sdcard disabled!");
         }
         String cmd = "cat /proc/mounts";
@@ -122,44 +128,60 @@ public class SDCardUtils {
     }
 
     /**
-     * 获取外部存储Music路径
+     * 获取外部存储Music路径，如果这个目录不存在，系统会自动帮你创建
      * /storage/emulated/0/Android/data/包名/files/Music/
+     *
      * @param context
      * @return /storage/emulated/0/Android/data/包名/files/Music/
      */
     public static String getExternalMusicDir(Context context) {
-        if (!isSDCardEnable()){
+        if (!isSDCardEnable()) {
             throw new RuntimeException("sdcard disabled!");
         }
         return context.getExternalFilesDir(Environment.DIRECTORY_MUSIC).getAbsolutePath() + File.separator;
     }
 
     /**
-     * 获取外部存储Movies路径
+     * 获取外部存储Movies路径，如果这个目录不存在，系统会自动帮你创建
      * /storage/emulated/0/Android/data/包名/files/Movies/
+     *
      * @param context
      * @return /storage/emulated/0/Android/data/包名/files/Movies/
      */
     public static String getExternalMovieDir(Context context) {
-        if (!isSDCardEnable()){
+        if (!isSDCardEnable()) {
             throw new RuntimeException("sdcard disabled!");
         }
         return context.getExternalFilesDir(Environment.DIRECTORY_MOVIES).getAbsolutePath() + File.separator;
     }
 
     /**
-     * 获取外部存储Download路径
+     * 获取外部存储Download路径，如果这个目录不存在，系统会自动帮你创建
      * /storage/emulated/0/Android/data/包名/files/Download/
+     *
      * @param context
      * @return /storage/emulated/0/Android/data/包名/files/Download/
      */
     public static String getExternalDownloadDir(Context context) {
-        if (!isSDCardEnable()){
+        if (!isSDCardEnable()) {
             throw new RuntimeException("sdcard disabled!");
         }
         return context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + File.separator;
     }
 
+    /**
+     * 获取外部存储Pictures路径，如果这个目录不存在，系统会自动帮你创建
+     * /storage/emulated/0/Android/data/包名/files/Pictures/
+     *
+     * @param context
+     * @return /storage/emulated/0/Android/data/包名/files/Pictures/
+     */
+    public static String getExternalPicturesDir(Context context) {
+        if (!isSDCardEnable()) {
+            throw new RuntimeException("sdcard disabled!");
+        }
+        return context.getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath() + File.separator;
+    }
 
     /**
      * 获取SD卡剩余空间
@@ -168,7 +190,7 @@ public class SDCardUtils {
      */
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
     public static String getFreeSpace() {
-        if (!isSDCardEnable()){
+        if (!isSDCardEnable()) {
             throw new RuntimeException("sdcard disabled!");
         }
         StatFs stat = new StatFs(getSDCardPath());
@@ -204,9 +226,9 @@ public class SDCardUtils {
 
     private static class SDCardInfo {
         boolean isExist;
-        long    totalBlocks;
-        long    freeBlocks;
-        long    availableBlocks;
+        long totalBlocks;
+        long freeBlocks;
+        long availableBlocks;
 
         long blockByteSize;
 

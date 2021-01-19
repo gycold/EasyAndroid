@@ -1,11 +1,12 @@
 # EasyAndroid
-[![EasyAndroid](https://api.bintray.com/packages/easyandroid/maven/easytools/images/download.svg)](https://bintray.com/easyandroid/maven/easytools/_latestVersion)  [![Platform](https://img.shields.io/badge/platform-Android-green.svg)](https://developer.android.google.cn/) [![SDK](https://img.shields.io/badge/minSdkVersion-15%2B-green.svg)](https://developer.android.com/about/)
+[![EasyAndroid](https://api.bintray.com/packages/easyandroid/maven/easytools/images/download.svg)](https://bintray.com/easyandroid/maven/easytools/_latestVersion)  [![Platform](https://img.shields.io/badge/platform-Android-green.svg)](https://developer.android.google.cn/) [![SDK](https://img.shields.io/badge/minSdkVersion-19%2B-green.svg)](https://developer.android.com/about/)
 
 包含各种工具类的集合，会不定期更新，欢迎贡献code
 
 使用方法：<br>
+2.0.0以后，放弃了support库，请使用AndroidX
 ```
-implementation 'com.easyandroid:easytools:1.5.1'
+implementation 'com.easyandroid:easytools:2.0.3'
 
 然后，在自己的Application中调用Utils.init(this);进行初始化
 ```
@@ -55,56 +56,58 @@ implementation 'com.easyandroid:easytools:1.5.1'
 + [31、文件的IO流相关](#fileioutils)
 + [32、针对Android 7版本以上 FileProvider做适配](#fileprovider7)
 + [33、文件操作相关](#fileutils)
-+ [34、Fragment相关](#fragmentutils)
-+ [35、Gson转换相关](#gsonutils)
-+ [36、16进制转换相关](#hexutils)
-+ [37、图片加载器](#imageloader)
-+ [38、意图相关工具类](#intentutils)
-+ [39、JSON操作相关](#jsonutils)
-+ [40、软键盘相关](#keyboardutils)
-+ [41、打印日志](#logutils)
-+ [42、循环定时器](#looptimer)
-+ [43、阴历阳历相关](#lunarutils)
-+ [44、m3u8文件解析类](#m3u8parserutils)
-+ [45、偶对象相关](#maputils)
-+ [46、获取MD5相关](#md5utils)
-+ [47、音频播放相关](#mediaplayerutils)
-+ [48、共享内存相关](#memoryfilehelper)
-+ [49、元数据相关](#metadatautils)
-+ [50、单币种货币类，处理货币算术、币种和取整](#money)
-+ [51、手机网络相关](#networkutils)
-+ [52、Notification相关](#notificationutils)
-+ [53、对象相关](#objectutils)
-+ [54、提取颜色的帮助类](#paletteutils)
-+ [55、目录路径相关](#pathutils)
-+ [56、权限相关](#permissionutils)
-+ [57、轮询相关工具类](#pollingutils)
-+ [58、判断先决条件](#preconditions)
-+ [59、进程相关](#processutils)
-+ [60、随机数相关](#randomutils)
-+ [61、反射相关](#reflectutils)
-+ [62、正则表达式相关](#regexutils)
-+ [63、资源操作相关](#resourceutils)
-+ [64、四舍五入相关](#roundutils)
-+ [65、SD卡相关](#sdcardutils)
-+ [66、服务相关](#serviceutils)
-+ [67、Shell相关](#shellutils)
-+ [68、短信相关](#smsutils)
-+ [69、Snackbar相关](#snackbarutils)
-+ [70、SharedPreferences相关](#sputils)
-+ [71、状态栏背景色](#statusbarutils)
-+ [72、状态栏字体颜色模式](#statustextutils)
-+ [73、字符串相关](#stringutils)
-+ [74、线程操作相关](#threadpoolutils)
-+ [75、时间经历工具类](#timeutils)
-+ [76、Toast工具相关](#toastmaster)
-+ [77、Toast简单工具类](#toastutils)
-+ [78、初始化Application，在Application之中调用init方法](#utils)
-+ [79、视图工具](#viewutils)
-+ [80、弱引用的Handler，防止内存泄漏，用法与Handler一致](#weakhandler)
-+ [81、WebView常用设置](#webviewutils)
-+ [82、文件压缩相关](#ziputils)
-+ [83、打印长日志](#longlogutils)
++ [34、闪光灯相关](#flashlightutils)
++ [35、Fragment相关](#fragmentutils)
++ [36、Gson转换相关](#gsonutils)
++ [37、16进制转换相关](#hexutils)
++ [38、图片加载器](#imageloader)
++ [39、意图相关工具类](#intentutils)
++ [40、JSON操作相关](#jsonutils)
++ [41、软键盘相关](#keyboardutils)
++ [42、打印日志](#logutils)
++ [43、循环定时器](#looptimer)
++ [44、阴历阳历相关](#lunarutils)
++ [45、m3u8文件解析类](#m3u8parserutils)
++ [46、偶对象相关](#maputils)
++ [47、获取MD5相关](#md5utils)
++ [48、音频播放相关](#mediaplayerutils)
++ [49、共享内存相关](#memoryfilehelper)
++ [50、元数据相关](#metadatautils)
++ [51、单币种货币类，处理货币算术、币种和取整](#money)
++ [52、手机网络相关](#networkutils)
++ [53、Notification相关](#notificationutils)
++ [54、对象相关](#objectutils)
++ [55、提取颜色的帮助类](#paletteutils)
++ [56、目录路径相关](#pathutils)
++ [57、权限相关](#permissionutils)
++ [58、轮询相关工具类](#pollingutils)
++ [59、判断先决条件](#preconditions)
++ [60、进程相关](#processutils)
++ [61、随机数相关](#randomutils)
++ [62、反射相关](#reflectutils)
++ [63、正则表达式相关](#regexutils)
++ [64、资源操作相关](#resourceutils)
++ [65、四舍五入相关](#roundutils)
++ [66、SD卡相关](#sdcardutils)
++ [67、服务相关](#serviceutils)
++ [68、Shell相关](#shellutils)
++ [69、短信相关](#smsutils)
++ [70、Snackbar相关](#snackbarutils)
++ [71、SharedPreferences相关](#sputils)
++ [72、状态栏背景色](#statusbarutils)
++ [73、状态栏字体颜色模式](#statustextutils)
++ [74、字符串相关](#stringutils)
++ [75、线程操作相关](#threadpoolutils)
++ [76、时间经历工具类](#timeutils)
++ [77、Toast工具相关](#toastmaster)
++ [78、Toast简单工具类](#toastutils)
++ [79、Uri相关工具类](#uriutils)
++ [80、初始化Application，在Application之中调用init方法](#utils)
++ [81、视图工具](#viewutils)
++ [82、弱引用的Handler，防止内存泄漏，用法与Handler一致](#weakhandler)
++ [83、WebView常用设置](#webviewutils)
++ [84、文件压缩相关](#ziputils)
++ [85、打印长日志](#longlogutils)
 ---
 
 <span id="acache">
@@ -132,6 +135,7 @@ currentActivity                          : 获取当前affinity栈顶Activity
 closeActivity                            : 关闭Activity
 closeAllActivity                         : 关闭所有Activity
 closeActivityByName                      : 通过传入完整包.类名，关闭Activity
+closeOtherActivities                     : 通过传入完整包.类名，关闭其他的所有Activity
 getCurrentActivityName                   : 获取当前Activity名称
 getActivityStack                         : 获取Activity栈
 ```
@@ -670,6 +674,7 @@ setBufferSize              : 设置缓冲区尺寸
 ```
 getFileByPath                 : 根据文件路径获取文件
 isFileExists                  : 根据路径判断文件是否存在
+isFileExistsApi29             : 当sdk >= 29时，判断文件是否存在
 isDir                         : 判断是否是目录
 isFile                        : 判断是否是文件
 createOrExistsDir             : 判断目录是否存在，不存在则创建目录，并判断是否创建成功
@@ -693,6 +698,16 @@ makeDirs                      : 创建文件目录
 getFolderName                 : 通过给定路径取得文件目录
 getFileNameNoEx               : 去掉文档扩展名
 getMimeType                   : 获取本地文件的媒体类型
+```
+
+<span id="flashlightutils">
+
+* ### 闪光灯相关 -> [FlashlightUtils.java][FlashlightUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
+```
+isFlashlightEnable           : 设备是否支持闪光灯
+isFlashlightOn               : 闪光灯是否开启
+setFlashlightStatus          : 设置闪光灯状态
+destroy                      : 闪光灯销毁
 ```
 
 <span id="fragmentutils">
@@ -845,6 +860,7 @@ xml                      : log 字符串之 xml
 
 * ### 循环定时器 -> [LoopTimer.java][LoopTimer.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
+
 ```
 
 <span id="lunarutils">
@@ -976,10 +992,11 @@ getServerAddressByWifi: 根据 WiFi 获取服务端 IP 地址
 * ### Notification相关 -> [NotificationUtils.java][NotificationUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 createNotificationChannel  : 8.0以上，获取NotificationChannel对象
-getManager                 : 获取 NotificationManager
-getChannelNotification     : 8.0以上，获取Notification.Builder
-getNotification_25         : 8.0以下，获取NotificationCompat.Builder
-sendNotification           : 设置通知信息
+getNotificationBuilder     : 获取 NotificationBuilder
+showNotification           : 显示一条消息
+nofity                     : 显示一条消息
+cancle                     : 设置通知信息
+getNotification            :获取Notification实例
 ```
 
 <span id="objectutils">
@@ -1141,6 +1158,7 @@ isZh             : 验证汉字
 isUsername       : 验证用户名
 isDate           : 验证yyyy-MM-dd格式的日期校验，已考虑平闰年
 isIP             : 验证IP地址
+isIPWithPort     : 验证IP地址和端口号
 isMatch          : 判断是否匹配正则
 getMatches       : 获取正则匹配的部分
 getSplits        : 获取正则匹配分组
@@ -1267,6 +1285,7 @@ clear          : 清空缓存，这是一个重载方法
 * ### 状态栏相关 -> [StatusBarUtils.java][StatusBarUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
 setColor                              : 设置状态栏颜色
+setStatusBarColor                     : 设置状态栏颜色
 setColorForSwipeBack                  : 为滑动返回界面设置状态栏颜色，这是一个重载方法
 setColorNoTranslucent                 : 设置状态栏纯色，不加半透明效果
 setColorDiff                          : 设置状态栏颜色(5.0以下无半透明效果,不建议使用)
@@ -1372,6 +1391,17 @@ cancel         : 取消吐司显示
 ```
 showToast     : 显示吐司
 cancel        : 取消吐司
+```
+
+<span id="uriutils">
+
+* ### Uri相关的工具类 -> [UriUtils.java][UriUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
+```
+res2Uri         : 资源文件（res/ 目录下的各种文件，例如anim、color、drawable、layout、raw、values等）转换为uri
+file2Uri        : File 转换为 Uri
+uri2File        : Uri 转换为 File
+uri2FileReal    : Uri 转换为 File的具体实现
+uri2Bytes       : Uri 转换为 字节码
 ```
 
 <span id="utils">
@@ -1500,6 +1530,8 @@ getComments       : 获取压缩文件中的注释链表
 
 [FileUtils.java]: https://github.com/gycold/EasyAndroid/blob/master/easytools/src/main/java/com/easytools/tools/FileUtils.java
 
+[FlashlightUtils.java]: https://github.com/gycold/EasyAndroid/blob/master/easytools/src/main/java/com/easytools/tools/FlashlightUtils.java
+
 [FragmentUtils.java]: https://github.com/gycold/EasyAndroid/blob/master/easytools/src/main/java/com/easytools/tools/FragmentUtils.java
 
 [GsonUtils.java]: https://github.com/gycold/EasyAndroid/blob/master/easytools/src/main/java/com/easytools/tools/GsonUtils.java
@@ -1588,6 +1620,8 @@ getComments       : 获取压缩文件中的注释链表
 [ToastMaster.java]: https://github.com/gycold/EasyAndroid/blob/master/easytools/src/main/java/com/easytools/tools/ToastMaster.java
 
 [ToastUtils.java]: https://github.com/gycold/EasyAndroid/blob/master/easytools/src/main/java/com/easytools/tools/ToastUtils.java
+
+[UriUtils.java]: https://github.com/gycold/EasyAndroid/blob/master/easytools/src/main/java/com/easytools/tools/UriUtils.java
 
 [Utils.java]: https://github.com/gycold/EasyAndroid/blob/master/easytools/src/main/java/com/easytools/tools/Utils.java
 

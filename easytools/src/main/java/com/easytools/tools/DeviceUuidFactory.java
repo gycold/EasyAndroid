@@ -2,10 +2,11 @@ package com.easytools.tools;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
+import android.text.TextUtils;
 
-import java.io.UnsupportedEncodingException;
 import java.util.UUID;
 
 /**
@@ -14,22 +15,22 @@ import java.util.UUID;
  * description:使用UUID生成手机唯一标示
  * Android获取设备唯一ID的几种方式：
  * 1、IMEI：
- *    方式：TelephonyManager.getDeviceId():
- *    问题
- *    范围：只能支持拥有通话功能的设备，对于平板不可以。
- *    持久性：返厂，数据擦除的时候不彻底，保留了原来的标识。
- *    权限：需要权限：Android.permission.READ_PHONE_STATE
- *    bug: 有些厂家的实现有bug，返回一些不可用的数据
+ * 方式：TelephonyManager.getDeviceId():
+ * 问题
+ * 范围：只能支持拥有通话功能的设备，对于平板不可以。
+ * 持久性：返厂，数据擦除的时候不彻底，保留了原来的标识。
+ * 权限：需要权限：Android.permission.READ_PHONE_STATE
+ * bug: 有些厂家的实现有bug，返回一些不可用的数据
  * 2、Mac地址：
- *    ACCESS_WIFI_STATE权限
- *    有些设备没有WiFi，或者蓝牙，就不可以，如果WiFi没有打开，硬件也不会返回Mac地址，不建议使用
+ * ACCESS_WIFI_STATE权限
+ * 有些设备没有WiFi，或者蓝牙，就不可以，如果WiFi没有打开，硬件也不会返回Mac地址，不建议使用
  * 3、ANDROID_ID：
- *    2.2（Froyo，8）版本系统会不可信，来自主要生产厂商的主流手机，至少有一个普遍发现的bug，
- *    这些有问题的手机相同的ANDROID_ID: 9774d56d682e549c
- *    但是如果返厂的手机，或者被root的手机，可能会变
+ * 2.2（Froyo，8）版本系统会不可信，来自主要生产厂商的主流手机，至少有一个普遍发现的bug，
+ * 这些有问题的手机相同的ANDROID_ID: 9774d56d682e549c
+ * 但是如果返厂的手机，或者被root的手机，可能会变
  * 4、Serial Number：
- *    从Android 2.3 (“Gingerbread”)开始可用，可以通过android.os.Build.SERIAL获取，对于没有通话功能的设备，它会
- *    返回一个唯一的device ID
+ * 从Android 2.3 (“Gingerbread”)开始可用，可以通过android.os.Build.SERIAL获取，对于没有通话功能的设备，它会
+ * 返回一个唯一的device ID
  * time: create at 2017/2/10 10:01
  */
 
@@ -38,18 +39,27 @@ public class DeviceUuidFactory {
     protected static final String PREFS_DEVICE_ID = "device_id";
     protected volatile static UUID uuid;
 
+    /**
+     * 从Android 10.0（即Android Q）起，应用必须具有 READ_PRIVILEGED_PHONE_STATE
+     * 签名权限才能访问设备的不可重置标识符（包含 IMEI 和序列号）。
+     * <p>
+     * 不过官方所说的READ_PRIVILEGED_PHONE_STATE权限只提供给系统app，所以
+     * getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId()这个方法算是废了。
+     *
+     * @param context
+     */
     public DeviceUuidFactory(Context context) {
         if (uuid == null) {
             synchronized (DeviceUuidFactory.class) {
                 if (uuid == null) {
                     final SharedPreferences prefs = context.getSharedPreferences(PREFS_FILE, 0);
                     final String id = prefs.getString(PREFS_DEVICE_ID, null);
-                    if (id != null) {
+                    if (!TextUtils.isEmpty(id)) {
                         // Use the ids previously computed and stored in the
                         // prefs file
                         uuid = UUID.fromString(id);
                     } else {
-                        final String androidId = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+                        final String androidId = Settings.System.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
                         // Use the Android ID unless it's broken, in which case
                         // fallback on deviceId,
                         // unless it's not available, then fallback on a random
@@ -58,16 +68,20 @@ public class DeviceUuidFactory {
                             if (!"9774d56d682e549c".equals(androidId)) {
                                 uuid = UUID.nameUUIDFromBytes(androidId.getBytes("utf8"));
                             } else {
-                                final String deviceId = ((TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId();
-                                uuid = deviceId != null ? UUID.nameUUIDFromBytes(deviceId.getBytes("utf8")) : UUID.randomUUID();
+                                final String deviceId = ((TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE)).getImei();
+                                if (TextUtils.isEmpty(deviceId)) {
+                                    uuid = getUUID();
+                                } else {
+                                    uuid = UUID.nameUUIDFromBytes(deviceId.getBytes("utf8"));
+                                }
                             }
-                        } catch (UnsupportedEncodingException e) {
-                            throw new RuntimeException(e);
+                        } catch (Exception e) {
+                            uuid = getUUID();
                         }
                         // Write the value out to the prefs file
                         prefs.edit()
                                 .putString(PREFS_DEVICE_ID, uuid.toString())
-                                .commit();
+                                .apply();
                     }
                 }
             }
@@ -75,35 +89,81 @@ public class DeviceUuidFactory {
     }
 
     /**
+     * 从Android 10.0（即Android Q）起，应用必须具有 READ_PRIVILEGED_PHONE_STATE
+     * 签名权限才能访问设备的不可重置标识符（包含 IMEI 和序列号）。
+     * <p>
+     * 不过官方所说的READ_PRIVILEGED_PHONE_STATE权限只提供给系统app，所以
+     * getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId()这个方法算是废了。
+     * <p>
      * Returns a unique UUID for the current android device. As with all UUIDs,
      * this unique ID is "very highly likely" to be unique across all Android
      * devices. Much more so than ANDROID_ID is.
-     *
+     * <p>
      * The UUID is generated by using ANDROID_ID as the base key if appropriate,
      * falling back on TelephonyManager.getDeviceID() if ANDROID_ID is known to
      * be incorrect, and finally falling back on a random UUID that's persisted
      * to SharedPreferences if getDeviceID() does not return a usable value.
-     *
+     * <p>
      * In some rare circumstances, this ID may change. In particular, if the
      * device is factory reset a new device ID may be generated. In addition, if
      * a user upgrades their phone from certain buggy implementations of Android
      * 2.2 to a newer, non-buggy version of Android, the device ID may change.
      * Or, if a user uninstalls your app on a device that has neither a proper
      * Android ID nor a Device ID, this ID may change on reinstallation.
-     *
+     * <p>
      * Note that if the code falls back on using TelephonyManager.getDeviceId(),
      * the resulting ID will NOT change after a factory reset. Something to be
      * aware of.
-     *
+     * <p>
      * Works around a bug in Android 2.2 for many devices when using ANDROID_ID
      * directly.
      *
-     * @see --http://code.google.com/p/android/issues/detail?id=10603
-     *
      * @return a UUID that may be used to uniquely identify your device for most
-     *         purposes.
+     * purposes.
+     * @see --http://code.google.com/p/android/issues/detail?id=10603
      */
     public UUID getDeviceUuid() {
         return uuid;
+    }
+
+
+    /**
+     * 给出一个不变和基本不重复的UUID方法
+     *
+     * @return
+     */
+    public static UUID getUUID() {
+
+        String serial = null;
+
+        String m_szDevIDShort = "35" +
+                Build.BOARD.length() % 10 + Build.BRAND.length() % 10 +
+
+                Build.CPU_ABI.length() % 10 + Build.DEVICE.length() % 10 +
+
+                Build.DISPLAY.length() % 10 + Build.HOST.length() % 10 +
+
+                Build.ID.length() % 10 + Build.MANUFACTURER.length() % 10 +
+
+                Build.MODEL.length() % 10 + Build.PRODUCT.length() % 10 +
+
+                Build.TAGS.length() % 10 + Build.TYPE.length() % 10 +
+
+                Build.USER.length() % 10; //13 位
+
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                serial = android.os.Build.getSerial();
+            } else {
+                serial = Build.SERIAL;
+            }
+            //API>=9 使用serial号
+            return new UUID(m_szDevIDShort.hashCode(), serial.hashCode());
+        } catch (Exception exception) {
+            //serial需要一个初始化
+            serial = "serial"; // 随便一个初始化
+        }
+        //使用硬件信息拼凑出来的15位号码
+        return new UUID(m_szDevIDShort.hashCode(), serial.hashCode());
     }
 }

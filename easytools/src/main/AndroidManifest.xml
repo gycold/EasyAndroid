@@ -7,8 +7,10 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
 
     <application>
+        <!--通常设置android:exported="false"，以保证权限最小化。-->
+        <!--granUriPermissions：是否允许授权文件的临时访问权限。这里需要，所以是 true。-->
         <provider
-            android:name="android.support.v4.content.FileProvider"
+            android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.android7.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">

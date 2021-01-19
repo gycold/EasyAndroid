@@ -1,5 +1,5 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.novoda.bintray-release'
+apply plugin: 'com.github.panpf.bintray-publish'
 
 android {
     compileSdkVersion rootProject.ext.android["compileSdkVersion"]
@@ -33,9 +33,16 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
+//    //以下是系统支持库
+//    compileOnly rootProject.ext.dependencies["appcompat-v7"]
+//    compileOnly rootProject.ext.dependencies["design"]
+//    compileOnly rootProject.ext.dependencies["palette-v7"]
+//    compileOnly rootProject.ext.dependencies["gson"]
+
+    //从2.0.0开始，升级为AndroidX，放弃support库
     //以下是系统支持库
-    compileOnly rootProject.ext.dependencies["appcompat-v7"]
-    compileOnly rootProject.ext.dependencies["design"]
+    compileOnly rootProject.ext.dependencies["appcompat"]
+    compileOnly rootProject.ext.dependencies["material"]
     compileOnly rootProject.ext.dependencies["palette"]
     compileOnly rootProject.ext.dependencies["gson"]
 }
@@ -45,7 +52,7 @@ publish {
     userOrg = 'easyandroid'//bintray.com用户名
     groupId = 'com.easyandroid'//jcenter上的路径
     artifactId = 'easytools'//项目名称
-    publishVersion = '1.5.1'//版本号
+    publishVersion = '2.0.3'//版本号
     desc = 'Oh hi, this is a nice description for a project, right?'//描述
     website = 'https://github.com/gycold/EasyAndroid.git'//网站
 }

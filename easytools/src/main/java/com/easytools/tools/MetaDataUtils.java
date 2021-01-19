@@ -1,14 +1,15 @@
 package com.easytools.tools;
 
 import android.app.Activity;
+import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.pm.ActivityInfo;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ServiceInfo;
-import android.support.annotation.NonNull;
-import android.app.Service;
+
+import androidx.annotation.NonNull;
 
 /**
  * package: com.easytools.tools.MetaDataUtils

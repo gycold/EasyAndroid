@@ -1,5 +1,6 @@
 package com.easytools.tools;
 
+import android.os.Build;
 import android.util.Base64;
 
 import java.io.File;
@@ -13,15 +14,11 @@ import java.security.KeyFactory;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 
-import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.Mac;
-import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
 
 import static com.easytools.tools.ConvertUtils.bytes2HexString;
@@ -836,96 +833,96 @@ public class EncryptUtils {
      * Return the Base64-encode bytes of RSA encryption.
      *
      * @param data           The data.
-     * @param key            The key.
-     * @param isPublicKey    True to use public key, false to use private key.
+     * @param publicKey      The public key.
+     * @param keySize        The size of key, e.g. 1024, 2048...
      * @param transformation The name of the transformation, e.g., <i>RSA/CBC/PKCS1Padding</i>.
      * @return the Base64-encode bytes of RSA encryption
      */
     public static byte[] encryptRSA2Base64(final byte[] data,
-                                           final byte[] key,
-                                           final boolean isPublicKey,
+                                           final byte[] publicKey,
+                                           final int keySize,
                                            final String transformation) {
-        return base64Encode(encryptRSA(data, key, isPublicKey, transformation));
+        return base64Encode(encryptRSA(data, publicKey, keySize, transformation));
     }
 
     /**
      * Return the hex string of RSA encryption.
      *
      * @param data           The data.
-     * @param key            The key.
-     * @param isPublicKey    True to use public key, false to use private key.
+     * @param publicKey      The public key.
+     * @param keySize        The size of key, e.g. 1024, 2048...
      * @param transformation The name of the transformation, e.g., <i>RSA/CBC/PKCS1Padding</i>.
      * @return the hex string of RSA encryption
      */
     public static String encryptRSA2HexString(final byte[] data,
-                                              final byte[] key,
-                                              final boolean isPublicKey,
+                                              final byte[] publicKey,
+                                              final int keySize,
                                               final String transformation) {
-        return bytes2HexString(encryptRSA(data, key, isPublicKey, transformation));
+        return ConvertUtils.bytes2HexString(encryptRSA(data, publicKey, keySize, transformation));
     }
 
     /**
      * Return the bytes of RSA encryption.
      *
      * @param data           The data.
-     * @param key            The key.
-     * @param isPublicKey    True to use public key, false to use private key.
+     * @param publicKey      The public key.
+     * @param keySize        The size of key, e.g. 1024, 2048...
      * @param transformation The name of the transformation, e.g., <i>RSA/CBC/PKCS1Padding</i>.
      * @return the bytes of RSA encryption
      */
     public static byte[] encryptRSA(final byte[] data,
-                                    final byte[] key,
-                                    final boolean isPublicKey,
+                                    final byte[] publicKey,
+                                    final int keySize,
                                     final String transformation) {
-        return rsaTemplate(data, key, isPublicKey, transformation, true);
+        return rsaTemplate(data, publicKey, keySize, transformation, true);
     }
 
     /**
      * Return the bytes of RSA decryption for Base64-encode bytes.
      *
      * @param data           The data.
-     * @param key            The key.
-     * @param isPublicKey    True to use public key, false to use private key.
+     * @param privateKey     The private key.
+     * @param keySize        The size of key, e.g. 1024, 2048...
      * @param transformation The name of the transformation, e.g., <i>RSA/CBC/PKCS1Padding</i>.
      * @return the bytes of RSA decryption for Base64-encode bytes
      */
     public static byte[] decryptBase64RSA(final byte[] data,
-                                          final byte[] key,
-                                          final boolean isPublicKey,
+                                          final byte[] privateKey,
+                                          final int keySize,
                                           final String transformation) {
-        return decryptRSA(base64Decode(data), key, isPublicKey, transformation);
+        return decryptRSA(base64Decode(data), privateKey, keySize, transformation);
     }
 
     /**
      * Return the bytes of RSA decryption for hex string.
      *
      * @param data           The data.
-     * @param key            The key.
-     * @param isPublicKey    True to use public key, false to use private key.
+     * @param privateKey     The private key.
+     * @param keySize        The size of key, e.g. 1024, 2048...
      * @param transformation The name of the transformation, e.g., <i>RSA/CBC/PKCS1Padding</i>.
      * @return the bytes of RSA decryption for hex string
      */
     public static byte[] decryptHexStringRSA(final String data,
-                                             final byte[] key,
-                                             final boolean isPublicKey,
+                                             final byte[] privateKey,
+                                             final int keySize,
                                              final String transformation) {
-        return decryptRSA(hexString2Bytes(data), key, isPublicKey, transformation);
+        return decryptRSA(ConvertUtils.hexString2Bytes(data), privateKey, keySize, transformation);
     }
 
     /**
      * Return the bytes of RSA decryption.
      *
      * @param data           The data.
-     * @param key            The key.
-     * @param isPublicKey    True to use public key, false to use private key.
+     * @param privateKey     The private key.
+     * @param keySize        The size of key, e.g. 1024, 2048...
      * @param transformation The name of the transformation, e.g., <i>RSA/CBC/PKCS1Padding</i>.
      * @return the bytes of RSA decryption
      */
     public static byte[] decryptRSA(final byte[] data,
-                                    final byte[] key,
-                                    final boolean isPublicKey,
+                                    final byte[] privateKey,
+                                    final int keySize,
                                     final String transformation) {
-        return rsaTemplate(data, key, isPublicKey, transformation, false);
+        return rsaTemplate(data, privateKey, keySize, transformation, false);
     }
 
 
@@ -963,14 +960,14 @@ public class EncryptUtils {
      *
      * @param data           The data.
      * @param key            The key.
-     * @param isPublicKey    True to use public key, false to use private key.
+     * @param keySize        The size of key, e.g. 1024, 2048...
      * @param transformation The name of the transformation, e.g., <i>DES/CBC/PKCS1Padding</i>.
      * @param isEncrypt      True to encrypt, false otherwise.
      * @return the bytes of RSA encryption or decryption
      */
     private static byte[] rsaTemplate(final byte[] data,
                                       final byte[] key,
-                                      final boolean isPublicKey,
+                                      final int keySize,
                                       final String transformation,
                                       final boolean isEncrypt) {
         if (data == null || data.length == 0 || key == null || key.length == 0) {
@@ -978,18 +975,30 @@ public class EncryptUtils {
         }
         try {
             Key rsaKey;
-            if (isPublicKey) {
+            KeyFactory keyFactory;
+            if (Build.VERSION.SDK_INT < 28) {
+                keyFactory = KeyFactory.getInstance("RSA", "BC");
+            } else {
+                keyFactory = KeyFactory.getInstance("RSA");
+            }
+            if (isEncrypt) {
                 X509EncodedKeySpec keySpec = new X509EncodedKeySpec(key);
-                rsaKey = KeyFactory.getInstance("RSA").generatePublic(keySpec);
+                rsaKey = keyFactory.generatePublic(keySpec);
             } else {
                 PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(key);
-                rsaKey = KeyFactory.getInstance("RSA").generatePrivate(keySpec);
+                rsaKey = keyFactory.generatePrivate(keySpec);
             }
             if (rsaKey == null) return null;
             Cipher cipher = Cipher.getInstance(transformation);
             cipher.init(isEncrypt ? Cipher.ENCRYPT_MODE : Cipher.DECRYPT_MODE, rsaKey);
             int len = data.length;
-            int maxLen = isEncrypt ? 117 : 128;
+            int maxLen = keySize / 8;
+            if (isEncrypt) {
+                String lowerTrans = transformation.toLowerCase();
+                if (lowerTrans.endsWith("pkcs1padding")) {
+                    maxLen -= 11;
+                }
+            }
             int count = len / maxLen;
             if (count > 0) {
                 byte[] ret = new byte[0];
@@ -1010,17 +1019,7 @@ public class EncryptUtils {
             } else {
                 return cipher.doFinal(data);
             }
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (NoSuchPaddingException e) {
-            e.printStackTrace();
-        } catch (InvalidKeyException e) {
-            e.printStackTrace();
-        } catch (BadPaddingException e) {
-            e.printStackTrace();
-        } catch (IllegalBlockSizeException e) {
-            e.printStackTrace();
-        } catch (InvalidKeySpecException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
@@ -1038,6 +1037,7 @@ public class EncryptUtils {
     }
 
     private static byte[] base64Decode(final byte[] input) {
+        if (input == null || input.length == 0) return new byte[0];
         return Base64.decode(input, Base64.NO_WRAP);
     }
 }

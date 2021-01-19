@@ -5,16 +5,19 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
-import android.support.annotation.ColorInt;
-import android.support.annotation.IntRange;
-import android.support.annotation.NonNull;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.v4.widget.DrawerLayout;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+
+import androidx.annotation.ColorInt;
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.easytools.R;
 
@@ -79,6 +82,34 @@ public class StatusBarUtils {
                 decorView.addView(createStatusBarView(activity, color, statusBarAlpha));
             }
             setRootView(activity);
+        }
+    }
+
+    /**
+     * Sets status-bar color for L devices.
+     *
+     * @param color
+     * @param window
+     */
+    public static void setStatusBarColor(@ColorInt int color, Window window) {
+        if (window != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                window.setStatusBarColor(color);
+            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+                ViewGroup mContentView = (ViewGroup) window.findViewById(Window.ID_ANDROID_CONTENT);
+                View mChildView = mContentView.getChildAt(0);
+                if (mChildView != null) {
+                    mChildView.setFitsSystemWindows(true);
+                }
+                View statusBarView = new View(window.getContext());
+                int statusBarHeight = getStatusBarHeight(window.getContext());
+                FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, statusBarHeight);
+                params.gravity = Gravity.TOP;
+                statusBarView.setLayoutParams(params);
+                statusBarView.setBackgroundColor(color);
+                mContentView.addView(statusBarView);
+            }
         }
     }
 
