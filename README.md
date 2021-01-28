@@ -18,7 +18,16 @@ implementation 'com.easyandroid:easytools:2.0.3'
 -keep class com.easytools.constant.**{*;}
 ```
 
----
+所需依赖库：
+
+1. appcompat 
+2. material
+3. palette
+4. gson
+
+
+
+------
 
 <span id="目录">
 
