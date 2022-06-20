@@ -19,7 +19,7 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:4.0.2'
 //        classpath 'com.novoda:bintray-release:0.9.2'//此仓库暂不支持gradle6.0以上版本，使用下面仓库代替
-        classpath 'com.github.panpf.bintray-publish:bintray-publish:1.0.0'
+//        classpath 'com.github.panpf.bintray-publish:bintray-publish:1.0.0'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -38,10 +38,11 @@ allprojects {
     }
 }
 
+
 // 运行gradle clean时，执行此处定义的task
 // 该任务继承自Delete，删除根目录中的build目录
 // 相当于执行Delete.delete(rootProject.buildDir)
 // gradle使用groovy语言，调用method时可以不用加（）
-task clean(type: Delete) {
-    delete rootProject.buildDir
-}
+//task clean(type: Delete) {
+//    delete rootProject.buildDir
+//}

@@ -1,5 +1,5 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.github.panpf.bintray-publish'
+//apply plugin: 'com.github.panpf.bintray-publish'
 
 android {
     compileSdkVersion rootProject.ext.android["compileSdkVersion"]
@@ -47,12 +47,21 @@ dependencies {
     compileOnly rootProject.ext.dependencies["gson"]
 }
 
-//添加
-publish {
-    userOrg = 'easyandroid'//bintray.com用户名
-    groupId = 'com.easyandroid'//jcenter上的路径
-    artifactId = 'easytools'//项目名称
-    publishVersion = '2.0.3'//版本号
-    desc = 'Oh hi, this is a nice description for a project, right?'//描述
-    website = 'https://github.com/gycold/EasyAndroid.git'//网站
+////添加
+//publish {
+//    userOrg = 'easyandroid'//bintray.com用户名
+//    groupId = 'com.easyandroid'//jcenter上的路径
+//    artifactId = 'easytools'//项目名称
+//    publishVersion = '2.0.3'//版本号
+//    desc = 'Oh hi, this is a nice description for a project, right?'//描述
+//    website = 'https://github.com/gycold/EasyAndroid.git'//网站
+//}
+
+
+//先ext，再apply from
+ext {
+    PUBLISH_ARTIFACT_ID = "easyandroid" //你的artifact_id，一般是module的名字
+    PUBLISH_VERSION = "2.0.4"  //发布版本号
+    PUBLISH_GROUP_ID = 'io.github.gycold'  //你的sonatype的group_id
 }
+apply from: rootProject.file('publish-mavencentral.gradle')

@@ -102,21 +102,23 @@ implementation 'com.easyandroid:easytools:2.0.3'
 + [68、Shell相关](#shellutils)
 + [69、短信相关](#smsutils)
 + [70、Snackbar相关](#snackbarutils)
-+ [71、SharedPreferences相关](#sputils)
-+ [72、状态栏背景色](#statusbarutils)
-+ [73、状态栏字体颜色模式](#statustextutils)
-+ [74、字符串相关](#stringutils)
-+ [75、线程操作相关](#threadpoolutils)
-+ [76、时间经历工具类](#timeutils)
-+ [77、Toast工具相关](#toastmaster)
-+ [78、Toast简单工具类](#toastutils)
-+ [79、Uri相关工具类](#uriutils)
-+ [80、初始化Application，在Application之中调用init方法](#utils)
-+ [81、视图工具](#viewutils)
-+ [82、弱引用的Handler，防止内存泄漏，用法与Handler一致](#weakhandler)
-+ [83、WebView常用设置](#webviewutils)
-+ [84、文件压缩相关](#ziputils)
-+ [85、打印长日志](#longlogutils)
++ [71、简单富文本](#spansimpleutils)
++ [72、富文本相关](#spanutils)
++ [73、SharedPreferences相关](#sputils)
++ [74、状态栏背景色](#statusbarutils)
++ [75、状态栏字体颜色模式](#statustextutils)
++ [76、字符串相关](#stringutils)
++ [77、线程操作相关](#threadpoolutils)
++ [78、时间经历工具类](#timeutils)
++ [79、Toast工具相关](#toastmaster)
++ [80、Toast简单工具类](#toastutils)
++ [81、Uri相关工具类](#uriutils)
++ [82、初始化Application，在Application之中调用init方法](#utils)
++ [83、视图工具](#viewutils)
++ [84、弱引用的Handler，防止内存泄漏，用法与Handler一致](#weakhandler)
++ [85、WebView常用设置](#webviewutils)
++ [86、文件压缩相关](#ziputils)
++ [87、打印长日志](#longlogutils)
 ---
 
 <span id="acache">
@@ -1263,6 +1265,14 @@ getView        : 获取 snackbar 视图
 addView        : 添加 snackbar 视图
 ```
 
+<span id="spansimpleutils">
+
+* ### 简单富文本 -> [SpanSimpleUtils.java][SpanSimpleUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
+
+<span id="spanutils">
+
+* ### 富文本相关 -> [SpanUtils.java][SpanUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
+
 <span id="sputils">
 
 * ### SharedPreferences相关 -> [SpUtils.java][SpUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
@@ -1612,6 +1622,10 @@ getComments       : 获取压缩文件中的注释链表
 [SMSUtils.java]: https://github.com/gycold/EasyAndroid/blob/master/easytools/src/main/java/com/easytools/tools/SMSUtils.java
 
 [SnackbarUtils.java]: https://github.com/gycold/EasyAndroid/blob/master/easytools/src/main/java/com/easytools/tools/SnackbarUtils.java
+
+[SpanSimpleUtils.java]: https://github.com/gycold/EasyAndroid/blob/master/easytools/src/main/java/com/easytools/tools/SpanSimpleUtils.java
+
+[SpanUtils.java]: https://github.com/gycold/EasyAndroid/blob/master/easytools/src/main/java/com/easytools/tools/SpanUtils.java
 
 [SpUtils.java]: https://github.com/gycold/EasyAndroid/blob/master/easytools/src/main/java/com/easytools/tools/SpUtils.java
 
