@@ -1,5 +1,5 @@
 # EasyAndroid
-[![EasyAndroid](https://api.bintray.com/packages/easyandroid/maven/easytools/images/download.svg)](https://bintray.com/easyandroid/maven/easytools/_latestVersion)  [![Platform](https://img.shields.io/badge/platform-Android-green.svg)](https://developer.android.google.cn/) [![SDK](https://img.shields.io/badge/minSdkVersion-19%2B-green.svg)](https://developer.android.com/about/)
+[![EasyAndroid](https://img.shields.io/maven-central/v/io.github.gycold/easyandroid)](https://bintray.com/easyandroid/maven/easytools/_latestVersion)  [![Platform](https://img.shields.io/badge/platform-Android-green.svg)](https://developer.android.google.cn/) [![SDK](https://img.shields.io/badge/minSdkVersion-19%2B-green.svg)](https://developer.android.com/about/)![License](https://img.shields.io/badge/license-Apache--2.0-green.svg)
 
 包含各种工具类的集合，会不定期更新，欢迎贡献code
 
