@@ -4,12 +4,21 @@
 包含各种工具类的集合，会不定期更新，欢迎贡献code
 
 使用方法：<br>
-2.0.0以后，放弃了support库，请使用AndroidX
+`2.0.0`以后，放弃了support库，请使用AndroidX
+同时，由于Jcenter Maven仓库不再维护，所以自`2.0.4`及以后版本，迁移至了MavenCentral：
+
+`2.0.3`版本及以前版本，通过以下方式引入：
 ```
 implementation 'com.easyandroid:easytools:2.0.3'
-
-然后，在自己的Application中调用Utils.init(this);进行初始化
 ```
+
+`2.0.4`版本及以后版本，通过以下方式引入：
+
+```
+implementation 'io.github.gycold:easyandroid:2.0.4'
+```
+然后，在自己的Application中调用Utils.init(this);进行初始化
+
 
 添加混淆：<br>
 ```
