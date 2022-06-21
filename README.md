@@ -4,7 +4,8 @@
 包含各种工具类的集合，会不定期更新，欢迎贡献code
 
 使用方法：<br>
-`2.0.0`以后，放弃了support库，请使用AndroidX
+`2.0.0`以后，放弃了support库，请使用AndroidX。
+
 同时，由于Jcenter Maven仓库不再维护，所以自`2.0.4`及以后版本，迁移至了MavenCentral：
 
 `2.0.3`版本及以前版本，通过以下方式引入：
