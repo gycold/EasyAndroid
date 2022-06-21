@@ -1,5 +1,5 @@
 # EasyAndroid
-[![EasyAndroid](https://img.shields.io/maven-central/v/io.github.gycold/easyandroid)](https://bintray.com/easyandroid/maven/easytools/_latestVersion)  [![Platform](https://img.shields.io/badge/platform-Android-green.svg)](https://developer.android.google.cn/) [![SDK](https://img.shields.io/badge/minSdkVersion-19%2B-green.svg)](https://developer.android.com/about/)![License](https://img.shields.io/badge/license-Apache--2.0-green.svg)
+[![EasyAndroid](https://img.shields.io/maven-central/v/io.github.gycold/easyandroid)](https://repo1.maven.org/maven2/io/github/gycold/easyandroid/)  [![Platform](https://img.shields.io/badge/platform-Android-green.svg)](https://developer.android.google.cn/)  [![SDK](https://img.shields.io/badge/minSdkVersion-19%2B-green.svg)](https://developer.android.com/about/)  [![License](https://img.shields.io/badge/license-Apache--2.0-green.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 
 包含各种工具类的集合，会不定期更新，欢迎贡献code
 
@@ -9,6 +9,7 @@
 同时，由于Jcenter Maven仓库不再维护，所以自`2.0.4`及以后版本，迁移至了MavenCentral：
 
 `2.0.3`版本及以前版本，通过以下方式引入：
+
 ```
 implementation 'com.easyandroid:easytools:2.0.3'
 ```
