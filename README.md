@@ -19,8 +19,28 @@ implementation 'com.easyandroid:easytools:2.0.3'
 ```
 implementation 'io.github.gycold:easyandroid:2.0.4'
 ```
+如果报错`unspecified`，用这个方式引入：
+```
+implementation('io.github.gycold:easyandroid:2.0.4') {
+        exclude module: 'unspecified'
+    }
+```
 然后，在自己的Application中调用Utils.init(this);进行初始化
 
+如遇到资源文件冲突问题，则在 `AndroidManifest.xml`中添加replace即可：
+```
+<provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true"
+            tools:replace="android:authorities">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/filepaths"
+                tools:replace="android:resource"/>
+        </provider>
+```
 
 添加混淆：<br>
 ```
