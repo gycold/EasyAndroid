@@ -10,9 +10,13 @@ buildscript {
          便会按照先后顺序去这些仓库寻找，从仓库将相关项目下载到本地**/
         // 但是因为网络原因，这两个仓库对于国内来说不太友好，所以通常使用阿里云等镜像站代替使用
         // 按需求添加如下几行即可
+        //方式一
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url 'https://maven.aliyun.com/repository/jcenter' }
+        //方式二
+//        maven { url 'https://maven.aliyun.com/nexus/content/groups/public/' }
+//        maven { url 'https://maven.aliyun.com/nexus/content/repositories/jcenter' }
         google()
-        maven { url 'https://maven.aliyun.com/nexus/content/groups/public/' }
-        maven { url 'https://maven.aliyun.com/nexus/content/repositories/jcenter' }
         mavenCentral()
         jcenter()
     }
@@ -32,8 +36,12 @@ allprojects {
     }
 
     repositories {
-        maven { url 'https://maven.aliyun.com/nexus/content/groups/public/' }
-        maven { url 'https://maven.aliyun.com/nexus/content/repositories/jcenter' }
+        //方式一
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url 'https://maven.aliyun.com/repository/jcenter' }
+        //方式二
+//        maven { url 'https://maven.aliyun.com/nexus/content/groups/public/' }
+//        maven { url 'https://maven.aliyun.com/nexus/content/repositories/jcenter' }
         google()
         mavenCentral()
         jcenter()
