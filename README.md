@@ -1,14 +1,45 @@
 # EasyAndroid
-[![EasyAndroid](https://api.bintray.com/packages/easyandroid/maven/easytools/images/download.svg)](https://bintray.com/easyandroid/maven/easytools/_latestVersion)  [![Platform](https://img.shields.io/badge/platform-Android-green.svg)](https://developer.android.google.cn/) [![SDK](https://img.shields.io/badge/minSdkVersion-19%2B-green.svg)](https://developer.android.com/about/)
+[![EasyAndroid](https://img.shields.io/maven-central/v/io.github.gycold/easyandroid)](https://repo1.maven.org/maven2/io/github/gycold/easyandroid/)  [![Platform](https://img.shields.io/badge/platform-Android-green.svg)](https://developer.android.google.cn/)  [![SDK](https://img.shields.io/badge/minSdkVersion-19%2B-green.svg)](https://developer.android.com/about/)  [![License](https://img.shields.io/badge/license-Apache--2.0-green.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 
 包含各种工具类的集合，会不定期更新，欢迎贡献code
 
 使用方法：<br>
-2.0.0以后，放弃了support库，请使用AndroidX
+`2.0.0`以后，放弃了support库，请使用AndroidX。
+
+同时，由于Jcenter Maven仓库不再维护，所以自`2.0.4`及以后版本，迁移至了MavenCentral：
+
+`2.0.3`版本及以前版本，通过以下方式引入：
+
 ```
 implementation 'com.easyandroid:easytools:2.0.3'
+```
 
+`2.0.4`版本及以后版本，通过以下方式引入：
+
+```
+implementation 'io.github.gycold:easyandroid:2.0.4'
+```
+如果报错`unspecified`，用这个方式引入：
+```
+implementation('io.github.gycold:easyandroid:2.0.4') {
+        exclude module: 'unspecified'
+    }
+```
 然后，在自己的Application中调用Utils.init(this);进行初始化
+
+如遇到资源文件冲突问题，则在 `AndroidManifest.xml`中添加replace即可：
+```
+<provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true"
+            tools:replace="android:authorities">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/filepaths"
+                tools:replace="android:resource"/>
+        </provider>
 ```
 
 添加混淆：<br>
@@ -18,7 +49,16 @@ implementation 'com.easyandroid:easytools:2.0.3'
 -keep class com.easytools.constant.**{*;}
 ```
 
----
+所需依赖库：
+
+1. appcompat 
+2. material
+3. palette
+4. gson
+
+
+
+------
 
 <span id="目录">
 
@@ -93,21 +133,23 @@ implementation 'com.easyandroid:easytools:2.0.3'
 + [68、Shell相关](#shellutils)
 + [69、短信相关](#smsutils)
 + [70、Snackbar相关](#snackbarutils)
-+ [71、SharedPreferences相关](#sputils)
-+ [72、状态栏背景色](#statusbarutils)
-+ [73、状态栏字体颜色模式](#statustextutils)
-+ [74、字符串相关](#stringutils)
-+ [75、线程操作相关](#threadpoolutils)
-+ [76、时间经历工具类](#timeutils)
-+ [77、Toast工具相关](#toastmaster)
-+ [78、Toast简单工具类](#toastutils)
-+ [79、Uri相关工具类](#uriutils)
-+ [80、初始化Application，在Application之中调用init方法](#utils)
-+ [81、视图工具](#viewutils)
-+ [82、弱引用的Handler，防止内存泄漏，用法与Handler一致](#weakhandler)
-+ [83、WebView常用设置](#webviewutils)
-+ [84、文件压缩相关](#ziputils)
-+ [85、打印长日志](#longlogutils)
++ [71、简单富文本](#spansimpleutils)
++ [72、富文本相关](#spanutils)
++ [73、SharedPreferences相关](#sputils)
++ [74、状态栏背景色](#statusbarutils)
++ [75、状态栏字体颜色模式](#statustextutils)
++ [76、字符串相关](#stringutils)
++ [77、线程操作相关](#threadpoolutils)
++ [78、时间经历工具类](#timeutils)
++ [79、Toast工具相关](#toastmaster)
++ [80、Toast简单工具类](#toastutils)
++ [81、Uri相关工具类](#uriutils)
++ [82、初始化Application，在Application之中调用init方法](#utils)
++ [83、视图工具](#viewutils)
++ [84、弱引用的Handler，防止内存泄漏，用法与Handler一致](#weakhandler)
++ [85、WebView常用设置](#webviewutils)
++ [86、文件压缩相关](#ziputils)
++ [87、打印长日志](#longlogutils)
 ---
 
 <span id="acache">
@@ -1254,6 +1296,14 @@ getView        : 获取 snackbar 视图
 addView        : 添加 snackbar 视图
 ```
 
+<span id="spansimpleutils">
+
+* ### 简单富文本 -> [SpanSimpleUtils.java][SpanSimpleUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
+
+<span id="spanutils">
+
+* ### 富文本相关 -> [SpanUtils.java][SpanUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
+
 <span id="sputils">
 
 * ### SharedPreferences相关 -> [SpUtils.java][SpUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
@@ -1603,6 +1653,10 @@ getComments       : 获取压缩文件中的注释链表
 [SMSUtils.java]: https://github.com/gycold/EasyAndroid/blob/master/easytools/src/main/java/com/easytools/tools/SMSUtils.java
 
 [SnackbarUtils.java]: https://github.com/gycold/EasyAndroid/blob/master/easytools/src/main/java/com/easytools/tools/SnackbarUtils.java
+
+[SpanSimpleUtils.java]: https://github.com/gycold/EasyAndroid/blob/master/easytools/src/main/java/com/easytools/tools/SpanSimpleUtils.java
+
+[SpanUtils.java]: https://github.com/gycold/EasyAndroid/blob/master/easytools/src/main/java/com/easytools/tools/SpanUtils.java
 
 [SpUtils.java]: https://github.com/gycold/EasyAndroid/blob/master/easytools/src/main/java/com/easytools/tools/SpUtils.java
 

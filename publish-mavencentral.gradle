@@ -1,0 +1,114 @@
+apply plugin: 'maven-publish'
+apply plugin: 'signing'
+
+task androidSourcesJar(type: Jar) {
+    classifier = 'sources'
+
+    exclude "**/R.class"  //排除`R.class`
+    exclude "**/BuildConfig.class"  //排除`BuildConfig.class`
+}
+//第 1 处
+ext["signing.keyId"] = ''
+ext["signing.password"] = ''
+ext["signing.secretKeyRingFile"] = ''
+ext["ossrhUsername"] = ''
+ext["ossrhPassword"] = ''
+
+File secretPropsFile = project.rootProject.file('local.properties')
+if (secretPropsFile.exists()) {
+    println "Found secret props file, loading props"
+    Properties p = new Properties()
+    p.load(new FileInputStream(secretPropsFile))
+    p.each { name, value ->
+        ext[name] = value
+    }
+} else {
+    println "No props file, loading env vars"
+}
+
+publishing {
+    publications {
+        release(MavenPublication) {
+            println("publish-maven Log-------> PUBLISH_GROUP_ID: $PUBLISH_GROUP_ID; PUBLISH_ARTIFACT_ID: $PUBLISH_ARTIFACT_ID; PUBLISH_VERSION: $PUBLISH_VERSION")
+            // The coordinates of the library, being set from variables that
+            // we'll set up in a moment
+            //第 2 处
+            groupId PUBLISH_GROUP_ID
+            artifactId PUBLISH_ARTIFACT_ID
+            version PUBLISH_VERSION
+
+            // Two artifacts, the `aar` and the sources
+            artifact("$buildDir/outputs/aar/${project.getName()}-release.aar")
+            artifact androidSourcesJar
+
+            // Self-explanatory metadata for the most part
+            pom {
+                //第 3 处
+                name = PUBLISH_ARTIFACT_ID
+                description = 'Android全工具类，持续迭代更新，欢迎贡献code' //项目描述
+                // If your project has a dedicated site, use its URL here
+                url = 'https://github.com/gycold/EasyAndroid' //项目github链接
+                licenses {
+                    license {
+                        //协议类型，一般默认Apache License2.0的话不用改：
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        //第 4 处
+                        id = 'guanyingcao' //你的sonatype用户名
+                        name = 'guanyingcao' //你的sonatype用户名
+                        email = 'guanyingcao@gmail.com' //你的sonatype注册邮箱
+                    }
+                }
+                // Version control info, if you're using GitHub, follow the format as seen here
+                scm {
+                    //第 5 处
+                    //修改成你的Git地址：
+                    connection = 'scm:git@github.com:gycold/EasyAndroid.git'
+                    developerConnection = 'scm:git@github.com:gycold/EasyAndroid.git'
+                    //分支地址：
+                    url = 'https://github.com/gycold/EasyAndroid/tree/master'
+                }
+                // A slightly hacky fix so that your POM will include any transitive dependencies
+                // that your library builds upon
+                withXml {
+                    def dependenciesNode = asNode().appendNode('dependencies')
+
+                    project.configurations.implementation.allDependencies.each {
+                        if (it.name != 'unspecified') {
+                            def dependencyNode = dependenciesNode.appendNode('dependency')
+                            dependencyNode.appendNode('groupId', it.group)
+                            dependencyNode.appendNode('artifactId', it.name)
+                            dependencyNode.appendNode('version', it.version)
+                        }
+                    }
+                }
+            }
+        }
+    }
+    repositories {
+        // The repository to publish to, Sonatype/MavenCentral
+        maven {
+            //第 6 处
+            name = "EasyAndroid"//项目名称
+            //此处用'https://s01.oss.sonatype.org'替代'https://oss.sonatype.org'，因为`https://oss.sonatype.org`会出现nexus后台无法登陆以及发布出现`Received status code 403 from server: Forbidden`问题
+            def releasesRepoUrl = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+            def snapshotsRepoUrl = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+            // You only need this if you want to publish snapshots, otherwise just set the URL
+            // to the release repo directly
+            url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+
+            // The username and password we've fetched earlier
+            credentials {
+                username ossrhUsername
+                password ossrhPassword
+            }
+        }
+    }
+}
+signing {
+    sign publishing.publications
+}
