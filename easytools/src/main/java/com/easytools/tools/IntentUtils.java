@@ -3,10 +3,12 @@ package com.easytools.tools;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.webkit.MimeTypeMap;
 
 import java.io.File;
@@ -34,6 +36,19 @@ public class IntentUtils {
 
     private IntentUtils() {
         throw new UnsupportedOperationException("u can't instantiate me...");
+    }
+
+    /**
+     * 确认意图是否可用
+     *
+     * @param intent
+     * @return
+     */
+    public static boolean isIntentAvailable(final Intent intent) {
+        return Utils.getApp()
+                .getPackageManager()
+                .queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY)
+                .size() > 0;
     }
 
     /**
@@ -98,6 +113,22 @@ public class IntentUtils {
         Intent intent = new Intent("android.settings.APPLICATION_DETAILS_SETTINGS");
         intent.setData(Uri.parse("package:" + packageName));
         return intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+    }
+
+    public static Intent getLaunchAppDetailsSettingsIntent(final String pkgName) {
+        return getLaunchAppDetailsSettingsIntent(pkgName, false);
+    }
+
+    /**
+     * Return the intent of launch app details settings.
+     *
+     * @param pkgName The name of the package.
+     * @return the intent of launch app details settings
+     */
+    public static Intent getLaunchAppDetailsSettingsIntent(final String pkgName, final boolean isNewTask) {
+        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        intent.setData(Uri.parse("package:" + pkgName));
+        return getIntent(intent, isNewTask);
     }
 
     /**

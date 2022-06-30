@@ -4,21 +4,27 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
-import androidx.annotation.IntRange;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
+
+import androidx.annotation.CallSuper;
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
 
 /**
  * package: com.easytools.tools.ThreadPoolUtils
@@ -56,15 +62,21 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class ThreadPoolUtils {
 
-    private static final Map<Integer, Map<Integer, ExecutorService>> TYPE_PRIORITY_POOLS = new ConcurrentHashMap<>();
-    private static final Map<Task, ScheduledExecutorService> TASK_SCHEDULED = new ConcurrentHashMap<>();
+    private static final Handler HANDLER = new Handler(Looper.getMainLooper());
+
+    private static final Map<Integer, Map<Integer, ExecutorService>> TYPE_PRIORITY_POOLS = new HashMap<>();
+
+    private static final Map<Task, ExecutorService> TASK_POOL_MAP = new ConcurrentHashMap<>();
+
+    private static final int   CPU_COUNT = Runtime.getRuntime().availableProcessors();
+    private static final Timer TIMER     = new Timer();
 
     private static final byte TYPE_SINGLE = -1;
     private static final byte TYPE_CACHED = -2;
-    private static final byte TYPE_IO = -4;
-    private static final byte TYPE_CPU = -8;
+    private static final byte TYPE_IO     = -4;
+    private static final byte TYPE_CPU    = -8;
 
-    private static final int CPU_COUNT = Runtime.getRuntime().availableProcessors();
+    private static Executor sDeliver;
 
     /**
      * Return whether the thread is the main thread.
@@ -73,6 +85,22 @@ public class ThreadPoolUtils {
      */
     public static boolean isMainThread() {
         return Looper.myLooper() == Looper.getMainLooper();
+    }
+
+    public static Handler getMainHandler() {
+        return HANDLER;
+    }
+
+    public static void runOnUiThread(final Runnable runnable) {
+        if (Looper.myLooper() == Looper.getMainLooper()) {
+            runnable.run();
+        } else {
+            HANDLER.post(runnable);
+        }
+    }
+
+    public static void runOnUiThreadDelayed(final Runnable runnable, long delayMillis) {
+        HANDLER.postDelayed(runnable, delayMillis);
     }
 
     /**
@@ -154,7 +182,7 @@ public class ThreadPoolUtils {
      * @return a IO thread pool
      */
     public static ExecutorService getIoPool() {
-        return getPoolByTypeAndPriority(TYPE_CACHED);
+        return getPoolByTypeAndPriority(TYPE_IO);
     }
 
     /**
@@ -165,7 +193,7 @@ public class ThreadPoolUtils {
      * @return a IO thread pool
      */
     public static ExecutorService getIoPool(@IntRange(from = 1, to = 10) final int priority) {
-        return getPoolByTypeAndPriority(TYPE_CACHED, priority);
+        return getPoolByTypeAndPriority(TYPE_IO, priority);
     }
 
     /**
@@ -861,63 +889,111 @@ public class ThreadPoolUtils {
      * @param task The task to cancel.
      */
     public static void cancel(final Task task) {
+        if (task == null) return;
         task.cancel();
     }
 
+    /**
+     * Cancel the given tasks.
+     *
+     * @param tasks The tasks to cancel.
+     */
+    public static void cancel(final Task... tasks) {
+        if (tasks == null || tasks.length == 0) return;
+        for (Task task : tasks) {
+            if (task == null) continue;
+            task.cancel();
+        }
+    }
+
+    /**
+     * Cancel the given tasks.
+     *
+     * @param tasks The tasks to cancel.
+     */
+    public static void cancel(final List<Task> tasks) {
+        if (tasks == null || tasks.size() == 0) return;
+        for (Task task : tasks) {
+            if (task == null) continue;
+            task.cancel();
+        }
+    }
+
+    /**
+     * Cancel the tasks in pool.
+     *
+     * @param executorService The pool.
+     */
+    public static void cancel(ExecutorService executorService) {
+        if (executorService instanceof ThreadPoolExecutor4Util) {
+            for (Map.Entry<Task, ExecutorService> taskTaskInfoEntry : TASK_POOL_MAP.entrySet()) {
+                if (taskTaskInfoEntry.getValue() == executorService) {
+                    cancel(taskTaskInfoEntry.getKey());
+                }
+            }
+        } else {
+            Log.e("ThreadUtils", "The executorService is not ThreadUtils's pool.");
+        }
+    }
+
+    /**
+     * Set the deliver.
+     *
+     * @param deliver The deliver.
+     */
+    public static void setDeliver(final Executor deliver) {
+        sDeliver = deliver;
+    }
+
     private static <T> void execute(final ExecutorService pool, final Task<T> task) {
-        executeWithDelay(pool, task, 0, TimeUnit.MILLISECONDS);
+        execute(pool, task, 0, 0, null);
     }
 
     private static <T> void executeWithDelay(final ExecutorService pool,
                                              final Task<T> task,
                                              final long delay,
                                              final TimeUnit unit) {
-        if (delay <= 0) {
-            getScheduledByTask(task).execute(new Runnable() {
-                @Override
-                public void run() {
-                    pool.execute(task);
-                }
-            });
-        } else {
-            getScheduledByTask(task).schedule(new Runnable() {
-                @Override
-                public void run() {
-                    pool.execute(task);
-                }
-            }, delay, unit);
-        }
+        execute(pool, task, delay, 0, unit);
     }
 
     private static <T> void executeAtFixedRate(final ExecutorService pool,
                                                final Task<T> task,
-                                               long initialDelay,
+                                               long delay,
                                                final long period,
                                                final TimeUnit unit) {
-        task.isSchedule = true;
-        getScheduledByTask(task).scheduleAtFixedRate(new Runnable() {
-            @Override
-            public void run() {
-                pool.execute(task);
+        execute(pool, task, delay, period, unit);
+    }
+
+    private static <T> void execute(final ExecutorService pool, final Task<T> task,
+                                    long delay, final long period, final TimeUnit unit) {
+        synchronized (TASK_POOL_MAP) {
+            if (TASK_POOL_MAP.get(task) != null) {
+                Log.e("ThreadUtils", "Task can only be executed once.");
+                return;
             }
-        }, initialDelay, period, unit);
-    }
-
-    private static ScheduledExecutorService getScheduledByTask(final Task task) {
-        ScheduledExecutorService scheduled = TASK_SCHEDULED.get(task);
-        if (scheduled == null) {
-            UtilsThreadFactory factory = new UtilsThreadFactory("scheduled", Thread.MAX_PRIORITY);
-            scheduled = Executors.newScheduledThreadPool(1, factory);
-            TASK_SCHEDULED.put(task, scheduled);
+            TASK_POOL_MAP.put(task, pool);
         }
-        return scheduled;
-    }
-
-    private static void removeScheduleByTask(final Task task) {
-        ScheduledExecutorService scheduled = TASK_SCHEDULED.get(task);
-        if (scheduled != null) {
-            TASK_SCHEDULED.remove(task);
-            shutdownAndAwaitTermination(scheduled);
+        if (period == 0) {
+            if (delay == 0) {
+                pool.execute(task);
+            } else {
+                TimerTask timerTask = new TimerTask() {
+                    @Override
+                    public void run() {
+                        pool.execute(task);
+                    }
+                };
+                TIMER.schedule(timerTask, unit.toMillis(delay));
+            }
+        } else {
+            task.setSchedule(true);
+            TimerTask timerTask = new TimerTask() {
+                @Override
+                public void run() {
+                    pool.execute(task);
+                }
+            };
+            TIMER.scheduleAtFixedRate(timerTask, unit.toMillis(delay), unit.toMillis(period));
         }
     }
 
@@ -926,68 +1002,178 @@ public class ThreadPoolUtils {
     }
 
     private static ExecutorService getPoolByTypeAndPriority(final int type, final int priority) {
-        ExecutorService pool;
-        Map<Integer, ExecutorService> priorityPools = TYPE_PRIORITY_POOLS.get(type);
-        if (priorityPools == null) {
-            priorityPools = new ConcurrentHashMap<>();
-            pool = createPoolByTypeAndPriority(type, priority);
-            priorityPools.put(priority, pool);
-            TYPE_PRIORITY_POOLS.put(type, priorityPools);
-        } else {
-            pool = priorityPools.get(priority);
-            if (pool == null) {
-                pool = createPoolByTypeAndPriority(type, priority);
+        synchronized (TYPE_PRIORITY_POOLS) {
+            ExecutorService pool;
+            Map<Integer, ExecutorService> priorityPools = TYPE_PRIORITY_POOLS.get(type);
+            if (priorityPools == null) {
+                priorityPools = new ConcurrentHashMap<>();
+                pool = ThreadPoolExecutor4Util.createPool(type, priority);
                 priorityPools.put(priority, pool);
-            }
-        }
-        return pool;
-    }
-
-    private static ExecutorService createPoolByTypeAndPriority(final int type, final int priority) {
-        switch (type) {
-            case TYPE_SINGLE:
-                return Executors.newSingleThreadExecutor(
-                        new UtilsThreadFactory("single", priority)
-                );
-            case TYPE_CACHED:
-                return Executors.newCachedThreadPool(
-                        new UtilsThreadFactory("cached", priority)
-                );
-            case TYPE_IO:
-                return new ThreadPoolExecutor(2 * CPU_COUNT + 1,
-                        2 * CPU_COUNT + 1,
-                        30, TimeUnit.SECONDS,
-                        new LinkedBlockingQueue<Runnable>(128),
-                        new UtilsThreadFactory("io", priority)
-                );
-            case TYPE_CPU:
-                return new ThreadPoolExecutor(CPU_COUNT + 1,
-                        2 * CPU_COUNT + 1,
-                        30, TimeUnit.SECONDS,
-                        new LinkedBlockingQueue<Runnable>(128),
-                        new UtilsThreadFactory("cpu", priority)
-                );
-            default:
-                return Executors.newFixedThreadPool(
-                        type,
-                        new UtilsThreadFactory("fixed(" + type + ")", priority)
-                );
-        }
-    }
-
-    private static void shutdownAndAwaitTermination(final ExecutorService pool) {
-        pool.shutdown();
-        try {
-            if (!pool.awaitTermination(60, TimeUnit.SECONDS)) {
-                pool.shutdownNow();
-                if (!pool.awaitTermination(60, TimeUnit.SECONDS)) {
-                    System.err.println("Pool did not terminate");
+                TYPE_PRIORITY_POOLS.put(type, priorityPools);
+            } else {
+                pool = priorityPools.get(priority);
+                if (pool == null) {
+                    pool = ThreadPoolExecutor4Util.createPool(type, priority);
+                    priorityPools.put(priority, pool);
                 }
             }
-        } catch (InterruptedException e) {
-            pool.shutdownNow();
-            Thread.currentThread().interrupt();
-            e.printStackTrace();
+            return pool;
+        }
+    }
+
+    static final class ThreadPoolExecutor4Util extends ThreadPoolExecutor {
+
+        private static ExecutorService createPool(final int type, final int priority) {
+            switch (type) {
+                case TYPE_SINGLE:
+                    return new ThreadPoolExecutor4Util(1, 1,
+                            0L, TimeUnit.MILLISECONDS,
+                            new LinkedBlockingQueue4Util(),
+                            new UtilsThreadFactory("single", priority)
+                    );
+                case TYPE_CACHED:
+                    return new ThreadPoolExecutor4Util(0, 128,
+                            60L, TimeUnit.SECONDS,
+                            new LinkedBlockingQueue4Util(true),
+                            new UtilsThreadFactory("cached", priority)
+                    );
+                case TYPE_IO:
+                    return new ThreadPoolExecutor4Util(2 * CPU_COUNT + 1, 2 * CPU_COUNT + 1,
+                            30, TimeUnit.SECONDS,
+                            new LinkedBlockingQueue4Util(),
+                            new UtilsThreadFactory("io", priority)
+                    );
+                case TYPE_CPU:
+                    return new ThreadPoolExecutor4Util(CPU_COUNT + 1, 2 * CPU_COUNT + 1,
+                            30, TimeUnit.SECONDS,
+                            new LinkedBlockingQueue4Util(true),
+                            new UtilsThreadFactory("cpu", priority)
+                    );
+                default:
+                    return new ThreadPoolExecutor4Util(type, type,
+                            0L, TimeUnit.MILLISECONDS,
+                            new LinkedBlockingQueue4Util(),
+                            new UtilsThreadFactory("fixed(" + type + ")", priority)
+                    );
+            }
+        }
+
+        private final AtomicInteger mSubmittedCount = new AtomicInteger();
+
+        private LinkedBlockingQueue4Util mWorkQueue;
+
+        ThreadPoolExecutor4Util(int corePoolSize, int maximumPoolSize,
+                                long keepAliveTime, TimeUnit unit,
+                                LinkedBlockingQueue4Util workQueue,
+                                ThreadFactory threadFactory) {
+            super(corePoolSize, maximumPoolSize,
+                    keepAliveTime, unit,
+                    workQueue,
+                    threadFactory
+            );
+            workQueue.mPool = this;
+            mWorkQueue = workQueue;
+        }
+
+        private int getSubmittedCount() {
+            return mSubmittedCount.get();
+        }
+
+        @Override
+        protected void afterExecute(Runnable r, Throwable t) {
+            mSubmittedCount.decrementAndGet();
+            super.afterExecute(r, t);
+        }
+
+        @Override
+        public void execute(@NonNull Runnable command) {
+            if (this.isShutdown()) return;
+            mSubmittedCount.incrementAndGet();
+            try {
+                super.execute(command);
+            } catch (RejectedExecutionException ignore) {
+                Log.e("ThreadUtils", "This will not happen!");
+                mWorkQueue.offer(command);
+            } catch (Throwable t) {
+                mSubmittedCount.decrementAndGet();
+            }
+        }
+    }
+
+    private static final class LinkedBlockingQueue4Util extends LinkedBlockingQueue<Runnable> {
+
+        private volatile ThreadPoolExecutor4Util mPool;
+
+        private int mCapacity = Integer.MAX_VALUE;
+
+        LinkedBlockingQueue4Util() {
+            super();
+        }
+
+        LinkedBlockingQueue4Util(boolean isAddSubThreadFirstThenAddQueue) {
+            super();
+            if (isAddSubThreadFirstThenAddQueue) {
+                mCapacity = 0;
+            }
+        }
+
+        LinkedBlockingQueue4Util(int capacity) {
+            super();
+            mCapacity = capacity;
+        }
+
+        @Override
+        public boolean offer(@NonNull Runnable runnable) {
+            if (mCapacity <= size() &&
+                    mPool != null && mPool.getPoolSize() < mPool.getMaximumPoolSize()) {
+                // create a non-core thread
+                return false;
+            }
+            return super.offer(runnable);
+        }
+    }
+
+    static final class UtilsThreadFactory extends AtomicLong
+            implements ThreadFactory {
+        private static final AtomicInteger POOL_NUMBER      = new AtomicInteger(1);
+        private static final long          serialVersionUID = -9209200509960368598L;
+        private final        String        namePrefix;
+        private final        int           priority;
+        private final        boolean       isDaemon;
+
+        UtilsThreadFactory(String prefix, int priority) {
+            this(prefix, priority, false);
+        }
+
+        UtilsThreadFactory(String prefix, int priority, boolean isDaemon) {
+            namePrefix = prefix + "-pool-" +
+                    POOL_NUMBER.getAndIncrement() +
+                    "-thread-";
+            this.priority = priority;
+            this.isDaemon = isDaemon;
+        }
+
+        @Override
+        public Thread newThread(@NonNull Runnable r) {
+            Thread t = new Thread(r, namePrefix + getAndIncrement()) {
+                @Override
+                public void run() {
+                    try {
+                        super.run();
+                    } catch (Throwable t) {
+                        Log.e("ThreadUtils", "Request threw uncaught throwable", t);
+                    }
+                }
+            };
+            t.setDaemon(isDaemon);
+            t.setUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
+                @Override
+                public void uncaughtException(Thread t, Throwable e) {
+                    System.out.println(e);
+                }
+            });
+            t.setPriority(priority);
+            return t;
         }
     }
 
@@ -1007,138 +1193,225 @@ public class ThreadPoolUtils {
 
     public abstract static class Task<T> implements Runnable {
 
-        private boolean isSchedule;
+        private static final int NEW         = 0;
+        private static final int RUNNING     = 1;
+        private static final int EXCEPTIONAL = 2;
+        private static final int COMPLETING  = 3;
+        private static final int CANCELLED   = 4;
+        private static final int INTERRUPTED = 5;
+        private static final int TIMEOUT     = 6;
 
-        private volatile int state;
-        private static final int NEW = 0;
-        private static final int COMPLETING = 1;
-        private static final int CANCELLED = 2;
-        private static final int EXCEPTIONAL = 3;
+        private final AtomicInteger state = new AtomicInteger(NEW);
 
-        public Task() {
-            state = NEW;
-        }
+        private volatile boolean isSchedule;
+        private volatile Thread  runner;
 
-        @Nullable
+        private Timer             mTimer;
+        private long              mTimeoutMillis;
+        private OnTimeoutListener mTimeoutListener;
+
+        private Executor deliver;
+
         public abstract T doInBackground() throws Throwable;
 
-        public abstract void onSuccess(@Nullable T result);
+        public abstract void onSuccess(T result);
 
         public abstract void onCancel();
 
         public abstract void onFail(Throwable t);
 
-
         @Override
         public void run() {
+            if (isSchedule) {
+                if (runner == null) {
+                    if (!state.compareAndSet(NEW, RUNNING)) return;
+                    runner = Thread.currentThread();
+                    if (mTimeoutListener != null) {
+                        Log.w("ThreadUtils", "Scheduled task doesn't support timeout.");
+                    }
+                } else {
+                    if (state.get() != RUNNING) return;
+                }
+            } else {
+                if (!state.compareAndSet(NEW, RUNNING)) return;
+                runner = Thread.currentThread();
+                if (mTimeoutListener != null) {
+                    mTimer = new Timer();
+                    mTimer.schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            if (!isDone() && mTimeoutListener != null) {
+                                timeout();
+                                mTimeoutListener.onTimeout();
+                                onDone();
+                            }
+                        }
+                    }, mTimeoutMillis);
+                }
+            }
             try {
                 final T result = doInBackground();
-                if (state != NEW) return;
-
                 if (isSchedule) {
-                    Deliver.post(new Runnable() {
+                    if (state.get() != RUNNING) return;
+                    getDeliver().execute(new Runnable() {
                         @Override
                         public void run() {
                             onSuccess(result);
                         }
                     });
                 } else {
-                    state = COMPLETING;
-                    Deliver.post(new Runnable() {
+                    if (!state.compareAndSet(RUNNING, COMPLETING)) return;
+                    getDeliver().execute(new Runnable() {
                         @Override
                         public void run() {
                             onSuccess(result);
-                            removeScheduleByTask(Task.this);
+                            onDone();
                         }
                     });
                 }
+            } catch (InterruptedException ignore) {
+                state.compareAndSet(CANCELLED, INTERRUPTED);
             } catch (final Throwable throwable) {
-                if (state != NEW) return;
-
-                state = EXCEPTIONAL;
-                Deliver.post(new Runnable() {
+                if (!state.compareAndSet(RUNNING, EXCEPTIONAL)) return;
+                getDeliver().execute(new Runnable() {
                     @Override
                     public void run() {
                         onFail(throwable);
-                        removeScheduleByTask(Task.this);
+                        onDone();
                     }
                 });
             }
         }
 
         public void cancel() {
-            if (state != NEW) return;
+            cancel(true);
+        }
 
-            state = CANCELLED;
-            Deliver.post(new Runnable() {
+        public void cancel(boolean mayInterruptIfRunning) {
+            synchronized (state) {
+                if (state.get() > RUNNING) return;
+                state.set(CANCELLED);
+            }
+            if (mayInterruptIfRunning) {
+                if (runner != null) {
+                    runner.interrupt();
+                }
+            }
+
+            getDeliver().execute(new Runnable() {
                 @Override
                 public void run() {
                     onCancel();
-                    removeScheduleByTask(Task.this);
+                    onDone();
                 }
             });
         }
-    }
 
-    private static final class UtilsThreadFactory extends AtomicLong
-            implements ThreadFactory {
-        private static final AtomicInteger POOL_NUMBER = new AtomicInteger(1);
-        private final ThreadGroup group;
-        private final String namePrefix;
-        private final int priority;
-
-        UtilsThreadFactory(String prefix, int priority) {
-            SecurityManager s = System.getSecurityManager();
-            group = s != null ? s.getThreadGroup() : Thread.currentThread().getThreadGroup();
-            namePrefix = prefix + "-pool-" +
-                    POOL_NUMBER.getAndIncrement() +
-                    "-thread-";
-            this.priority = priority;
+        private void timeout() {
+            synchronized (state) {
+                if (state.get() > RUNNING) return;
+                state.set(TIMEOUT);
+            }
+            if (runner != null) {
+                runner.interrupt();
+            }
         }
 
-        public Thread newThread(@NonNull Runnable r) {
-            Thread t = new Thread(group, r, namePrefix + getAndIncrement(), 0) {
+
+        public boolean isCanceled() {
+            return state.get() >= CANCELLED;
+        }
+
+        public boolean isDone() {
+            return state.get() > RUNNING;
+        }
+
+        public Task<T> setDeliver(Executor deliver) {
+            this.deliver = deliver;
+            return this;
+        }
+
+        /**
+         * Scheduled task doesn't support timeout.
+         */
+        public Task<T> setTimeout(final long timeoutMillis, final OnTimeoutListener listener) {
+            mTimeoutMillis = timeoutMillis;
+            mTimeoutListener = listener;
+            return this;
+        }
+
+        private void setSchedule(boolean isSchedule) {
+            this.isSchedule = isSchedule;
+        }
+
+        private Executor getDeliver() {
+            if (deliver == null) {
+                return getGlobalDeliver();
+            }
+            return deliver;
+        }
+
+        @CallSuper
+        protected void onDone() {
+            TASK_POOL_MAP.remove(this);
+            if (mTimer != null) {
+                mTimer.cancel();
+                mTimer = null;
+                mTimeoutListener = null;
+            }
+        }
+
+        public interface OnTimeoutListener {
+            void onTimeout();
+        }
+    }
+
+    public static class SyncValue<T> {
+
+        private CountDownLatch mLatch = new CountDownLatch(1);
+        private AtomicBoolean mFlag  = new AtomicBoolean();
+        private T              mValue;
+
+        public void setValue(T value) {
+            if (mFlag.compareAndSet(false, true)) {
+                mValue = value;
+                mLatch.countDown();
+            }
+        }
+
+        public T getValue() {
+            if (!mFlag.get()) {
+                try {
+                    mLatch.await();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            return mValue;
+        }
+
+        public T getValue(long timeout, TimeUnit unit, T defaultValue) {
+            if (!mFlag.get()) {
+                try {
+                    mLatch.await(timeout, unit);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                    return defaultValue;
+                }
+            }
+            return mValue;
+        }
+    }
+
+    private static Executor getGlobalDeliver() {
+        if (sDeliver == null) {
+            sDeliver = new Executor() {
                 @Override
-                public void run() {
-                    try {
-                        super.run();
-                    } catch (Throwable t) {
-                        Log.e("ThreadUtils", "Request threw uncaught throwable", t);
-                    }
+                public void execute(@NonNull Runnable command) {
+                    runOnUiThread(command);
                 }
             };
-            if (t.isDaemon()) {
-                t.setDaemon(false);
-            }
-            t.setPriority(priority);
-            return t;
         }
-    }
-
-    private static class Deliver {
-
-        private static final Handler MAIN_HANDLER;
-
-        static {
-            Looper looper;
-            try {
-                looper = Looper.getMainLooper();
-            } catch (Exception e) {
-                looper = null;
-            }
-            if (looper != null) {
-                MAIN_HANDLER = new Handler(looper);
-            } else {
-                MAIN_HANDLER = null;
-            }
-        }
-
-        static void post(final Runnable runnable) {
-            if (MAIN_HANDLER != null) {
-                MAIN_HANDLER.post(runnable);
-            } else {
-                runnable.run();
-            }
-        }
+        return sDeliver;
     }
 }

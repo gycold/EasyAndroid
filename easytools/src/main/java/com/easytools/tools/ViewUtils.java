@@ -1,11 +1,19 @@
 package com.easytools.tools;
 
+import android.content.Context;
+import android.os.Build;
 import android.text.Editable;
 import android.text.Selection;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.view.ViewGroup.MarginLayoutParams;
+import android.widget.EditText;
+
+import java.util.Locale;
+
+import androidx.annotation.LayoutRes;
 
 /**
  * package: com.easytools.tools.ViewUtils
@@ -101,42 +109,89 @@ public class ViewUtils {
 
     /**
      * 设置控件所在的位置X，并且不改变宽高，X为绝对位置，此时Y可能归0
+     *
      * @param view
      * @param x
      */
-    public static void setLayoutX(View view,int x)
-    {
-        MarginLayoutParams margin=new MarginLayoutParams(view.getLayoutParams());
-        margin.setMargins(x,margin.topMargin, x+margin.width, margin.bottomMargin);
+    public static void setLayoutX(View view, int x) {
+        MarginLayoutParams margin = new MarginLayoutParams(view.getLayoutParams());
+        margin.setMargins(x, margin.topMargin, x + margin.width, margin.bottomMargin);
         ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(margin);
         view.setLayoutParams(layoutParams);
     }
 
     /**
      * 设置控件所在的位置Y，并且不改变宽高，Y为绝对位置，此时X可能归0
+     *
      * @param view
      * @param y
      */
-    public static void setLayoutY(View view,int y)
-    {
-        MarginLayoutParams margin=new MarginLayoutParams(view.getLayoutParams());
-        margin.setMargins(margin.leftMargin,y, margin.rightMargin, y+margin.height);
+    public static void setLayoutY(View view, int y) {
+        MarginLayoutParams margin = new MarginLayoutParams(view.getLayoutParams());
+        margin.setMargins(margin.leftMargin, y, margin.rightMargin, y + margin.height);
         ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(margin);
         view.setLayoutParams(layoutParams);
     }
 
     /**
      * 设置控件所在的位置YY，并且不改变宽高，XY为绝对位置
+     *
      * @param view
      * @param x
      * @param y
      */
-    public static void setLayout(View view,int x,int y)
-    {
-        MarginLayoutParams margin=new MarginLayoutParams(view.getLayoutParams());
-        margin.setMargins(x,y, x+margin.width, y+margin.height);
+    public static void setLayout(View view, int x, int y) {
+        MarginLayoutParams margin = new MarginLayoutParams(view.getLayoutParams());
+        margin.setMargins(x, y, x + margin.width, y + margin.height);
         ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(margin);
         view.setLayoutParams(layoutParams);
+    }
+
+    /**
+     * Return whether horizontal layout direction of views are from Right to Left.
+     *
+     * @return {@code true}: yes<br>{@code false}: no
+     */
+    public static boolean isLayoutRtl() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            Locale primaryLocale;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                primaryLocale = Utils.getApp().getResources().getConfiguration().getLocales().get(0);
+            } else {
+                primaryLocale = Utils.getApp().getResources().getConfiguration().locale;
+            }
+            return TextUtils.getLayoutDirectionFromLocale(primaryLocale) == View.LAYOUT_DIRECTION_RTL;
+        }
+        return false;
+    }
+
+
+    /**
+     * Fix the problem of topping the ScrollView nested ListView/GridView/WebView/RecyclerView.
+     *
+     * @param view The root view inner of ScrollView.
+     */
+    public static void fixScrollViewTopping(View view) {
+        view.setFocusable(false);
+        ViewGroup viewGroup = null;
+        if (view instanceof ViewGroup) {
+            viewGroup = (ViewGroup) view;
+        }
+        if (viewGroup == null) {
+            return;
+        }
+        for (int i = 0, n = viewGroup.getChildCount(); i < n; i++) {
+            View childAt = viewGroup.getChildAt(i);
+            childAt.setFocusable(false);
+            if (childAt instanceof ViewGroup) {
+                fixScrollViewTopping(childAt);
+            }
+        }
+    }
+
+    public static View layoutId2View(@LayoutRes final int layoutId) {
+        LayoutInflater inflate = (LayoutInflater) Utils.getApp().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        return inflate.inflate(layoutId, null);
     }
 
     ///////////////////////////////////////////////////////////////////////////

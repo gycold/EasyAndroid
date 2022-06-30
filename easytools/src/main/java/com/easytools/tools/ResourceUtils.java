@@ -1,8 +1,7 @@
 package com.easytools.tools;
 
 
-import androidx.annotation.RawRes;
-import androidx.core.content.ContextCompat;
+import android.content.res.Resources;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -15,7 +14,12 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.IllegalFormatException;
 import java.util.List;
+
+import androidx.annotation.Nullable;
+import androidx.annotation.RawRes;
+import androidx.core.content.ContextCompat;
 
 /**
  * package: com.easytools.tools.ResourceUtils
@@ -352,7 +356,7 @@ public class ResourceUtils {
      * @return
      */
     public static String getString(int resId) {
-        return Utils.getApp().getResources().getString(resId);
+        return getString(resId, (Object[]) null);
     }
 
     /**
@@ -363,6 +367,26 @@ public class ResourceUtils {
      * @return
      */
     public static String getString(int resId, Object... formatArgs) {
-        return Utils.getApp().getResources().getString(resId, formatArgs);
+        try {
+            return format(Utils.getApp().getString(resId), formatArgs);
+        } catch (Resources.NotFoundException e) {
+            e.printStackTrace();
+            return String.valueOf(resId);
+        }
+//        return Utils.getApp().getResources().getString(resId, formatArgs);
+    }
+
+    public static String format(@Nullable String str, Object... args) {
+        String text = str;
+        if (text != null) {
+            if (args != null && args.length > 0) {
+                try {
+                    text = String.format(str, args);
+                } catch (IllegalFormatException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return text;
     }
 }

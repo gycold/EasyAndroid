@@ -141,15 +141,14 @@ implementation('io.github.gycold:easyandroid:2.0.4') {
 + [76、字符串相关](#stringutils)
 + [77、线程操作相关](#threadpoolutils)
 + [78、时间经历工具类](#timeutils)
-+ [79、Toast工具相关](#toastmaster)
-+ [80、Toast简单工具类](#toastutils)
-+ [81、Uri相关工具类](#uriutils)
-+ [82、初始化Application，在Application之中调用init方法](#utils)
-+ [83、视图工具](#viewutils)
-+ [84、弱引用的Handler，防止内存泄漏，用法与Handler一致](#weakhandler)
-+ [85、WebView常用设置](#webviewutils)
-+ [86、文件压缩相关](#ziputils)
-+ [87、打印长日志](#longlogutils)
++ [79、Toast简单工具类](#toastutils)
++ [80、Uri相关工具类](#uriutils)
++ [81、初始化Application，在Application之中调用init方法](#utils)
++ [82、视图工具](#viewutils)
++ [83、弱引用的Handler，防止内存泄漏，用法与Handler一致](#weakhandler)
++ [84、WebView常用设置](#webviewutils)
++ [85、文件压缩相关](#ziputils)
++ [86、打印长日志](#longlogutils)
 ---
 
 <span id="acache">
@@ -1419,22 +1418,6 @@ format       : 输入时间毫秒数，输出时间差，如：1分钟前、3小
 getTime      : 输入时间秒，获得时间，格式为00:00:00
 ```
 
-<span id="toastmaster">
-
-* ### Toast工具相关 -> [ToastMaster.java][ToastMaster.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
-```
-setGravity     : 设置吐司位置
-setBgColor     : 设置背景颜色
-setBgResource  : 设置背景资源
-setMsgColor    : 设置消息颜色
-setMsgTextSize : 设置消息字体大小
-showShort      : 显示短时吐司
-showLong       : 显示长时吐司
-showCustomShort: 显示短时自定义吐司
-showCustomLong : 显示长时自定义吐司
-cancel         : 取消吐司显示
-```
-
 <span id="toastutils">
 
 * ### Toast简单工具类 -> [ToastUtils.java][ToastUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
@@ -1670,8 +1653,6 @@ getComments       : 获取压缩文件中的注释链表
 [ThreadPoolUtilsTest.java]: https://github.com/gycold/EasyAndroid/blob/master/easytools/src/test/java/com/easytools/tools/ThreadPoolUtilsTest.java
 
 [TimeUtils.java]: https://github.com/gycold/EasyAndroid/blob/master/easytools/src/main/java/com/easytools/tools/TimeUtils.java
-
-[ToastMaster.java]: https://github.com/gycold/EasyAndroid/blob/master/easytools/src/main/java/com/easytools/tools/ToastMaster.java
 
 [ToastUtils.java]: https://github.com/gycold/EasyAndroid/blob/master/easytools/src/main/java/com/easytools/tools/ToastUtils.java
 

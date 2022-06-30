@@ -8,13 +8,9 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.View;
 import android.view.Window;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
-import androidx.core.content.ContextCompat;
 
 import com.easytools.constant.PermissionConstants;
 import com.easytools.constant.PermissionConstants.Permission;
@@ -25,6 +21,11 @@ import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
 
 /**
  * package: com.easytools.tools.PermissionUtils
@@ -136,6 +137,16 @@ public class PermissionUtils {
             }
         }
         sInstance = this;
+    }
+
+    /**
+     * Return whether the app can draw on top of other apps.
+     *
+     * @return {@code true}: yes<br>{@code false}: no
+     */
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public static boolean isGrantedDrawOverlays() {
+        return Settings.canDrawOverlays(Utils.getApp());
     }
 
     /**
@@ -284,6 +295,7 @@ public class PermissionUtils {
         getPermissionsStatus(activity);
         requestCallback();
     }
+
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     public static class PermissionActivity extends Activity {

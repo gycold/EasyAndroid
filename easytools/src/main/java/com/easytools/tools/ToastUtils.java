@@ -19,7 +19,7 @@ public class ToastUtils {
         } else {
             toast.setText(msg);
         }
-        if (toast.getView().isShown()) return;
+//        if (toast.getView().isShown()) return;
         toast.show();
     }
 

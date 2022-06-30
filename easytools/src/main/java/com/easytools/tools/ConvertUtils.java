@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -486,16 +485,31 @@ public class ConvertUtils {
      */
     public static Bitmap view2Bitmap(View view) {
         if (view == null) return null;
-        Bitmap ret = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(ret);
-        Drawable bgDrawable = view.getBackground();
-        if (bgDrawable != null) {
-            bgDrawable.draw(canvas);
+        boolean drawingCacheEnabled = view.isDrawingCacheEnabled();
+        boolean willNotCacheDrawing = view.willNotCacheDrawing();
+        view.setDrawingCacheEnabled(true);
+        view.setWillNotCacheDrawing(false);
+        Bitmap drawingCache = view.getDrawingCache();
+        Bitmap bitmap;
+        if (null == drawingCache || drawingCache.isRecycled()) {
+            view.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+                    View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+            view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
+            view.buildDrawingCache();
+            drawingCache = view.getDrawingCache();
+            if (null == drawingCache || drawingCache.isRecycled()) {
+                bitmap = Bitmap.createBitmap(view.getMeasuredWidth(), view.getMeasuredHeight(), Bitmap.Config.RGB_565);
+                Canvas canvas = new Canvas(bitmap);
+                view.draw(canvas);
+            } else {
+                bitmap = Bitmap.createBitmap(drawingCache);
+            }
         } else {
-            canvas.drawColor(Color.WHITE);
+            bitmap = Bitmap.createBitmap(drawingCache);
         }
-        view.draw(canvas);
-        return ret;
+        view.setWillNotCacheDrawing(willNotCacheDrawing);
+        view.setDrawingCacheEnabled(drawingCacheEnabled);
+        return bitmap;
     }
 
     /**

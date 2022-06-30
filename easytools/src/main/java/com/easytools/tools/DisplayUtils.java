@@ -19,10 +19,10 @@ import android.view.ViewConfiguration;
 import android.view.Window;
 import android.view.WindowManager;
 
+import java.lang.reflect.Method;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresPermission;
-
-import java.lang.reflect.Method;
 
 import static android.Manifest.permission.WRITE_SETTINGS;
 
@@ -65,16 +65,16 @@ public class DisplayUtils {
     /**
      * 将px值转换为dp值
      */
-    public static int px2dp(Context context, float pxValue) {
-        final float scale = context.getResources().getDisplayMetrics().density;
+    public static int px2dp(float pxValue) {
+        final float scale = Resources.getSystem().getDisplayMetrics().density;
         return (int) (pxValue / scale + 0.5f);
     }
 
     /**
      * 将dp值转换为px值
      */
-    public static int dp2px(Context context, float dpValue) {
-        final float scale = context.getResources().getDisplayMetrics().density;
+    public static int dp2px(float dpValue) {
+        final float scale = Resources.getSystem().getDisplayMetrics().density;
         return (int) (dpValue * scale + 0.5f);
     }
 
@@ -82,7 +82,7 @@ public class DisplayUtils {
      * 将px值转换为sp值
      */
     public static int px2sp(Context context, float pxValue) {
-        final float fontScale = context.getResources().getDisplayMetrics().scaledDensity;
+        final float fontScale = Resources.getSystem().getDisplayMetrics().scaledDensity;
         return (int) (pxValue / fontScale + 0.5f);
     }
 
@@ -90,7 +90,7 @@ public class DisplayUtils {
      * 将sp值转换为px值
      */
     public static int sp2px(Context context, float spValue) {
-        final float fontScale = context.getResources().getDisplayMetrics().scaledDensity;
+        final float fontScale = Resources.getSystem().getDisplayMetrics().scaledDensity;
         return (int) (spValue * fontScale + 0.5f);
     }
 
@@ -148,6 +148,32 @@ public class DisplayUtils {
         DisplayMetrics metric = new DisplayMetrics();
         activity.getWindowManager().getDefaultDisplay().getMetrics(metric);
         return metric.heightPixels;
+    }
+
+    /**
+     * Return the application's width of screen, in pixel.
+     *
+     * @return the application's width of screen, in pixel
+     */
+    public static int getAppScreenWidth() {
+        WindowManager wm = (WindowManager) Utils.getApp().getSystemService(Context.WINDOW_SERVICE);
+        if (wm == null) return -1;
+        Point point = new Point();
+        wm.getDefaultDisplay().getSize(point);
+        return point.x;
+    }
+
+    /**
+     * Return the application's height of screen, in pixel.
+     *
+     * @return the application's height of screen, in pixel
+     */
+    public static int getAppScreenHeight() {
+        WindowManager wm = (WindowManager) Utils.getApp().getSystemService(Context.WINDOW_SERVICE);
+        if (wm == null) return -1;
+        Point point = new Point();
+        wm.getDefaultDisplay().getSize(point);
+        return point.y;
     }
 
     /**

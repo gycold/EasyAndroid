@@ -11,12 +11,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 
+import java.util.List;
+
 import androidx.annotation.AnimRes;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.util.Pair;
-
-import java.util.List;
 
 /**
  * package: com.easytools.tools.ActivityUtils
@@ -1506,6 +1506,11 @@ public class ActivityUtils {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public static boolean isActivityAlive(final Activity activity) {
+        return activity != null && !activity.isFinishing()
+                && (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1 || !activity.isDestroyed());
     }
 
     private static void startActivity(final Context context,
