@@ -17,11 +17,11 @@ implementation 'com.easyandroid:easytools:2.0.3'
 `2.0.4`版本及以后版本，通过以下方式引入：
 
 ```
-implementation 'io.github.gycold:easyandroid:2.0.4'
+implementation 'io.github.gycold:easyandroid:2.0.5'
 ```
 如果报错`unspecified`，用这个方式引入：
 ```
-implementation('io.github.gycold:easyandroid:2.0.4') {
+implementation('io.github.gycold:easyandroid:2.0.5') {
         exclude module: 'unspecified'
     }
 ```

@@ -61,7 +61,7 @@ dependencies {
 //先ext，再apply from
 ext {
     PUBLISH_ARTIFACT_ID = "easyandroid" //你的artifact_id，一般是module的名字
-    PUBLISH_VERSION = "2.0.4"  //发布版本号
+    PUBLISH_VERSION = "2.0.5"  //发布版本号
     PUBLISH_GROUP_ID = 'io.github.gycold'  //你的sonatype的group_id
 }
 apply from: rootProject.file('publish-mavencentral.gradle')
