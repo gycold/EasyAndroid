@@ -81,7 +81,7 @@ public class DisplayUtils {
     /**
      * 将px值转换为sp值
      */
-    public static int px2sp(Context context, float pxValue) {
+    public static int px2sp(float pxValue) {
         final float fontScale = Resources.getSystem().getDisplayMetrics().scaledDensity;
         return (int) (pxValue / fontScale + 0.5f);
     }
