@@ -89,7 +89,7 @@ public class DisplayUtils {
     /**
      * 将sp值转换为px值
      */
-    public static int sp2px(Context context, float spValue) {
+    public static int sp2px(float spValue) {
         final float fontScale = Resources.getSystem().getDisplayMetrics().scaledDensity;
         return (int) (spValue * fontScale + 0.5f);
     }
