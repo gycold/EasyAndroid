@@ -21,7 +21,7 @@ implementation 'io.github.gycold:easyandroid:2.0.5'
 ```
 如果报错`unspecified`，用这个方式引入：
 ```
-implementation('io.github.gycold:easyandroid:2.0.5') {
+implementation('io.github.gycold:easyandroid:2.0.6') {
         exclude module: 'unspecified'
     }
 ```
@@ -149,6 +149,7 @@ implementation('io.github.gycold:easyandroid:2.0.5') {
 + [84、WebView常用设置](#webviewutils)
 + [85、文件压缩相关](#ziputils)
 + [86、打印长日志](#longlogutils)
++ [87、简化日志操作，可以使用此，上面两个不常用](#easylog)
 ---
 
 <span id="acache">
@@ -1497,6 +1498,11 @@ getComments       : 获取压缩文件中的注释链表
 * ### 打印长日志 -> [LongLogUtils.java][LongLogUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 
 
+<span id="easylog">
+
+* ### 打印长日志 -> [EasyLog.java][EasyLog.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
+
+
 [ACache.java]: https://github.com/gycold/EasyAndroid/blob/master/easytools/src/main/java/com/easytools/tools/ACache.java
 
 [ActivityManager.java]: https://github.com/gycold/EasyAndroid/blob/master/easytools/src/main/java/com/easytools/tools/ActivityManager.java
@@ -1669,6 +1675,8 @@ getComments       : 获取压缩文件中的注释链表
 [ZipUtils.java]: https://github.com/gycold/EasyAndroid/blob/master/easytools/src/main/java/com/easytools/tools/ZipUtils.java
 
 [LongLogUtils.java]: https://github.com/gycold/EasyAndroid/blob/master/easytools/src/main/java/com/easytools/tools/LongLogUtils.java
+
+[EasyLog.java]: https://github.com/gycold/EasyAndroid/blob/master/easytools/src/main/java/com/easytools/tools/log/EasyLog.java
 
 一行代码搞定Android7.0以上版本 FileProvider的使用：
  ![image](https://github.com/gycold/EasyAndroid/raw/master/pictures/fileprovider.png)
