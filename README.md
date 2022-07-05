@@ -3,6 +3,12 @@
 
 包含各种工具类的集合，会不定期更新，欢迎贡献code
 
+**最新版本：**
+
+```
+implementation 'io.github.gycold:easyandroid:2.0.7'
+```
+
 使用方法：<br>
 `2.0.0`以后，放弃了support库，请使用AndroidX。
 
@@ -17,11 +23,11 @@ implementation 'com.easyandroid:easytools:2.0.3'
 `2.0.4`版本及以后版本，通过以下方式引入：
 
 ```
-implementation 'io.github.gycold:easyandroid:2.0.6'
+implementation 'io.github.gycold:easyandroid:2.0.7'
 ```
 如果报错`unspecified`，用这个方式引入：
 ```
-implementation('io.github.gycold:easyandroid:2.0.6') {
+implementation('io.github.gycold:easyandroid:2.0.7') {
         exclude module: 'unspecified'
     }
 ```
@@ -42,7 +48,10 @@ implementation('io.github.gycold:easyandroid:2.0.6') {
         </provider>
 ```
 
-添加混淆：<br>
+**混淆：**
+自`2.0.7`版本开始，自带混淆规则。
+
+之前的版本，添加混淆：<br>
 ```
 -keep class com.easytools.tools.DialogUtils {*;}
 -dontwarn com.easytools.tools.**
@@ -72,61 +81,61 @@ implementation('io.github.gycold:easyandroid:2.0.6') {
 + [7、关于数组的各种排序算法](#arrayutils)
 + [8、Assets目录数据库相关](#assetdatabaseopenhelper)
 + [9、设置Badge数字角标](#badgeutils)
-+ [10、状态栏相关](#barutils)
-+ [11、Base64相关](#base64utils)
-+ [12、Bitmap相关](#bitmaputils)
-+ [13、选择适配器](#checkadapter)
-+ [14、数据验证相关](#checkutils)
-+ [15、类操作相关](#classutils)
-+ [16、清除缓存/文件相关工具类](#cleanutils)
-+ [17、剪贴板相关工具类](#clipboardutils)
-+ [18、关闭操作流相关](#closeutils)
-+ [19、常量相关](#constantutils)
-+ [20、转换操作相关](#convertutils)
-+ [21、倒计时](#countdown)
-+ [22、崩溃相关](#crashutils)
-+ [23、日期操作相关](#dateutils)
-+ [24、设备信息相关](#deviceutils)
-+ [25、使用UUID生成手机唯一标示](#deviceuuidfactory)
-+ [26、弹框相关](#dialogutils)
-+ [27、屏幕显示相关](#displayutils)
-+ [28、双击识别器](#doubleclickexitdetector)
-+ [29、编码解码相关](#encodeutils)
-+ [30、加密解密相关](#encryptutils)
-+ [31、文件的IO流相关](#fileioutils)
-+ [32、针对Android 7版本以上 FileProvider做适配](#fileprovider7)
-+ [33、文件操作相关](#fileutils)
-+ [34、闪光灯相关](#flashlightutils)
-+ [35、Fragment相关](#fragmentutils)
-+ [36、Gson转换相关](#gsonutils)
-+ [37、16进制转换相关](#hexutils)
-+ [38、图片加载器](#imageloader)
-+ [39、意图相关工具类](#intentutils)
-+ [40、JSON操作相关](#jsonutils)
-+ [41、软键盘相关](#keyboardutils)
-+ [42、打印日志](#logutils)
-+ [43、循环定时器](#looptimer)
-+ [44、阴历阳历相关](#lunarutils)
-+ [45、m3u8文件解析类](#m3u8parserutils)
-+ [46、偶对象相关](#maputils)
-+ [47、获取MD5相关](#md5utils)
-+ [48、音频播放相关](#mediaplayerutils)
-+ [49、共享内存相关](#memoryfilehelper)
-+ [50、元数据相关](#metadatautils)
-+ [51、单币种货币类，处理货币算术、币种和取整](#money)
-+ [52、手机网络相关](#networkutils)
-+ [53、Notification相关](#notificationutils)
-+ [54、对象相关](#objectutils)
-+ [55、提取颜色的帮助类](#paletteutils)
-+ [56、目录路径相关](#pathutils)
-+ [57、权限相关](#permissionutils)
-+ [58、轮询相关工具类](#pollingutils)
-+ [59、判断先决条件](#preconditions)
-+ [60、进程相关](#processutils)
-+ [61、随机数相关](#randomutils)
-+ [62、反射相关](#reflectutils)
-+ [63、正则表达式相关](#regexutils)
-+ [64、资源操作相关](#resourceutils)
++ [10、Base64相关](#base64utils)
++ [11、Bitmap相关](#bitmaputils)
++ [12、选择适配器](#checkadapter)
++ [13、数据验证相关](#checkutils)
++ [14、类操作相关](#classutils)
++ [15、清除缓存/文件相关工具类](#cleanutils)
++ [16、剪贴板相关工具类](#clipboardutils)
++ [17、关闭操作流相关](#closeutils)
++ [18、常量相关](#constantutils)
++ [19、转换操作相关](#convertutils)
++ [20、倒计时](#countdown)
++ [21、崩溃相关](#crashutils)
++ [22、日期操作相关](#dateutils)
++ [23、设备信息相关](#deviceutils)
++ [24、使用UUID生成手机唯一标示](#deviceuuidfactory)
++ [25、弹框相关](#dialogutils)
++ [26、屏幕显示相关](#displayutils)
++ [27、双击识别器](#doubleclickexitdetector)
++ [28、编码解码相关](#encodeutils)
++ [29、加密解密相关](#encryptutils)
++ [30、文件的IO流相关](#fileioutils)
++ [31、针对Android 7版本以上 FileProvider做适配](#fileprovider7)
++ [32、文件操作相关](#fileutils)
++ [33、闪光灯相关](#flashlightutils)
++ [34、Fragment相关](#fragmentutils)
++ [35、Gson转换相关](#gsonutils)
++ [36、16进制转换相关](#hexutils)
++ [37、图片加载器](#imageloader)
++ [38、意图相关工具类](#intentutils)
++ [39、JSON操作相关](#jsonutils)
++ [40、软键盘相关](#keyboardutils)
++ [41、打印日志](#logutils)
++ [42、循环定时器](#looptimer)
++ [43、阴历阳历相关](#lunarutils)
++ [44、m3u8文件解析类](#m3u8parserutils)
++ [45、偶对象相关](#maputils)
++ [46、获取MD5相关](#md5utils)
++ [47、音频播放相关](#mediaplayerutils)
++ [48、共享内存相关](#memoryfilehelper)
++ [49、元数据相关](#metadatautils)
++ [50、单币种货币类，处理货币算术、币种和取整](#money)
++ [51、手机网络相关](#networkutils)
++ [52、Notification相关](#notificationutils)
++ [53、对象相关](#objectutils)
++ [54、提取颜色的帮助类](#paletteutils)
++ [55、目录路径相关](#pathutils)
++ [56、权限相关](#permissionutils)
++ [57、轮询相关工具类](#pollingutils)
++ [58、判断先决条件](#preconditions)
++ [59、进程相关](#processutils)
++ [60、随机数相关](#randomutils)
++ [61、反射相关](#reflectutils)
++ [62、正则表达式相关](#regexutils)
++ [63、资源操作相关](#resourceutils)
++ [64、Rom 相关](#romutils)
 + [65、四舍五入相关](#roundutils)
 + [66、SD卡相关](#sdcardutils)
 + [67、服务相关](#serviceutils)
@@ -300,19 +309,6 @@ setBadgeOfHTC             : 设置HTC的Badge
 setBadgeOfNova            : 设置HTC的Badge
 setBadgeOfMadMode         : 设置Nova的Badge
 resetBadgeCount           : 重置Badge
-```
-
-<span id="barutils">
-
-* ### 状态栏相关 -> [BarUtils.java][BarUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
-```
-setTransparentStatusBar    : 隐藏状态栏
-hideStatusBar              : 获取状态栏高度
-getStatusBarHeight         : 不传Context获取状态栏高度
-isStatusBarExists          : 判断状态栏是否存在
-getActionBarHeight         : 获取ActionBar高度
-showNotificationBar        : 显示通知栏
-hideNotificationBar        : 隐藏通知栏
 ```
 
 <span id="base64utils">
@@ -1220,6 +1216,33 @@ readRaw2String    : 从 raw 中读取字符串
 readRaw2List      : 从 raw 中按行读取字符串
 ```
 
+<span id="romutils">
+
+* ### Rom相关 -> [RomUtils.java][RomUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
+```
+isHuawei   : 是否华为
+isVivo     : 是否 VIVO
+isXiaomi   : 是否小米
+isOppo     : 是否 OPPO
+isLeeco    : 是否乐视
+is360      : 是否 360
+isZte      : 是否中兴
+isOneplus  : 是否一加
+isNubia    : 是否努比亚
+isCoolpad  : 是否酷派
+isLg       : 是否 LG
+isGoogle   : 是否谷歌
+isSamsung  : 是否三星
+isMeizu    : 是否魅族
+isLenovo   : 是否联想
+isSmartisan: 是否锤子
+isHtc      : 是否 HTC
+isSony     : 是否索尼
+isGionee   : 是否金立
+isMotorola : 是否摩托罗拉
+getRomInfo : 获取 ROM 信息
+```
+
 <span id="roundutils">
 
 * ### 四舍五入相关 -> [RoundUtils.java][RoundUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
@@ -1334,23 +1357,26 @@ clear          : 清空缓存，这是一个重载方法
 
 * ### 状态栏相关 -> [StatusBarUtils.java][StatusBarUtils.java]&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;&#8195;[回到目录](#目录)
 ```
-setColor                              : 设置状态栏颜色
-setStatusBarColor                     : 设置状态栏颜色
-setColorForSwipeBack                  : 为滑动返回界面设置状态栏颜色，这是一个重载方法
-setColorNoTranslucent                 : 设置状态栏纯色，不加半透明效果
-setColorDiff                          : 设置状态栏颜色(5.0以下无半透明效果,不建议使用)
-setTranslucent                        : 使状态栏半透明，这是一个重载方法
-setTranslucentForCoordinatorLayout    : 针对根布局是 CoordinatorLayout, 使状态栏半透明
-setTransparent                        : 设置状态栏全透明
-setTranslucentDiff                    : 使状态栏透明(5.0以上半透明效果,不建议使用)，这是一个重载方法
-setColorForDrawerLayout               : 为DrawerLayout 布局设置状态栏变色
-setColorNoTranslucentForDrawerLayout  : 为DrawerLayout 布局设置状态栏颜色,纯色
-setColorForDrawerLayoutDiff           : 为DrawerLayout 布局设置状态栏变色(5.0以下无半透明效果,不建议使用)
-setTranslucentForDrawerLayout         : 为 DrawerLayout 布局设置状态栏透明，这是一个重载方法
-setTranslucentForDrawerLayoutDiff     : 为 DrawerLayout 布局设置状态栏透明(5.0以上半透明效果,不建议使用)
-setTransparentForImageView            : 为头部是 ImageView 的界面设置状态栏全透明，这是一个重载方法
-setTranslucentForImageViewInFragment  : 为 fragment 头部是 ImageView 的设置状态栏透明，这是一个重载方法
-hideFakeStatusBarView                 : 隐藏伪状态栏 View
+getStatusBarHeight                   : 获取状态栏高度（px）
+setStatusBarVisibility               : 设置状态栏是否可见
+isStatusBarVisible                   : 判断状态栏是否可见
+setStatusBarLightMode                : 设置状态栏是否为浅色模式
+isStatusBarLightMode                 : 判断状态栏是否为浅色模式
+addMarginTopEqualStatusBarHeight     : 为 view 增加 MarginTop 为状态栏高度
+subtractMarginTopEqualStatusBarHeight: 为 view 减少 MarginTop 为状态栏高度
+setStatusBarColor                    : 设置状态栏颜色
+setStatusBarColor4Drawer             : 为 DrawerLayout 设置状态栏颜色
+transparentStatusBar                 : 透明状态栏
+getActionBarHeight                   : 获取 ActionBar 高度
+setNotificationBarVisibility         : 设置通知栏是否可见
+getNavBarHeight                      : 获取导航栏高度
+setNavBarVisibility                  : 设置导航栏是否可见
+isNavBarVisible                      : 判断导航栏是否可见
+setNavBarColor                       : 设置导航栏颜色
+getNavBarColor                       : 获取导航栏颜色
+isSupportNavBar                      : 判断是否支持导航栏
+setNavBarLightMode                   : 设置导航栏是否为浅色模式
+isNavBarLightMode                    : 判断导航栏是否为浅色模式
 ```
 
 <span id="statustextutils">
@@ -1521,8 +1547,6 @@ getComments       : 获取压缩文件中的注释链表
 
 [BadgeUtils.java]: https://github.com/gycold/EasyAndroid/blob/master/easytools/src/main/java/com/easytools/tools/BadgeUtils.java
 
-[BarUtils.java]: https://github.com/gycold/EasyAndroid/blob/master/easytools/src/main/java/com/easytools/tools/BarUtils.java
-
 [Base64Utils.java]: https://github.com/gycold/EasyAndroid/blob/master/easytools/src/main/java/com/easytools/tools/Base64Utils.java
 
 [BitmapUtils.java]: https://github.com/gycold/EasyAndroid/blob/master/easytools/src/main/java/com/easytools/tools/BitmapUtils.java
@@ -1630,6 +1654,8 @@ getComments       : 获取压缩文件中的注释链表
 [RegexUtils.java]: https://github.com/gycold/EasyAndroid/blob/master/easytools/src/main/java/com/easytools/tools/RegexUtils.java
 
 [ResourceUtils.java]: https://github.com/gycold/EasyAndroid/blob/master/easytools/src/main/java/com/easytools/tools/ResourceUtils.java
+
+[RomUtils.java]: https://github.com/gycold/EasyAndroid/blob/master/easytools/src/main/java/com/easytools/tools/RomUtils.java
 
 [RoundUtils.java]: https://github.com/gycold/EasyAndroid/blob/master/easytools/src/main/java/com/easytools/tools/RoundUtils.java
 

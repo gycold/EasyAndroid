@@ -18,3 +18,4 @@
 -keep class com.easytools.tools.DialogUtils {*;}
 -dontwarn com.easytools.tools.**
 -keep class com.easytools.constant.**{*;}
+-keep class com.easytools.**{*;}
