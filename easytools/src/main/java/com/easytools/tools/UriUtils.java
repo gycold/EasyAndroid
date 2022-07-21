@@ -1,5 +1,6 @@
 package com.easytools.tools;
 
+import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
@@ -13,14 +14,14 @@ import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
 
-import androidx.core.content.FileProvider;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
+
+import androidx.core.content.FileProvider;
 
 /**
  * package: com.easytools.tools.UriUtils
@@ -334,5 +335,22 @@ public final class UriUtils {
                 }
             }
         }
+    }
+
+    public static File uriToFile(Activity activity, Uri uri) {
+        String img_path;
+        String[] proj = {MediaStore.Images.Media.DATA};
+        Cursor actualimagecursor = activity.managedQuery(uri, proj, null,
+                null, null);
+        if (actualimagecursor == null) {
+            img_path = uri.getPath();
+        } else {
+            int actual_image_column_index = actualimagecursor
+                    .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            actualimagecursor.moveToFirst();
+            img_path = actualimagecursor.getString(actual_image_column_index);
+        }
+        File file = new File(img_path);
+        return file;
     }
 }
