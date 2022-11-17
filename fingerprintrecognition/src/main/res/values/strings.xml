@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">指纹demo</string>
+
+    <string name="fingerprint_authenticate">指纹验证</string>
+    <string name="press_fingerprint">请按下指纹</string>
+    <string name="cancel">取消</string>
+    <string name="retry">请重试</string>
+    <string name="change_finger">换个手指试试</string>
+
+    <string name="kindly_reminder">温馨提示</string>
+    <string name="confirm">确定</string>
+</resources>

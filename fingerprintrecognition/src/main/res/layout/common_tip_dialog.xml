@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/dialog_bg"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="@dimen/common_tip_dialog_width"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="60dp"
+        android:layout_marginBottom="60dp"
+        android:background="@drawable/common_round_corner_white_bg"
+        android:orientation="vertical"
+        android:padding="18dp">
+
+        <TextView
+            android:id="@+id/tv_kindly_reminder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:text="@string/kindly_reminder"
+            android:textColor="@color/text_black_color"
+            android:textSize="@dimen/font_normal2" />
+
+
+        <TextView
+            android:id="@+id/tv_tip_content"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_below="@id/tv_kindly_reminder"
+            android:layout_marginTop="22dp"
+            android:layout_weight="1"
+            android:background="@color/white"
+            android:lineSpacingMultiplier="1.2"
+            android:maxLines="9999"
+            android:textColor="@color/text_gray_color"
+            android:textSize="@dimen/font_normal2" />
+
+
+        <LinearLayout
+            android:id="@+id/ll_double_button_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_tip_content"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="right"
+            android:layout_marginTop="22dp"
+            android:layout_marginRight="12dp"
+            android:background="@color/white"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:id="@+id/tv_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:text="@string/cancel"
+                android:textColor="#666666"
+                android:textSize="@dimen/font_normal2" />
+
+            <TextView
+                android:id="@+id/tv_confirm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="22dp"
+                android:background="@color/white"
+                android:text="@string/confirm"
+                android:textColor="@color/app_theme_color"
+                android:textSize="@dimen/font_normal2" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_single_button_confirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_tip_content"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="right"
+            android:layout_marginTop="22dp"
+            android:layout_marginRight="12dp"
+            android:background="@color/white"
+            android:text="@string/confirm"
+            android:textColor="@color/app_theme_color"
+            android:textSize="@dimen/font_normal2"
+            android:visibility="gone" />
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>
