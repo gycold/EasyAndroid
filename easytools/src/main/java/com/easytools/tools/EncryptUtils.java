@@ -364,7 +364,7 @@ public class EncryptUtils {
      * @param algorithm 加密算法
      * @return 密文字节数组
      */
-    private static byte[] hashTemplate(byte[] data, String algorithm) {
+    public static byte[] hashTemplate(byte[] data, String algorithm) {
         if (data == null || data.length <= 0) return null;
         try {
             MessageDigest md = MessageDigest.getInstance(algorithm);

@@ -2,8 +2,11 @@ package com.easytools.tools;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
+
+import androidx.annotation.NonNull;
 
 /**
  * package: com.easytools.tools.ShellUtils
@@ -20,82 +23,268 @@ public class ShellUtils {
     }
 
     /**
-     * 在 root 下执行命令
+     * Execute the command asynchronously.
      *
-     * @param command 命令
-     * @param isRoot  是否需要 root 权限执行
-     * @return CommandResult
+     * @param command  The command.
+     * @param isRooted True to use root, false otherwise.
+     * @param consumer The consumer.
+     * @return the task
      */
-    public static CommandResult execCmd(final String command, final boolean isRoot) {
-        return execCmd(new String[]{command}, isRoot, true);
+    public static Utils.Task<CommandResult> execCmdAsync(final String command,
+                                                         final boolean isRooted,
+                                                         final Utils.Consumer<CommandResult> consumer) {
+        return execCmdAsync(new String[]{command}, isRooted, true, consumer);
     }
 
     /**
-     * 在 root 下执行命令
+     * Execute the command asynchronously.
      *
-     * @param commands 多条命令链表
-     * @param isRoot   是否需要 root 权限执行
-     * @return CommandResult
+     * @param commands The commands.
+     * @param isRooted True to use root, false otherwise.
+     * @param consumer The consumer.
+     * @return the task
      */
-    public static CommandResult execCmd(final List<String> commands, final boolean isRoot) {
-        return execCmd(commands == null ? null : commands.toArray(new String[]{}), isRoot, true);
+    public static Utils.Task<CommandResult> execCmdAsync(final List<String> commands,
+                                                         final boolean isRooted,
+                                                         final Utils.Consumer<CommandResult> consumer) {
+        return execCmdAsync(commands == null ? null : commands.toArray(new String[]{}), isRooted, true, consumer);
     }
 
     /**
-     * 在 root 下执行命令
+     * Execute the command asynchronously.
      *
-     * @param commands 多条命令数组
-     * @param isRoot   是否需要 root 权限执行
-     * @return CommandResult
+     * @param commands The commands.
+     * @param isRooted True to use root, false otherwise.
+     * @param consumer The consumer.
+     * @return the task
      */
-    public static CommandResult execCmd(final String[] commands, final boolean isRoot) {
-        return execCmd(commands, isRoot, true);
+    public static Utils.Task<CommandResult> execCmdAsync(final String[] commands,
+                                                         final boolean isRooted,
+                                                         final Utils.Consumer<CommandResult> consumer) {
+        return execCmdAsync(commands, isRooted, true, consumer);
     }
 
     /**
-     * 在 root 下执行命令
+     * Execute the command asynchronously.
      *
-     * @param command         命令
-     * @param isRoot          是否需要 root 权限执行
-     * @param isNeedResultMsg 是否需要结果消息
-     * @return CommandResult
+     * @param command         The command.
+     * @param isRooted        True to use root, false otherwise.
+     * @param isNeedResultMsg True to return the message of result, false otherwise.
+     * @param consumer        The consumer.
+     * @return the task
      */
-    public static CommandResult execCmd(final String command,
-                                        final boolean isRoot,
-                                        final boolean isNeedResultMsg) {
-        return execCmd(new String[]{command}, isRoot, isNeedResultMsg);
+    public static Utils.Task<CommandResult> execCmdAsync(final String command,
+                                                         final boolean isRooted,
+                                                         final boolean isNeedResultMsg,
+                                                         final Utils.Consumer<CommandResult> consumer) {
+        return execCmdAsync(new String[]{command}, isRooted, isNeedResultMsg, consumer);
     }
 
     /**
-     * 是否是在 root 下执行命令
+     * Execute the command asynchronously.
      *
-     * @param commands        命令链表
-     * @param isRoot          是否需要 root 权限执行
-     * @param isNeedResultMsg 是否需要结果消息
-     * @return CommandResult
+     * @param commands        The commands.
+     * @param isRooted        True to use root, false otherwise.
+     * @param isNeedResultMsg True to return the message of result, false otherwise.
+     * @param consumer        The consumer.
+     * @return the task
+     */
+    public static Utils.Task<CommandResult> execCmdAsync(final List<String> commands,
+                                                         final boolean isRooted,
+                                                         final boolean isNeedResultMsg,
+                                                         final Utils.Consumer<CommandResult> consumer) {
+        return execCmdAsync(commands == null ? null : commands.toArray(new String[]{}),
+                isRooted,
+                isNeedResultMsg,
+                consumer);
+    }
+
+    /**
+     * Execute the command asynchronously.
+     *
+     * @param commands        The commands.
+     * @param isRooted        True to use root, false otherwise.
+     * @param isNeedResultMsg True to return the message of result, false otherwise.
+     * @param consumer        The consumer.
+     * @return the task
+     */
+    public static Utils.Task<CommandResult> execCmdAsync(final String[] commands,
+                                                         final boolean isRooted,
+                                                         final boolean isNeedResultMsg,
+                                                         @NonNull final Utils.Consumer<CommandResult> consumer) {
+        Utils.Task<CommandResult> task = new Utils.Task<CommandResult>(consumer) {
+            @Override
+            public CommandResult doInBackground() {
+                return execCmd(commands, isRooted, isNeedResultMsg);
+            }
+        };
+        ThreadPoolUtils.getCachedPool().execute(task);
+        return task;
+    }
+
+    /**
+     * Execute the command.
+     *
+     * @param command  The command.
+     * @param isRooted True to use root, false otherwise.
+     * @return the single {@link CommandResult} instance
+     */
+    public static CommandResult execCmd(final String command, final boolean isRooted) {
+        return execCmd(new String[]{command}, isRooted, true);
+    }
+
+    /**
+     * Execute the command.
+     *
+     * @param command  The command.
+     * @param envp     The environment variable settings.
+     * @param isRooted True to use root, false otherwise.
+     * @return the single {@link CommandResult} instance
+     */
+    public static CommandResult execCmd(final String command, final List<String> envp, final boolean isRooted) {
+        return execCmd(new String[]{command},
+                envp == null ? null : envp.toArray(new String[]{}),
+                isRooted,
+                true);
+    }
+
+    /**
+     * Execute the command.
+     *
+     * @param commands The commands.
+     * @param isRooted True to use root, false otherwise.
+     * @return the single {@link CommandResult} instance
+     */
+    public static CommandResult execCmd(final List<String> commands, final boolean isRooted) {
+        return execCmd(commands == null ? null : commands.toArray(new String[]{}), isRooted, true);
+    }
+
+    /**
+     * Execute the command.
+     *
+     * @param commands The commands.
+     * @param envp     The environment variable settings.
+     * @param isRooted True to use root, false otherwise.
+     * @return the single {@link CommandResult} instance
      */
     public static CommandResult execCmd(final List<String> commands,
-                                        final boolean isRoot,
-                                        final boolean isNeedResultMsg) {
+                                        final List<String> envp,
+                                        final boolean isRooted) {
         return execCmd(commands == null ? null : commands.toArray(new String[]{}),
-                isRoot,
+                envp == null ? null : envp.toArray(new String[]{}),
+                isRooted,
+                true);
+    }
+
+    /**
+     * Execute the command.
+     *
+     * @param commands The commands.
+     * @param isRooted True to use root, false otherwise.
+     * @return the single {@link CommandResult} instance
+     */
+    public static CommandResult execCmd(final String[] commands, final boolean isRooted) {
+        return execCmd(commands, isRooted, true);
+    }
+
+    /**
+     * Execute the command.
+     *
+     * @param command         The command.
+     * @param isRooted        True to use root, false otherwise.
+     * @param isNeedResultMsg True to return the message of result, false otherwise.
+     * @return the single {@link CommandResult} instance
+     */
+    public static CommandResult execCmd(final String command,
+                                        final boolean isRooted,
+                                        final boolean isNeedResultMsg) {
+        return execCmd(new String[]{command}, isRooted, isNeedResultMsg);
+    }
+
+    /**
+     * Execute the command.
+     *
+     * @param command         The command.
+     * @param envp            The environment variable settings.
+     * @param isRooted        True to use root, false otherwise.
+     * @param isNeedResultMsg True to return the message of result, false otherwise.
+     * @return the single {@link CommandResult} instance
+     */
+    public static CommandResult execCmd(final String command,
+                                        final List<String> envp,
+                                        final boolean isRooted,
+                                        final boolean isNeedResultMsg) {
+        return execCmd(new String[]{command}, envp == null ? null : envp.toArray(new String[]{}),
+                isRooted,
                 isNeedResultMsg);
     }
 
     /**
-     * 是否是在 root 下执行命令
+     * Execute the command.
      *
-     * @param commands        命令数组
-     * @param isRoot          是否需要 root 权限执行
-     * @param isNeedResultMsg 是否需要结果消息
-     * @return CommandResult
+     * @param command         The command.
+     * @param envp            The environment variable settings array.
+     * @param isRooted        True to use root, false otherwise.
+     * @param isNeedResultMsg True to return the message of result, false otherwise.
+     * @return the single {@link CommandResult} instance
+     */
+    public static CommandResult execCmd(final String command,
+                                        final String[] envp,
+                                        final boolean isRooted,
+                                        final boolean isNeedResultMsg) {
+        return execCmd(new String[]{command}, envp, isRooted, isNeedResultMsg);
+    }
+
+    /**
+     * Execute the command.
+     *
+     * @param commands        The commands.
+     * @param isRooted        True to use root, false otherwise.
+     * @param isNeedResultMsg True to return the message of result, false otherwise.
+     * @return the single {@link CommandResult} instance
+     */
+    public static CommandResult execCmd(final List<String> commands,
+                                        final boolean isRooted,
+                                        final boolean isNeedResultMsg) {
+        return execCmd(commands == null ? null : commands.toArray(new String[]{}),
+                isRooted,
+                isNeedResultMsg);
+    }
+
+    /**
+     * Execute the command.
+     *
+     * @param commands        The commands.
+     * @param isRooted        True to use root, false otherwise.
+     * @param isNeedResultMsg True to return the message of result, false otherwise.
+     * @return the single {@link CommandResult} instance
      */
     public static CommandResult execCmd(final String[] commands,
-                                        final boolean isRoot,
+                                        final boolean isRooted,
+                                        final boolean isNeedResultMsg) {
+        return execCmd(commands, null, isRooted, isNeedResultMsg);
+    }
+
+    /**
+     * Execute the command.
+     *
+     * @param commands        The commands.
+     * @param envp            Array of strings, each element of which
+     *                        has environment variable settings in the format
+     *                        <i>name</i>=<i>value</i>, or
+     *                        <tt>null</tt> if the subprocess should inherit
+     *                        the environment of the current process.
+     * @param isRooted        True to use root, false otherwise.
+     * @param isNeedResultMsg True to return the message of result, false otherwise.
+     * @return the single {@link CommandResult} instance
+     */
+    public static CommandResult execCmd(final String[] commands,
+                                        final String[] envp,
+                                        final boolean isRooted,
                                         final boolean isNeedResultMsg) {
         int result = -1;
         if (commands == null || commands.length == 0) {
-            return new CommandResult(result, null, null);
+            return new CommandResult(result, "", "");
         }
         Process process = null;
         BufferedReader successResult = null;
@@ -104,7 +293,7 @@ public class ShellUtils {
         StringBuilder errorMsg = null;
         DataOutputStream os = null;
         try {
-            process = Runtime.getRuntime().exec(isRoot ? "su" : "sh");
+            process = Runtime.getRuntime().exec(isRooted ? "su" : "sh", envp, null);
             os = new DataOutputStream(process.getOutputStream());
             for (String command : commands) {
                 if (command == null) continue;
@@ -118,10 +307,12 @@ public class ShellUtils {
             if (isNeedResultMsg) {
                 successMsg = new StringBuilder();
                 errorMsg = new StringBuilder();
-                successResult = new BufferedReader(new InputStreamReader(process.getInputStream(),
-                        "UTF-8"));
-                errorResult = new BufferedReader(new InputStreamReader(process.getErrorStream(),
-                        "UTF-8"));
+                successResult = new BufferedReader(
+                        new InputStreamReader(process.getInputStream(), "UTF-8")
+                );
+                errorResult = new BufferedReader(
+                        new InputStreamReader(process.getErrorStream(), "UTF-8")
+                );
                 String line;
                 if ((line = successResult.readLine()) != null) {
                     successMsg.append(line);
@@ -139,39 +330,57 @@ public class ShellUtils {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            CloseUtils.closeIO(os, successResult, errorResult);
+            try {
+                if (os != null) {
+                    os.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            try {
+                if (successResult != null) {
+                    successResult.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            try {
+                if (errorResult != null) {
+                    errorResult.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             if (process != null) {
                 process.destroy();
             }
         }
         return new CommandResult(
                 result,
-                successMsg == null ? null : successMsg.toString(),
-                errorMsg == null ? null : errorMsg.toString()
+                successMsg == null ? "" : successMsg.toString(),
+                errorMsg == null ? "" : errorMsg.toString()
         );
     }
 
     /**
-     * 返回的命令结果
+     * The result of command.
      */
     public static class CommandResult {
-        /**
-         * 结果码
-         **/
-        public int    result;
-        /**
-         * 成功信息
-         **/
+        public int result;
         public String successMsg;
-        /**
-         * 错误信息
-         **/
         public String errorMsg;
 
         public CommandResult(final int result, final String successMsg, final String errorMsg) {
             this.result = result;
             this.successMsg = successMsg;
             this.errorMsg = errorMsg;
+        }
+
+        @Override
+        public String toString() {
+            return "result: " + result + "\n" +
+                    "successMsg: " + successMsg + "\n" +
+                    "errorMsg: " + errorMsg;
         }
     }
 }

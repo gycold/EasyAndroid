@@ -1,7 +1,6 @@
 package com.easytools.tools;
 
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -9,9 +8,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.Settings;
-import android.webkit.MimeTypeMap;
 
 import java.io.File;
+
+import androidx.core.content.FileProvider;
 
 /**
  * package: com.easytools.tools.IntentUtils
@@ -52,31 +52,53 @@ public class IntentUtils {
     }
 
     /**
-     * 获取安装App(支持6.0)的意图
+     * Return the intent of install app.
+     * <p>Target APIs greater than 25 must hold
+     * {@code <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />}</p>
      *
-     * @param filePath 文件路径
-     * @return intent
+     * @param filePath The path of file.
+     * @return the intent of install app
      */
-    public static Intent getInstallAppIntent(String filePath) {
-        return getInstallAppIntent(FileUtils.getFileByPath(filePath));
+    public static Intent getInstallAppIntent(final String filePath) {
+        return getInstallAppIntent(UtilsBridge.getFileByPath(filePath));
     }
 
     /**
-     * 获取安装App(支持6.0)的意图
+     * Return the intent of install app.
+     * <p>Target APIs greater than 25 must hold
+     * {@code <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />}</p>
      *
-     * @param file 文件
-     * @return intent
+     * @param file The file.
+     * @return the intent of install app
      */
-    public static Intent getInstallAppIntent(File file) {
-        if (file == null) return null;
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        String type;
-        if (Build.VERSION.SDK_INT < 23) {
-            type = "application/vnd.android.package-archive";
+    public static Intent getInstallAppIntent(final File file) {
+        if (!UtilsBridge.isFileExists(file)) return null;
+        Uri uri;
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            uri = Uri.fromFile(file);
         } else {
-            type = MimeTypeMap.getSingleton().getMimeTypeFromExtension(FileUtils.getFileExtension(file));
+            String authority = Utils.getApp().getPackageName() + ".utilcode.fileprovider";
+            uri = FileProvider.getUriForFile(Utils.getApp(), authority, file);
         }
-        intent.setDataAndType(Uri.fromFile(file), type);
+        return getInstallAppIntent(uri);
+    }
+
+    /**
+     * Return the intent of install app.
+     * <p>Target APIs greater than 25 must hold
+     * {@code <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />}</p>
+     *
+     * @param uri The uri.
+     * @return the intent of install app
+     */
+    public static Intent getInstallAppIntent(final Uri uri) {
+        if (uri == null) return null;
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        String type = "application/vnd.android.package-archive";
+        intent.setDataAndType(uri, type);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        }
         return intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     }
 
@@ -95,12 +117,16 @@ public class IntentUtils {
     /**
      * 获取打开App的意图
      *
-     * @param context     上下文
      * @param packageName 包名
      * @return intent
      */
-    public static Intent getLaunchAppIntent(Context context, String packageName) {
-        return context.getPackageManager().getLaunchIntentForPackage(packageName);
+    public static Intent getLaunchAppIntent(String packageName) {
+        String launcherActivity = UtilsBridge.getLauncherActivity(packageName);
+        if (UtilsBridge.isSpace(launcherActivity)) return null;
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_LAUNCHER);
+        intent.setClassName(packageName, launcherActivity);
+        return intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     }
 
     /**
